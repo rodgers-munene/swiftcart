@@ -30,10 +30,6 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true
-    },
-    address: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Address"
     }
 }, {
     timestamps: true

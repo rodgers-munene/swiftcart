@@ -18,17 +18,18 @@ const port = process.env.PORT? process.env.PORT: 5000;
 app.use(express.json())
 
 // declaring the routes
+
+// auth routes
+app.use('/api/auth', require('./routes/authRoutes'))
 // user routes
 app.use('/api/users', require('./routes/userRoutes'))
 
 // product routes
 app.use('/api/products', require('./routes/productsRoutes')) 
 
-// category routes
+// category routes and brand routes
 app.use('/api/categories', require('./routes/categoryRoutes'))
 
-// brand routers
-app.use('/api/categories/',require('./routes/brandRoutes') )
 
 // error handler middleware
 app.use(errorHandler);

@@ -1,96 +1,163 @@
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const Address = require('../models/addressModel')
 
-// registration controller
-const registerUser = asyncHandler(async (req, res) => {
-    const {firstName, lastName, email, password, birthDate, phone, address} = req.body;
-
-    // check for missing fields
-    if(!firstName || !lastName || !email || !password || !birthDate || !phone){
-        res.status(400);
-        throw new Error("All fields are mandatory!!")
-    }
-
-    // check if user is already register 
-    const userAvailable = await User.findOne({ email })
-
-    if(userAvailable){
-        res.status(400);
-        throw new Error("User already registered!!")
-    }
-
-    // encryption of password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
-        firstName,
-        lastName,
-        email,
-        password: hashedPassword,
-        birthDate,
-        phone,
-        address
-    })
-
-    console.log("✅ User created:", user);
-
-    res.status(201).json({ 
-        _id: user._id,
-        firstName: user.firstName, 
-        lastName: user.lastName, 
-        email: user.email,
-        birthDate: user.birthDate,
-        phone: user.phone,
-        address: user.address
-     })
-})
-
-// login controller
-const loginUser = asyncHandler(async (req, res) => {
-    const {email, password} = req.body
-
-    // check for missing fields
-    if(!email || !password){
-        res.json(400);
-        throw new Error("All fields a required!!")
-    }
-
-    // check if user is registerd
-    const userAvailable = await User.findOne({ email });
-
-    if(userAvailable && (await bcrypt.compare(password, userAvailable.password))){
-        // create a login token for a successful login
-        const accessToken = jwt.sign({
-            user: {
-                firstName: userAvailable.firstName,
-                lastName: userAvailable.lastName,
-                email: userAvailable.email,
-                dob: userAvailable.birthDate,
-                phone: userAvailable.phone
-            }
-        }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" })
-
-        res.status(200).json({ accessToken })
-    }else{
-        res.status(401);
-        throw new Error("Email or password is not valid");
-    }
-
-    res.status(200).json({message: "User Login successful"})
-})
 
 // user Profile
-
 const userProfile = asyncHandler(async (req, res) => {
+    if(req.user.user_id !== req.params.id){
+        res.status(400)
+        throw new Error("Unauthorised!!")
+    }
     res.json(req.user);
 })
 
-// admin leve api
+// update profile
+const updateProfile = asyncHandler(async(req, res) => {
+    // check if user exists
+    const user = await User.findById(req.params.id)
+
+    if(!user){
+        res.status(400)
+        throw new Error("User not found")
+    }
+
+    // validate the token
+    if(req.user.user_id !== req.params.id){
+        res.status(401)
+        throw new Error("Unauthorised!!")
+    }
+
+    const allowedChanges = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        birthDate: req.body.birthDate,
+        phone: req.body.phone
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        {$set: allowedChanges},
+        {new: true}
+    )
+    res.status(200).json(updatedUser)
+
+})
+
+// user addresses
+
+// Get userAddress
+const getAddresses = asyncHandler(async (req, res) => {
+    // validate the token
+    if(req.user.user_id !== req.params.id){
+        res.status(401);
+        throw new Error("Unauthorised!!")
+    }
+
+    const address = await Address.find({user_id: req.params.id})
+
+    res.status(200).json(address)
+
+})
+
+// get specific address details
+const getSpecificAddress = asyncHandler(async(req, res) => {
+    if(req.user.user_id !== req.params.id){
+        res.status(401);
+        throw new Error("Unauthorised");
+    }
+
+    const address = await Address.findById(req.params.addressId)
+
+    if(!address){
+        res.status(400)
+        throw new Error("Address not found")
+    }
+
+    res.status(200).json(address);
+
+})
+
+// post  address
+const createAddress = asyncHandler(async (req, res) => {
+    const { addressLine, country, city, postalCode } = req.body
+
+    if(!addressLine || !country || !city || !postalCode){
+        res.status(400)
+        throw new Error("All key fields are mandatory");
+    }
+
+    // validate the token
+    if(req.user.user_id !== req.params.id){
+        res.status(401);
+        throw new Error("Unauthorised")
+    }
+
+    const address = await Address.create({
+        user_id: req.user.user_id,
+        addressLine,
+        country,
+        city,
+        postalCode
+    })
+    res.status(200).json(address)
+})
+
+// update address
+// put /api/users/:id/address/:addressId
+const updateAddress = asyncHandler(async (req, res) => {
+    // validate the token 
+    if(req.user.user_id !== req.params.id){
+        res.status(401);
+        throw new Error("Unauthorised");
+    }
+
+    const address = await Address.findById(req.params.addressId)
+
+    if(!address){
+        res.status(400)
+        throw new Error("Address not found")
+    }
+    const updatedAddress = await Address.findByIdAndUpdate(
+        req.params.addressId,
+        req.body,
+        {new: true}
+    )
+    res.status(201).json(updatedAddress);
+    
+})
+
+// delete address
+const deleteAddress = asyncHandler(async (req, res) => {
+    if(req.user.user_id !== req.params.id){
+        res.status(401);
+        throw new Error("Unauthorised");
+    }
+
+    const address = await Address.findByIdAndDelete(req.params.addressId)
+
+    if(!address){
+        res.status(400)
+        throw new Error("Address not found")
+    }
+
+
+    res.status(200).json(address);
+})
+
+// admin level api
 const getAllUsers = asyncHandler(async (req, res) => {
     const users = await User.find();
     res.status(200).json(users)
 })
 
-module.exports = {registerUser, loginUser, userProfile, getAllUsers}
+module.exports = {
+     userProfile,
+     getAllUsers, 
+     updateProfile, 
+     getAddresses,
+     getSpecificAddress, 
+     createAddress, 
+     updateAddress, 
+     deleteAddress
+}

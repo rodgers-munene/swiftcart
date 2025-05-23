@@ -5,12 +5,9 @@ const addressSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    addressLineOne:{
+    addressLine:{
         type: String,
         require: [true, "This field is required"]
-    },
-    addressLineTwo: {
-        type: String,
     },
     country: {
         type: String,
@@ -21,7 +18,7 @@ const addressSchema = mongoose.Schema({
         required: [true, "This field is required"]
     },
     postalCode: {
-        type: Number,
+        type: String,
         required: [true, "This field is required"]
     }
 
