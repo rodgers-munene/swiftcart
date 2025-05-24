@@ -2,7 +2,7 @@ const express = require('express')
 const dotenv = require('dotenv').config()
 const errorHandler = require('./middleware/errorHandler')
 const dbConnect = require('./config/dbConnect')
-const seedFunction = require('./fetchData')
+// const seedFunction = require('./fetchData')
 
 // start the database 
 dbConnect()
@@ -29,6 +29,12 @@ app.use('/api/products', require('./routes/productsRoutes'))
 
 // category routes and brand routes
 app.use('/api/categories', require('./routes/categoryRoutes'))
+
+// cart routes
+app.use('/api/user', require('./routes/cartRoutes'))
+
+// order routes
+app.use('/api/user', require('./routes/orderRoutes'))
 
 
 // error handler middleware
