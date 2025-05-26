@@ -28,7 +28,6 @@ const orderSchema = mongoose.Schema({
         shippingAddress: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Address",
-            required: true
         },
         paymentMethod: {
             type: String,
@@ -41,11 +40,13 @@ const orderSchema = mongoose.Schema({
         },
         paymentStatus: {
             type: String,
+            enum: ['pending', 'paid', 'failed'],
             default: 'pending' // or paid
         },
         orderStatus: {
             type: String,
-            default: 'processing', // shipped, delivered, cancelled
+            enum: ['processing', 'shipped', 'delivered', 'cancelled'],
+            default: 'processing'
         }
 
 },

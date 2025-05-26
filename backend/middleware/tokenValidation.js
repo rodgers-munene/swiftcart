@@ -30,4 +30,12 @@ const validateToken = asyncHandler( async (req, res, next) => {
 
  })
 
- module.exports = validateToken
+ const isAdmin = asyncHandler(async (req, res, next) => {
+    if(req.user.role !== 'admin'){
+        res.status(403)
+        throw new Error("Admin role is required to carry out this operation")
+    }
+    next();
+ })
+
+ module.exports = {validateToken, isAdmin}

@@ -1,6 +1,7 @@
 const express = require('express')
-const { userProfile, getAllUsers, updateProfile, getAddresses, createAddress, updateAddress, deleteAddress, getSpecificAddress } = require('../controllers/userController')
-const validateToken = require('../middleware/tokenValidation')
+const { userProfile, updateProfile, getAddresses, createAddress, updateAddress, deleteAddress, getSpecificAddress } = require('../controllers/userController')
+
+const { validateToken } = require('../middleware/tokenValidation')
 const router = express.Router()
 
 
@@ -8,12 +9,12 @@ const router = express.Router()
 // Get user information / profile
 // GET /api/users/:id
 // private router
-router.get('/:id', validateToken, userProfile)
+router.get('/profile/:id', validateToken, userProfile)
 
 // Update user profile/ info
 // PUT /api/users/:id
 // private router
-router.put('/:id', validateToken, updateProfile)
+router.put('/profile/:id', validateToken, updateProfile)
 
 // Get all of users addresses
 // GET /api/users/:id/address
@@ -42,7 +43,5 @@ router.put('/:id/address/:addressId', validateToken, updateAddress)
 router.delete('/:id/address/:addressId', validateToken, deleteAddress)
 
 
-// get all users
-router.get('/', getAllUsers);
 
 module.exports = router

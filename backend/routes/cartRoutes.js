@@ -1,6 +1,6 @@
 const express = require('express')
 const { getCart, addToCart, updateCart, deleteCart } = require('../controllers/cartController')
-const validateToken = require('../middleware/tokenValidation')
+const { validateToken } = require('../middleware/tokenValidation')
 const router = express.Router()
 
 // Get cart

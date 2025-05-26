@@ -43,6 +43,11 @@ const getProductsInBrand = asyncHandler(async (req, res) => {
 const postCategory = asyncHandler( async (req, res) => {
     const {name ,slug} = req.body
 
+    if(req.user.role !== 'admin'){
+        res.status(403);
+        throw new Error("Not allowed to make this changes!!")
+    }
+    
     if(!name || !slug){
         res.status(400);
         throw new Error("All field are required!!");
@@ -65,6 +70,11 @@ const postCategory = asyncHandler( async (req, res) => {
 // admin level
 const postBrand = asyncHandler( async (req, res) => {
     const {name ,slug, category} = req.body
+
+    if(req.user.role !== 'admin'){
+        res.status(403);
+        throw new Error("Not allowed to make this changes!!")
+    }
 
     if(!name || !slug){
         res.status(400);

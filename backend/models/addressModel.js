@@ -20,6 +20,10 @@ const addressSchema = mongoose.Schema({
     postalCode: {
         type: String,
         required: [true, "This field is required"]
+    },
+    isDefault: {
+        type: Boolean,
+        default: false
     }
 
 }, {

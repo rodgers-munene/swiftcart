@@ -29,6 +29,11 @@ const getProductDetails = asyncHandler(async (req, res) => {
 const postProduct = asyncHandler(async (req, res) => {
     const {name, description, category, brand, image, sku, inStock, quantity, ratings, numReviews, colors, size, discount, weight} = req.body
 
+    if(req.user.role !== 'admin'){
+        res.status(403);
+        throw new Error("Not allowed to make this changes!!")
+    }
+    
     // required field validations
     if(!name || !description || !brand || inStock === undefined ||!sku){
         res.status(400)
@@ -59,6 +64,11 @@ const postProduct = asyncHandler(async (req, res) => {
 // PUT /api/product/:id
 const updateProduct = asyncHandler(async (req, res) => {
 
+    if(req.user.role !== 'admin'){
+        res.status(403);
+        throw new Error("Not allowed to make this changes!!")
+    }
+
     const product = await Product.findById(req.params.id);
 
     if(!product){
@@ -78,6 +88,11 @@ const updateProduct = asyncHandler(async (req, res) => {
 // DELETE /api/product/:id
 
 const deleteProduct = asyncHandler(async (req, res) => {
+    if(req.user.role !== 'admin'){
+        res.status(403);
+        throw new Error("Not allowed to make this changes!!")
+    }
+
     const product = await Product.findByIdAndDelete(req.params.id);
 
     if(!product) {

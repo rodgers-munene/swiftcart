@@ -18,6 +18,8 @@ const port = process.env.PORT? process.env.PORT: 5000;
 app.use(express.json())
 
 // declaring the routes
+// admin routes
+app.use('/api/admin', require('./routes/adminRoutes'))
 
 // auth routes
 app.use('/api/auth', require('./routes/authRoutes'))

@@ -32,7 +32,7 @@ const updateProfile = asyncHandler(async(req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         birthDate: req.body.birthDate,
-        phone: req.body.phone
+        phone: req.body.phone,
     }
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -80,7 +80,7 @@ const getSpecificAddress = asyncHandler(async(req, res) => {
 
 // post  address
 const createAddress = asyncHandler(async (req, res) => {
-    const { addressLine, country, city, postalCode } = req.body
+    const { addressLine, country, city, postalCode, isDefault } = req.body
 
     if(!addressLine || !country || !city || !postalCode){
         res.status(400)
@@ -93,13 +93,24 @@ const createAddress = asyncHandler(async (req, res) => {
         throw new Error("Unauthorised")
     }
 
+    // check for existing addresses, if none set the first one's isDefault to true else set isDefault to false
+    const availableAddresses = await Address.findOne({user_id: req.params.id});
+    let defaultStatus = ""
+
+    if(!availableAddresses){
+        defaultStatus = true
+    }else{
+        defaultStatus = false
+    }
+
     const address = await Address.create({
-        user_id: req.user.user_id,
+        user_id: req.params.id,
         addressLine,
         country,
         city,
-        postalCode
-    })
+        postalCode,
+        isDefault: isDefault? isDefault : defaultStatus 
+    });
     res.status(200).json(address)
 })
 
@@ -147,6 +158,11 @@ const deleteAddress = asyncHandler(async (req, res) => {
 
 // admin level api
 const getAllUsers = asyncHandler(async (req, res) => {
+    if(req.user.role !== 'admin'){
+        res.status(403);
+        throw new Error("Not allowed to make this changes!!")
+    }
+
     const users = await User.find();
     res.status(200).json(users)
 })
