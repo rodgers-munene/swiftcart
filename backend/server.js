@@ -67,8 +67,6 @@ app.use('/api/users', require('./routes/userRoutes'))
 // product routes
 app.use('/api/products', require('./routes/productsRoutes')) 
 
-// category routes and brand routes
-app.use('/api/categories', require('./routes/categoryRoutes'))
 
 // cart routes
 app.use('/api/user', require('./routes/cartRoutes'))
