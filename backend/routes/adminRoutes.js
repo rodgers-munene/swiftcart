@@ -4,7 +4,7 @@ const { deleteProduct, updateProduct, postProduct } = require('../controllers/pr
 const { getAllUsers } = require('../controllers/userController')
 const { getOrders, allOrders } = require('../controllers/orderController')
 const { validateToken, isAdmin } = require('../middleware/tokenValidation')
-const { postBrand, postCategory } = require('../controllers/categoryController')
+
 
 //user management 
 
@@ -43,16 +43,6 @@ router.get('/users/orders', validateToken, isAdmin, allOrders)
 // private route
 router.get('/users/orders/:id', validateToken, isAdmin, getOrders)
 
-// brands and categories
 
-// Post a new brand in a category
-// POST /api/categories/:categoryId/brands
-// admin level route
-router.post('/brands', validateToken, isAdmin, postBrand);
-
-// add a new category
-// POST /api/categories
-// admin level route
-router.post('/categories', validateToken, isAdmin, postCategory)
 
 module.exports = router

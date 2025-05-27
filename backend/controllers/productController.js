@@ -27,7 +27,7 @@ const getProductDetails = asyncHandler(async (req, res) => {
 // post a product
 
 const postProduct = asyncHandler(async (req, res) => {
-    const {name, description, category, brand, image, sku, inStock, quantity, ratings, numReviews, colors, size, discount, weight} = req.body
+    const { sku, productName, description, category, subCategory, image, price } = req.body
 
     if(req.user.role !== 'admin'){
         res.status(403);
@@ -35,26 +35,26 @@ const postProduct = asyncHandler(async (req, res) => {
     }
     
     // required field validations
-    if(!name || !description || !brand || inStock === undefined ||!sku){
+    if(!productName || !description || !subCategory ||!sku){
         res.status(400)
         throw new Error("Key values Missing!!")
     }
 
+    // define category hierarchy
+
+    const categoryHierarchy = [category, subCategory]
+
     const product = await Product.create({
-        name,
+        sku,
+        productName,
         description,
         category,
-        brand,
-        image,
-        sku,
-        inStock,
-        quantity,
-        ratings,
-        numReviews,
-        colors,
-        size,
-        discount,
-        weight
+        categoryHierarchy,
+        productImages: image,
+        price: {
+            list: Number(price),
+            sale: Number(price)
+        }
     })
     res.status(201).json(product);
 })

@@ -36,65 +36,8 @@ const getProductsInBrand = asyncHandler(async (req, res) => {
 
 
 
-// create category test
-
-const postCategory = asyncHandler( async (req, res) => {
-    const {name ,slug} = req.body
-
-    if(req.user.role !== 'admin'){
-        res.status(403);
-        throw new Error("Not allowed to make this changes!!")
-    }
-    
-    if(!name || !slug){
-        res.status(400);
-        throw new Error("All field are required!!");
-    }
-
-    const categoryCreated = await Category.findOne({name: req.body.name})
-
-    if(categoryCreated){
-        res.status(400);
-        throw new Error("Brand already exists");
-    }
-
-    const brand = await Category.create({
-        name,
-        slug,
-    })
-})
-
-// create brand
-// admin level
-const postBrand = asyncHandler( async (req, res) => {
-    const {name ,slug, category} = req.body
-
-    if(req.user.role !== 'admin'){
-        res.status(403);
-        throw new Error("Not allowed to make this changes!!")
-    }
-
-    if(!name || !slug){
-        res.status(400);
-        throw new Error("All field are required!!");
-    }
-
-    const brandCreated = await Brand.findOne({name: req.body.name})
-
-    if(brandCreated){
-        res.status(400);
-        throw new Error("Brand already exists");
-    }
-
-    const brand = await Brand.create({
-        name,
-        slug,
-        category: req.params.categoryId
-    })
-})
 
 
 
 
-
-module.exports = {getCategories, postCategory, postBrand, getBrands, getProductsInBrand}
+module.exports = {getCategories, getBrands, getProductsInBrand}
