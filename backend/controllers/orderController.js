@@ -55,7 +55,7 @@ const postOrders = asyncHandler(async (req, res) => {
     const userAddress = await Address.findOne({user_id: req.params.id, isDefault: true})
     if(!userAddress){
         res.status(400);
-        throw new Error("Address not found")
+        throw new Error("Address required to complete order!")
     }
 
     // to create an order we will get the items from cart and add them to order when user clicks "proceed to checkout"

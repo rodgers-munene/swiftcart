@@ -43,6 +43,9 @@ const addToCart = asyncHandler(async (req, res) => {
     // check for an already existing user's cart
     const userCart = await Cart.findOne({user_id: req.params.id})
 
+    // format the price
+    const formattedPrice = product.price.sale? parseFloat(product.price.sale) : 0
+
     if(!userCart){
         const newCart = await Cart.create({
             user_id: req.params.id,
@@ -50,10 +53,10 @@ const addToCart = asyncHandler(async (req, res) => {
                 {   
                     product_id,
                     quantity,
-                    price: product.price * quantity
+                    price: formattedPrice * quantity
                 }
             ],
-            totalPrice: product.price * quantity
+            totalPrice: formattedPrice * quantity
         })
 
         res.status(201).json(newCart)
@@ -66,18 +69,18 @@ const addToCart = asyncHandler(async (req, res) => {
         if(itemIndex > -1){
             // if product already exists update quantity and price
             userCart.items[itemIndex].quantity += quantity
-            userCart.items[itemIndex].price += product.price * quantity
+            userCart.items[itemIndex].price = parseFloat(userCart.items[itemIndex].price) + (formattedPrice * quantity)
         }else {
             // if product does not exist push it into the array
             userCart.items.push({
                 product_id,
                 quantity,
-                price: product.price * quantity
+                price: formattedPrice * quantity
             });
 
          }
         
-        userCart.totalPrice += product.price * quantity 
+        userCart.totalPrice += formattedPrice * quantity 
 
         const updatedCart = await userCart.save()
 
@@ -116,14 +119,16 @@ const updateCart = asyncHandler(async (req, res) => {
         item => item.product_id.toString() === req.params.productId
     )
 
+    const formattedPrice = product.price.sale? parseFloat(product.price.sale) : 0
+
     if(itemIndex > -1){
-        const oldPrice = userCart.items[itemIndex].price
+        const oldPrice = parseFloat(userCart.items[itemIndex].price)
 
         if(quantity > 0){
             userCart.items[itemIndex].quantity = quantity
-            userCart.items[itemIndex].price = product.price * quantity
+            userCart.items[itemIndex].price = formattedPrice * quantity
 
-            userCart.totalPrice = userCart.totalPrice - oldPrice + (product.price * quantity)
+            userCart.totalPrice = userCart.totalPrice - oldPrice + (formattedPrice * quantity)
         }else{
             userCart.totalPrice -= oldPrice
             userCart.items.splice(itemIndex, 1)
@@ -156,13 +161,14 @@ const deleteCart = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Cart not found")
     }
+    const formattedPrice = product.price.sale? parseFloat(product.price.sale): 0
 
     const itemIndex = await userCart.items.findIndex(
         item => item.product_id.toString() === req.params.productId
     )
 
     if(itemIndex > -1 ){
-        const oldPrice = userCart.items[itemIndex].price
+        const oldPrice = parseFloat(userCart.items[itemIndex].price)
         userCart.totalPrice -= oldPrice
 
         userCart.items.splice(itemIndex, 1)

@@ -1,83 +1,65 @@
 const  mongoose = require('mongoose')
 
 
-const productSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, "Please add the contact name"],
-        maxLength: 100,
-        trim: true
+const productSchema = new mongoose.Schema({
+  sku: {
+    type: String,
+    unique: true
+  },
+  productName: {
+    type: String,
+    required: [true, "Please add the product name"],
+    maxLength: 100,
+    trim: true
+  },
+  description: {
+    type: String,
+    default: ""
+  },
+  category: {
+    type: String,
+    default: ""
+  },
+  categoryHierarchy: {
+    type: [String],
+    required: [true, "Please add the category hierarchy"]
+  },
+  productImages: {
+    type: [String],
+    default: []
+  },
+  price: {
+    list: {
+      type: String,
+      default: 0,
+      min: 0
     },
-    description: {
-        type: String,
-        required: [true, "Please add the description of the product"],
-        maxLength: 1000
-    },
-    price: {
-        type: Number,
-        required: [true, "Please add the price of the product"],
-        min: 0,
-        default: 0
-    },
-    category: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
-        required: [true, "Please add the product category"]
-    },
-    brand: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Brand',
-        required: [true, "Product Brand is required"]
-    },
-    image: {
-        type: String,
-        default: ''
-    },
-    sku: {
+    sale: {
       type: String,
       required: true,
-      unique: true,
-    },
-    inStock: {
-        type: Boolean,
-        required: true
-    },
-    quantity: {
-        type: Number,
-        default: 0
-    },
-    rating: {
+      default:0,
+      min: 0
+    }
+  },
+  reviews: {
+    averageReviewScore: {
       type: Number,
-      default: 0,
-      min: 0,
-      max: 5,
+      default: 0
     },
-    numReviews: {
+    numberOfReviews: {
       type: Number,
-      default: 0,
+      default: 0
     },
-    colors: {
+    totalReviewScore: {
+      type: Number,
+      default: 0
+    },
+    recentReviews: {
       type: [String],
-      default: [],
-    },
-    size: {
-      type: String,
-      enum: ['S', 'M', 'L', 'XL'],
-      default: 'M',
-    },
-    discount: {
-      type: Number,
-      default: 0,
-      min: 0,
-      max: 100,
-    },
-    weight: {
-      type: String,
-      default: '0 kg',
-    }       
+      default: []
+    }
+  }
+}, { timestamps: true });
 
-},
-{timestamps: true}
-)
 
 module.exports = mongoose.model('Product', productSchema)

@@ -12,6 +12,10 @@ const helmet = require('helmet')
 // start the database 
 dbConnect()
 
+// seedFunction()
+
+
+
 
 
 // declare the app module 
@@ -36,6 +40,11 @@ const limiter = rateLimiter({
 });
 
 app.use(limiter)
+
+app.use((req, res, next) => {
+  req.query = { ...req.query }; // Clone into a mutable object
+  next();
+});
 
 // protect the server from nosql injections
 app.use(mongoSanitize())
