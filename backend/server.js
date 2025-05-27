@@ -2,6 +2,11 @@ const express = require('express')
 const dotenv = require('dotenv').config()
 const errorHandler = require('./middleware/errorHandler')
 const dbConnect = require('./config/dbConnect')
+const rateLimiter = require('express-rate-limit')
+const cors = require('cors')
+const mongoSanitize = require('express-mongo-sanitize')
+const xss = require('xss-clean')
+const helmet = require('helmet')
 // const seedFunction = require('./fetchData')
 
 // start the database 
@@ -13,6 +18,30 @@ dbConnect()
 const app = express()
 
 const port = process.env.PORT? process.env.PORT: 5000;
+
+// allow api calls from our vite frontend
+app.use(cors({
+    origin: "http://localhost:5173/",
+    credentials: true
+}))
+
+//set secure http headers
+app.use(helmet())
+// limit the number of api calls from a single ip address to 60
+
+const limiter = rateLimiter({
+    windowMs: 15 * 60 * 1000,
+    max: 60,
+    message: "Too many requests from this ip, please try again later"
+});
+
+app.use(limiter)
+
+// protect the server from nosql injections
+app.use(mongoSanitize())
+
+// prevent cross-site scripting
+app.use(xss())
 
 
 app.use(express.json())
