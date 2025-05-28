@@ -1,13 +1,18 @@
-import ToggleTheme from "./components/toggleTheme"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Home from './pages/Home'
+import Layout from "./components/Layout"
+
 
 
 function App() {
 
   return (
-    <div className='w-screen h-screen bg-white dark:bg-black transition-colors duration-500'>
-      
-      <ToggleTheme />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout>< Home /></Layout>} />
+        {/* <Route path="/" element={< Home />} /> */}
+      </Routes>
+    </Router>
   )
 }
 

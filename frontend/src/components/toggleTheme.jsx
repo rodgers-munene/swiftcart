@@ -14,7 +14,7 @@ const ToggleTheme = () => {
         className='fixed bottom-5 right-5 z-50 rounded-full p-2 bg-gray-900 dark:bg-gray-100'
         onClick={handleClick}
         > 
-        {theme === 'dark'? < Sun/>: < Moon className='text-white'/>}
+        {theme === 'dark'? < Sun className='text-[#213547]'/>: < Moon className='text-white'/>}
         </button> 
     </div>
   )
