@@ -44,7 +44,7 @@ const addToCart = asyncHandler(async (req, res) => {
     const userCart = await Cart.findOne({user_id: req.params.id})
 
     // format the price
-    const formattedPrice = product.price.sale? parseFloat(product.price.sale) : 0
+    const formattedPrice = product.price? parseFloat(product.price) : 0
 
     if(!userCart){
         const newCart = await Cart.create({
@@ -119,7 +119,7 @@ const updateCart = asyncHandler(async (req, res) => {
         item => item.product_id.toString() === req.params.productId
     )
 
-    const formattedPrice = product.price.sale? parseFloat(product.price.sale) : 0
+    const formattedPrice = product.price? parseFloat(product.price) : 0
 
     if(itemIndex > -1){
         const oldPrice = parseFloat(userCart.items[itemIndex].price)
@@ -161,7 +161,7 @@ const deleteCart = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Cart not found")
     }
-    const formattedPrice = product.price.sale? parseFloat(product.price.sale): 0
+    const formattedPrice = product.price? parseFloat(product.price): 0
 
     const itemIndex = await userCart.items.findIndex(
         item => item.product_id.toString() === req.params.productId

@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const raw = fs.readFileSync('../../../Downloads/products.json', 'utf-8');
+const raw = fs.readFileSync('./products.json', 'utf-8');
 const lines = raw.trim().split('\n');
 
 // Convert each line to a JS object
