@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import logo from '../assets/logo.svg'
 import Searchbar from './Searchbar'
 import Navbar from './Navbar'
@@ -7,6 +7,23 @@ import Hamburger from './Hamburger'
 
 const Header = () => {
   const[isOpen, setIsOpen] = useState(false)
+  const navbarRef = useRef(null)
+
+  useEffect(() => {
+    const handleOutsideCLick = (event) => {
+        if(navbarRef.current && !navbarRef.current.contains(event.target)){
+          setIsOpen(false)
+        }
+    }
+
+    if(isOpen){
+      document.addEventListener('mousedown', handleOutsideCLick)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideCLick)
+    }
+  }, [isOpen, setIsOpen])
 
   const toggleNavbar = () => {
     setIsOpen((prev) => !prev)
@@ -52,7 +69,9 @@ const Header = () => {
 
       
 
-      <div className={`absolute right-0 transition-all duration-200 lg:hidden ${isOpen? "top-10 md:top-14": "-top-[30rem]"}`}>
+      <div 
+      ref={navbarRef}
+      className={`absolute right-0 transition-all duration-500 ease-in-out lg:hidden ${isOpen? "top-10 md:top-14": "-top-[30rem]"}`}>
         <Hamburger />
            
       </div>
