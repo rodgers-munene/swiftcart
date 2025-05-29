@@ -2,7 +2,7 @@ import React from 'react'
 
 const Navbar = () => {
   return (
-    <div className=' flex justify-around items-center'>
+    <div className='flex justify-around items-center'>
       <a href="/">Home</a>
       <a href="">Categories</a>
       <a href="/beauty">Beauty</a>
