@@ -32,12 +32,14 @@ export const topCategories = [
 
 // get products in a certain category
 
-export const getProductsInCategory = async ({category, limit}) => {
+export const getProductsInCategory = async (category, limit) => {
     try {
-        const res = await fetch(`http://localhost:5001/api/categories/products?category=${category}&limit=${limit}`)
+        const categoryParam = category.join(',')
+        const res = await fetch(`http://localhost:5001/api/categories/products?category=${categoryParam}&limit=${limit}`)
         const data = await res.json()
         return data;
     } catch (error) {
         console.error("Error fetching Products!!")
+        return []
     }
 } 
