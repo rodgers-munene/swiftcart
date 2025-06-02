@@ -1,24 +1,28 @@
 import { useEffect, useState } from 'react'
 import GridProducts from '../components/gridProducts'
-import { topCategories, getProductsInCategory } from '../services/backendApi'
+import { topCategories, getProductsInCategory, getHighestDiscountedProducts } from '../services/backendApi'
 import { ArrowRight } from 'lucide-react'
 import FlexProducts from '../components/flexProducts'
 import NewsHome from '../components/newsHome'
+import TopDiscountSlider from '../components/Slideshow'
 
 const Home = () => {
   const [beautyProducts, setBeautyProducts] = useState([]);
   const [fashionProducts, setFashionProducts] = useState([])
   const [homeProducts, setHomeProducts] = useState([])
+  const [slideProducts, setSlideProducts] = useState([])
 
 
   useEffect(() => {
     const getData = async () => {
       const beautyData = await getProductsInCategory(['beauty', 'skin-care'], 8)
       const fashionData = await getProductsInCategory(['mens-shirts', 'womens-dresses'], 8)
-      const homeProducts = await getProductsInCategory(['home-decoration', 'furniture'], 8)
+      const homeData = await getProductsInCategory(['home-decoration', 'furniture'], 8)
+      const slideData = await getHighestDiscountedProducts(6)
       setBeautyProducts(beautyData)
       setFashionProducts(fashionData)
-      setHomeProducts(homeProducts)
+      setHomeProducts(homeData)
+      setSlideProducts(slideData)
     }
 
     getData()
@@ -26,24 +30,23 @@ const Home = () => {
 
   return (
     <div className='w-screen min-h-screen'>
-      {/* categories section */}
-      <div className=' w-full flex flex-col items-center h-24 justify-around'>
-          <h1 className='text-xl font-bold'>Top Categories</h1>
-          {/* <div className='w-[98vw] sm:w-[85vw] flex overflow-x-auto sm:justify-around py-2'>
-            
-          {topCategories? topCategories.map((item, index) => (
-            <div className='min-w-36'> 
-              <a href='' key={index} className='mx-1'>{item}</a>
-            </div>
-          )): "Loading"}
 
+      {/* slide show section */}
 
-          </div> */}
+      <div className='bg-gray-300 dark:bg-gray-700'>
+          <TopDiscountSlider products={slideProducts}/>
       </div>
 
+      {/* categories section */}
+      
       <div className='w-full min-h-screen bg-gray-300 dark:bg-gray-700 flex items-center flex-col'>
+        {/* title */}
+        <div className=' w-full flex flex-col items-center mt-3 justify-around'>
+          <h1 className='text-2xl font-bold'>Top Categories</h1>
+          
+        </div>
         {/* beauty section */}
-        <div className='flex items-center flex-col mt-5'>
+        <div className='flex items-center flex-col mt-3'>
 
           <div className=' w-[90vw] flex justify-between mb-5 items-center'>
             <p className='text-sm sm:text-base lg:text-xl font-bold'>Beauty & Skincare</p>

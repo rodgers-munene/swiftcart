@@ -43,3 +43,15 @@ export const getProductsInCategory = async (category, limit) => {
         return []
     }
 } 
+
+// get highest discounted products 
+export const getHighestDiscountedProducts = async (limit) => {
+    try {
+        const res = await fetch(`http://localhost:5001/api/products/highest-discount?&limit=${limit}`)
+        const data = await res.json()
+        return data;
+    } catch (error) {
+        console.error('Error fetching products');
+        return [];
+    }
+}

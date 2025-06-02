@@ -1,5 +1,9 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -14,6 +18,16 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.custom-swiper .swiper-pagination{
+  bottom: -4px !important;
+}
+.swiper-pagination-bullet{
+  @apply bg-gray-900 dark:bg-[#9ca3af]
+}
+.swiper-pagination-bullet-active{
+  @apply bg-[#3b82f6] dark:bg-[#60a5fa] 
 }
 
 a {
