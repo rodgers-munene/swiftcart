@@ -36,6 +36,11 @@ const Login = () => {
                         <img src={Google} alt="" className='w-6 h-6 mr-2'/>
                         Login with Google</div>
                 </div>
+
+                <div className='w-full flex justify-center'>
+                    <p className='text-black'>Don't have an account? <a href="/signup" className='text-blue-400'>Sign up</a></p>
+                </div>
+
                 
             </form>
         </div>
