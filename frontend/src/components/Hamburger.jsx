@@ -31,9 +31,7 @@ const Hamburger = () => {
             )
           })}
             
-            <button className='text-black dark:text-white pt-2 pl-4 flex items-center md:hidden'>
-              <p>Profile</p> <User className='ml-1' />
-            </button>
+            
             <button className='text-black dark:text-white py-2 pl-4 flex items-center md:hidden'>
               <p>Wishlist</p> <Heart className='ml-1'/>
             </button>

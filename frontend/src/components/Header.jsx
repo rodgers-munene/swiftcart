@@ -4,10 +4,22 @@ import Searchbar from './Searchbar'
 import Navbar from './Navbar'
 import { ShoppingCart, User, Heart, MenuIcon, XIcon } from 'lucide-react'
 import Hamburger from './Hamburger'
+import { useAuth } from '../context/AuthContext'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
+  const[openProfile, setOpenProfile] = useState(false)
   const[isOpen, setIsOpen] = useState(false)
   const navbarRef = useRef(null)
+  const profileRef = useRef(null)
+  const { user } = useAuth()
+
+
+  const toggleProfile = () => {
+    setOpenProfile((prev) => !prev)
+  }
+
+
 
   useEffect(() => {
     const handleOutsideCLick = (event) => {
@@ -24,6 +36,22 @@ const Header = () => {
       document.removeEventListener('mousedown', handleOutsideCLick)
     }
   }, [isOpen, setIsOpen])
+
+  useEffect(() => {
+     const handleProfileClick = (event) => {
+      if(profileRef.current && !profileRef.current.contains(event.target)){
+        setOpenProfile(false)
+        }
+      }
+
+      if(openProfile){
+        document.addEventListener('mousedown', handleProfileClick)
+      }
+
+      return () => {
+         document.removeEventListener('mousedown', handleProfileClick)
+      }
+  }, [openProfile, setOpenProfile])
 
   const toggleNavbar = () => {
     setIsOpen((prev) => !prev)
@@ -42,6 +70,11 @@ const Header = () => {
 
       <div className='md:hidden flex items-center mr-2'>
         <Searchbar />
+        <div className='relative'>
+           <button className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
+              <User />
+          </button>
+        </div>
         <button onClick={toggleNavbar}>
             {isOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
         </button>
@@ -52,9 +85,8 @@ const Header = () => {
       <div className='hidden md:block md:w-1/3 lg:w-1/6'>
         <div className='w-full flex items-center justify-around'>
             <Searchbar />
-            <button className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
-              <User />
-            </button>
+
+
             <button className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
               <Heart />
             </button>
@@ -63,7 +95,36 @@ const Header = () => {
             </button>
             <button onClick={toggleNavbar} className='lg:hidden'>
             {isOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
-        </button>
+            </button>
+
+            {/* user management */}
+            <div className='relative'>
+              <button 
+              onClick={toggleProfile}
+              className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
+              <User />
+              </button>
+
+              <div 
+              ref={profileRef}
+              className={`absolute w-36 h-auto bg-gray-400 -right-5 z-50 rounded-lg dark:bg-gray-800 ${openProfile? "block": "hidden"}`}>
+                {user === null? 
+                <div className='flex flex-col items-start'>
+                  <a
+                  href='/login'
+                   className=' flex items-center h-10 border w-full rounded-t-lg
+                    hover:bg-gray-300 dark:hover:bg-gray-700 pl-4 
+                    hover:text-white '>Login</a>
+                  <a
+                    href='/signup'
+                   className='flex items-center h-10 border w-full rounded-b-lg hover:bg-gray-300 dark:hover:bg-gray-700 pl-4'>Signup</a> 
+                </div>:
+                <div>
+                  <button className='h-10 w-full rounded-lg'>View Profile</button>
+                </div>
+                }
+              </div>
+            </div>
         </div>      
       </div>
 
