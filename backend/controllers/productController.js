@@ -21,6 +21,12 @@ const getProductDetails = asyncHandler(async (req, res) => {
     res.status(200).json(product)
 })
 
+const getHighestDiscountProducts = asyncHandler(async (req, res) =>{
+    const productLimit = req.query.limit || 10
+    const products = await Product.find().sort({discountPercentage: -1}).limit(productLimit)
+
+    res.status(200).json(products)
+})
 
 // admin/ seller level endpoint
 
@@ -107,4 +113,4 @@ const deleteProduct = asyncHandler(async (req, res) => {
 
 
 
-module.exports = {getProducts, getProductDetails, postProduct, updateProduct, deleteProduct}
+module.exports = {getProducts, getProductDetails, postProduct, updateProduct, deleteProduct, getHighestDiscountProducts}

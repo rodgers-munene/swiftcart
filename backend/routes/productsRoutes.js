@@ -1,5 +1,5 @@
 const express = require('express');
-const { getProducts, getProductDetails } = require('../controllers/productController');
+const { getProducts, getProductDetails, getHighestDiscountProducts } = require('../controllers/productController');
 const router = express.Router();
 
 // Get all products
@@ -7,9 +7,17 @@ const router = express.Router();
 // public route 
 router.get('/', getProducts)
 
+// get products sorted according to the discountPercentage
+// GET /api/products
+// public route
+
+router.get('/highest-discount', getHighestDiscountProducts)
+
 // Get product details 
 // GET /api/products/:id
 // public route
 router.get('/:id', getProductDetails)
+
+
 
 module.exports = router
