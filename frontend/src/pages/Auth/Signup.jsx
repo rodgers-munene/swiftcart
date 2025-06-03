@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import logo from '../../assets/logo.svg'
 import Google from '../../assets/google.png'
-import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import Notification from '../../components/notification'
+import Loader from '../../components/Loader'
 
 
 
 const Signup = () => {
-    const {setUser} = useAuth();
+    
     const [formData, setFormData] = useState({ //get data from the form on submit
         firstName: '',
         lastName: '',
@@ -67,16 +67,14 @@ const Signup = () => {
                 const errorData = await response.json();
                 setMessage(errorData.error || "Registration Failed")
                 setShow(true)
-                console.log("Registration Failed", errorData);
                 return;
             }
 
-            const data = await response.json();
-            setUser(data);
             setMessage("Registration successful, Please Login")
             setShow(true)
             console.log("Registration successful, please login to continue!")
             setTimeout(() => navigate('/login'), 1500)
+            
         } catch (error) {
             console.log(error);
             return;
@@ -96,7 +94,7 @@ const Signup = () => {
         </div>
         <div className='bg-white w-80 md:w-96 h-[30rem]'>
             
-            <form action="" method="post" className='w-full h-full flex flex-col justify-around'>
+            <form action="" method="post" className='relative min-w-full h-full flex flex-col justify-around'>
                 {/* title */}
                 <div className='w-full'>
                     <h1 className='text-2xl font-bold pl-5 text-black'>Sign Up</h1>
@@ -174,9 +172,11 @@ const Signup = () => {
                     disabled={loading}
                     className='w-[90%] bg-blue-600 text-white h-10 pl-3 rounded-lg mb-2'>{loading ? 'Registering...' : 'Register'}</button>
                     
-                    <div className='w-[90%] bg-gray-200 h-10 pl-3 rounded-lg flex justify-center items-center cursor-pointer text-black'>
+                    <button
+                     type='button'
+                     className='w-[90%] bg-gray-200 h-10 pl-3 rounded-lg flex justify-center items-center text-black'>
                         <img src={Google} alt="" className='w-6 h-6 mr-2'/>
-                        Sign up with Google</div>
+                        Sign up with Google</button>
                 </div>
 
 
@@ -184,7 +184,12 @@ const Signup = () => {
                     <p className='text-black'>Already have an account? <a href="/login" className='text-blue-400'>Log in</a></p>
                 </div>
 
-
+                {/* animation loader */}
+                {loading && (
+                    <div className='text-black absolute top-1/2 left-1/2'>
+                    <Loader />
+                    </div>
+                )}
             </form>
 
             {show && (<Notification 
@@ -192,6 +197,8 @@ const Signup = () => {
                 duration={1500}
                 onClose={() => setShow(false)}
             />)}
+
+            
 
         </div>
         

@@ -17,6 +17,7 @@ const Header = () => {
 
   const toggleProfile = () => {
     setOpenProfile((prev) => !prev)
+    console.log("profile open")
   }
 
 
@@ -71,7 +72,9 @@ const Header = () => {
       <div className='md:hidden flex items-center mr-2'>
         <Searchbar />
         <div className='relative'>
-           <button className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
+           <button 
+           onClick={toggleProfile}
+           className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
               <User />
           </button>
         </div>
@@ -98,36 +101,40 @@ const Header = () => {
             </button>
 
             {/* user management */}
-            <div className='relative'>
-              <button 
-              onClick={toggleProfile}
-              className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
-              <User />
-              </button>
-
-              <div 
-              ref={profileRef}
-              className={`absolute w-36 h-auto bg-gray-400 -right-5 z-50 rounded-lg dark:bg-gray-800 ${openProfile? "block": "hidden"}`}>
-                {user === null? 
-                <div className='flex flex-col items-start'>
-                  <a
-                  href='/login'
-                   className=' flex items-center h-10 border w-full rounded-t-lg
-                    hover:bg-gray-300 dark:hover:bg-gray-700 pl-4 
-                    hover:text-white '>Login</a>
-                  <a
-                    href='/signup'
-                   className='flex items-center h-10 border w-full rounded-b-lg hover:bg-gray-300 dark:hover:bg-gray-700 pl-4'>Signup</a> 
-                </div>:
-                <div>
-                  <button className='h-10 w-full rounded-lg'>View Profile</button>
-                </div>
-                }
-              </div>
+            <div className=''>
+                <button 
+                onClick={toggleProfile}
+                className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
+                <User />
+                </button>
             </div>
+
+            
         </div>      
       </div>
 
+      {/* profile component */}
+      {openProfile && (
+        <div 
+          ref={profileRef}
+          className={`fixed w-36 h-auto bg-gray-400 right-0 top-10 md:top-14 z-50 rounded-lg dark:bg-gray-800`}>
+            {user === null? 
+            <div className='flex flex-col items-start'>
+              <a
+              href='/login'
+              className=' flex items-center h-10 border w-full rounded-t-lg
+                hover:bg-gray-300 dark:hover:bg-gray-700 pl-4 
+                hover:text-white '>Login</a>
+              <a
+                href='/signup'
+              className='flex items-center h-10 border w-full rounded-b-lg hover:bg-gray-300 dark:hover:bg-gray-700 pl-4'>Signup</a> 
+            </div>:
+            <div>
+              <button className='h-10 w-full rounded-lg'>View Profile</button>
+            </div>
+            }
+          </div>
+      )}
       
 
       <div 

@@ -31,7 +31,7 @@ const Searchbar = () => {
 
 
   return (
-    <div className='flex'>
+    <div className='flex z-50'>
         <div 
         ref={searchRef}
         className={`fixed top-1.5 left-0 md:left-1/4 lg:left-1/3 w-screen md:w-1/2 lg:w-1/3 border 
