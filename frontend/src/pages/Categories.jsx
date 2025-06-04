@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getProductsInCategory } from '../services/backendApi'
 import GridProducts from '../components/categories/categoryGrid'
-import { getCategories } from '../services/backendApi'
-import { Slide, Slider } from '@mui/material'
+import { Slider } from '@mui/material'
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
 import DynamicBreadcrumb from '../components/categories/BreadcrumbNav'
+import AllCategories from '../components/home/AllCategories'
 
 
 const Categories = () => {
   const {categoryName} = useParams()
   const [products, setProducts] = useState([])
-  const [categories, setCategories] = useState([])
   const [value, setValue] = useState([0, 50000])
   const [showFilters, setShowFilters] = useState(false);
 
@@ -19,17 +18,22 @@ const Categories = () => {
     setValue(newValue)
   }
 
+  const handleFilter = async () => {
+    const data = await getProductsInCategory(categoryName, 20, value[0], value[1])
+    console.log(value[0], value[1])
+    console.log(data)
+    setProducts(data)
+  }
+
 
   useEffect(() => {
     const getData = async() => {
-      const data = await getProductsInCategory(categoryName, 10)
-      const categoryData = await getCategories()
-      setCategories(categoryData);
+      const data = await getProductsInCategory(categoryName, 20)
       setProducts(data)
     }
 
     getData()
-  }, [getProductsInCategory])
+  }, [getProductsInCategory, categoryName])
 
   const formatCategoryName = (name) => {
       return name
@@ -126,6 +130,7 @@ const Categories = () => {
             <div className="flex justify-between items-center mt-2 text-sm">
               <span>Price: ${value[0]} - ${value[1]}</span>
               <button
+                onClick={handleFilter}
                 type="button"
                 className="border px-4 py-1 rounded-lg hover:bg-blue-600 hover:text-white transition"
               >
@@ -133,6 +138,11 @@ const Categories = () => {
               </button>
             </div>
           </div>
+        </div>
+
+        {/* categories div */}
+        <div>
+          <AllCategories  title={"Change Category"}/>
         </div>
       </div>
 

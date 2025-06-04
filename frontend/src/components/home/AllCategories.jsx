@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getCategories } from '../../services/backendApi'
 import { Link } from 'react-router-dom';
 
-const Categories = () => {
+const AllCategories = ( {title} ) => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ const Categories = () => {
   return (
     <div>
         <div>
-            <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white text-center">Shop by Category</h2>
+            <h2 className="text-xl font-semibold mt-3 mb-1 text-gray-800 dark:text-white text-center">{title}</h2>
         </div>
         
         <div className="bg-white dark:bg-gray-950 rounded-xl shadow pl-4 pt-1 pb-1 h-full overflow-y-auto md:overflow-y-hidden max-h-[400px]">
@@ -44,4 +44,4 @@ const Categories = () => {
   )
 }
 
-export default Categories
+export default AllCategories

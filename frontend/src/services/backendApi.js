@@ -61,10 +61,10 @@ export const serviceData = [
 
 // get products in a certain category
 
-export const getProductsInCategory = async (category, limit = 20) => {
+export const getProductsInCategory = async (category, limit = 20, minPrice=0, maxPrice=50000) => {
     try {
         const categoryParam = Array.isArray(category)? category.join(',') : category
-        const res = await fetch(`http://localhost:5001/api/categories/products?category=${categoryParam}&limit=${limit}`)
+        const res = await fetch(`http://localhost:5001/api/categories/products?category=${categoryParam}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`)
         const data = await res.json()
         return data;
     } catch (error) {

@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react'
 import FlexProducts from '../components/home/flexProducts'
 import TopDiscountSlider from '../components/home/Slideshow'
 import Features from '../components/home/Features'
-import Categories from '../components/home/Categories'
+import AllCategories from '../components/home/AllCategories'
 
 const Home = () => {
   const [beautyProducts, setBeautyProducts] = useState([]);
@@ -37,7 +37,7 @@ const Home = () => {
       <div className='w-full bg-gray-300 dark:bg-gray-700 flex justify-center'>
         <div className='w-full sm:w-[95vw] flex md:flex-row md:items-center md:justify-around'>
           <div className="w-full md:w-[40%] hidden md:block">
-            <Categories />
+            <AllCategories title={"Shop by Category"} />
           </div>
             <TopDiscountSlider products={slideProducts}/>
       </div>
