@@ -30,6 +30,7 @@ const Categories = () => {
     const getData = async() => {
       const data = await getProductsInCategory(categoryName, 20)
       setProducts(data)
+      setValue([0, 50000])
     }
 
     getData()

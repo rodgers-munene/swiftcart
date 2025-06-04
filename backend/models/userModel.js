@@ -24,11 +24,9 @@ const userSchema = mongoose.Schema({
     },
     birthDate: {
         type: Date,
-        required: [true, "This field is required"]
     },
     phone: {
         type: String,
-        required: true,
         trim: true
     },
     role:{

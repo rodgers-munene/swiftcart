@@ -8,7 +8,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const {firstName, lastName, email, password, birthDate, phone} = req.body;
 
     // check for missing fields
-    if(!firstName || !lastName || !email || !password || !birthDate || !phone){
+    if(!firstName || !lastName || !email || !password){
         res.status(400);
         throw new Error("All fields are mandatory!!")
     }
@@ -58,21 +58,26 @@ const loginUser = asyncHandler(async (req, res) => {
     // check if user is registerd
     const userAvailable = await User.findOne({ email });
 
+    const user = {
+        user_id: userAvailable._id,
+        firstName: userAvailable.firstName,
+        lastName: userAvailable.lastName,
+        email: userAvailable.email,
+        dob: userAvailable.birthDate,
+        phone: userAvailable.phone,
+        role: userAvailable.role
+    }
+
+    const expiresAt = "5h"
+
     if(userAvailable && (await bcrypt.compare(password, userAvailable.password))){
         // create a login token for a successful login
-        const accessToken = jwt.sign({
-            user: {
-                user_id: userAvailable._id,
-                firstName: userAvailable.firstName,
-                lastName: userAvailable.lastName,
-                email: userAvailable.email,
-                dob: userAvailable.birthDate,
-                phone: userAvailable.phone,
-                role: userAvailable.role
-            }
-        }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" })
+        const accessToken = jwt.sign(
+            { user },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: expiresAt})
 
-        res.status(200).json({ accessToken })
+        res.status(200).json({ accessToken, user})
     }else{
         res.status(401);
         throw new Error("Email or password is not valid");
