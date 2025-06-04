@@ -24,7 +24,7 @@ export default function TopDiscountSlider({ products }) {
       >
         {products.map((product) => (
           <SwiperSlide key={product._id}>
-            <div className="bg-white flex flex-col justify-around dark:bg-gray-950 shadow-2xl h-96 rounded-xl overflow-hidden transition duration-300 text-sm">
+            <div className="relative bg-white flex flex-col justify-around dark:bg-gray-950 shadow-2xl h-96 rounded-xl overflow-hidden transition duration-300 text-sm">
               <img
                 src={product.images[0]}
                 alt={product.title}

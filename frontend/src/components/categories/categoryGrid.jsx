@@ -1,12 +1,12 @@
 import React from 'react'
 import { Heart } from 'lucide-react'
-import StarRating from './StarRating'
+import StarRating from '../products/StarRating'
 import { formattedPrice } from '../../utils/formatPrice'
 
 const GridProducts = ({ items }) => {
   return (
-    <div className="grid w-[95vw] max-w-screen-xl mx-auto gap-4
-      grid-cols-2 sm:grid-cols-3 lg:grid-cols-4
+    <div className="grid sm:w-[95%] max-w-screen-xl mx-auto gap-4
+      grid-cols-2 sm:grid-cols-3
       bg-white dark:bg-gray-950 rounded-xl p-2 sm:p-4">
       
       {items ? items.map((item, index) => (

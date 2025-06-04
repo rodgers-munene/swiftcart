@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getCategories } from '../../services/backendApi'
+import { Link } from 'react-router-dom';
 
 const Categories = () => {
     const [categories, setCategories] = useState([]);
@@ -34,7 +35,7 @@ const Categories = () => {
                 key={category}
                 className="text-sm text-gray-700 dark:text-gray-100 hover:text-blue-600 cursor-pointer transition"
             >
-                {formatCategoryName(category)}
+                <Link to={`/categories/${category}`}>{formatCategoryName(category)}</Link>
             </li>
             ))}
         </ul>

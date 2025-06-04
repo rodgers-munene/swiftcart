@@ -15,7 +15,6 @@ export const getCategories = async () =>{
     try {
         const res = await fetch('http://localhost:5001/api/categories')
         const data = await res.json();
-        console.log(data)
         return data;
     } catch (error) {
         console.error('Error Fetching Categories!!')
@@ -62,9 +61,9 @@ export const serviceData = [
 
 // get products in a certain category
 
-export const getProductsInCategory = async (category, limit) => {
+export const getProductsInCategory = async (category, limit = 20) => {
     try {
-        const categoryParam = category.join(',')
+        const categoryParam = Array.isArray(category)? category.join(',') : category
         const res = await fetch(`http://localhost:5001/api/categories/products?category=${categoryParam}&limit=${limit}`)
         const data = await res.json()
         return data;

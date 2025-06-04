@@ -34,12 +34,15 @@ const Home = () => {
 
       {/* slide show section */}
 
-      <div className='bg-gray-300 dark:bg-gray-700 flex flex-col md:flex-row md:items-center md:justify-around'>
+      <div className='w-full bg-gray-300 dark:bg-gray-700 flex justify-center'>
+        <div className='w-full sm:w-[95vw] flex md:flex-row md:items-center md:justify-around'>
           <div className="w-full md:w-[40%] hidden md:block">
             <Categories />
           </div>
             <TopDiscountSlider products={slideProducts}/>
       </div>
+      </div>
+     
 
       {/* categories section */}
       
