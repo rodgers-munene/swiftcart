@@ -1,3 +1,6 @@
+import { CarFront, CreditCard, ShieldHalf, Headphones } from 'lucide-react';
+
+
 export const getProducts = async () => {
     try {
         const res = await fetch('http://localhost:5001/api/products')
@@ -29,6 +32,33 @@ export const topCategories = [
     "Accessories",
     "Vehicle"
 ]
+// get services data 
+export const serviceData = [
+  {
+    icon: CarFront,
+    title: "Free Shipping",
+    subtitle: "Enjoy fast, free delivery on all orders.",
+    bg: "#fdefe6",
+  },
+  {
+    icon: CreditCard,
+    title: "Safe Payment",
+    subtitle: "Pay securely with trusted payment methods.",
+    bg: "#ceebe9",
+  },
+  {
+    icon: ShieldHalf ,
+    title: "Secure Payment",
+    subtitle: "Your personal data is protected with us.",
+    bg: "#e2f2b2",
+  },
+  {
+    icon: Headphones ,
+    title: " Back Guarantee",
+    subtitle: "100% satisfaction guaranteed.",
+    bg: "#d6e5fb",
+  },
+];
 
 // get products in a certain category
 

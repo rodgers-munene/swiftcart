@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import GridProducts from '../components/gridProducts'
-import { topCategories, getProductsInCategory, getHighestDiscountedProducts } from '../services/backendApi'
+import {getProductsInCategory, getHighestDiscountedProducts } from '../services/backendApi'
 import { ArrowRight } from 'lucide-react'
 import FlexProducts from '../components/flexProducts'
-import NewsHome from '../components/newsHome'
 import TopDiscountSlider from '../components/Slideshow'
+import Features from '../components/Features'
+import Categories from '../components/Categories'
 
 const Home = () => {
   const [beautyProducts, setBeautyProducts] = useState([]);
@@ -33,13 +34,21 @@ const Home = () => {
 
       {/* slide show section */}
 
-      <div className='bg-gray-300 dark:bg-gray-700'>
-          <TopDiscountSlider products={slideProducts}/>
+      <div className='bg-gray-300 dark:bg-gray-700 flex flex-col md:flex-row md:items-center md:justify-around'>
+          <div className="w-full md:w-[40%] hidden md:block">
+            <Categories />
+          </div>
+            <TopDiscountSlider products={slideProducts}/>
       </div>
 
       {/* categories section */}
       
       <div className='w-full min-h-screen bg-gray-300 dark:bg-gray-700 flex items-center flex-col'>
+        {/* services */}
+         <div>
+          <Features />
+         </div>
+         
         {/* title */}
         <div className=' w-full flex flex-col items-center mt-3 justify-around'>
           <h1 className='text-2xl font-bold'>Top Categories</h1>
@@ -85,14 +94,7 @@ const Home = () => {
           <GridProducts items={homeProducts} />
         </div>
 
-        {/* news section */}
-        <div className='flex items-center flex-col mt-5 w-full mb-5'>
-          <div className=' w-[90vw] flex justify-between mb-5 items-center'>
-            <p className='text-sm sm:text-base lg:text-xl font-bold'>News Articles</p>
-            <button className='flex rounded-md text-sm px-2 py-1 text-black bg-white items-center'>View More <ArrowRight className='w-4 h-4'/></button>
-          </div>
-          <NewsHome />
-        </div>
+        
       </div>
 
     </div>

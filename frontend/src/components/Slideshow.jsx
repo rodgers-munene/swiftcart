@@ -4,7 +4,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 export default function TopDiscountSlider({ products }) {
   return (
-    <div className="w-full px-4 py-4 md:px-6 lg:px-10">
+    <div className="w-full md:w-1/2 px-4 py-4 md:px-6 lg:px-10">
       <h2 className="text-xl md:text-2xl font-semibold mb-4 text-center">
         Top Offers
       </h2>
@@ -17,18 +17,18 @@ export default function TopDiscountSlider({ products }) {
         autoplay={{ delay: 5000 }}
         breakpoints={{
           640: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
+          768: { slidesPerView: 1 },
+          1024: { slidesPerView: 1 },
         }}
         className="w-full custom-swiper"
       >
         {products.map((product) => (
           <SwiperSlide key={product._id}>
-            <div className="bg-white dark:bg-gray-950 shadow-2xl rounded-xl overflow-hidden transition duration-300 text-sm">
+            <div className="bg-white flex flex-col justify-around dark:bg-gray-950 shadow-2xl h-96 rounded-xl overflow-hidden transition duration-300 text-sm">
               <img
                 src={product.images[0]}
                 alt={product.title}
-                className="w-full h-40 object-cover"
+                className="w-full h-[60%]  object-contain"
               />
               <div className="p-3">
                 <h3 className="font-semibold truncate">{product.title}</h3>
