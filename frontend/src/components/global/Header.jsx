@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
-import logo from '../assets/logo.svg'
+import logo from '../../assets/logo.svg'
 import Searchbar from './Searchbar'
 import Navbar from './Navbar'
 import { ShoppingCart, User, Heart, MenuIcon, XIcon } from 'lucide-react'
 import Hamburger from './Hamburger'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../../context/AuthContext'
 import { Link } from 'react-router-dom'
 
 const Header = () => {

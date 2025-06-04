@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import logo from '../../assets/logo.svg'
 import Google from '../../assets/google.png'
 import { useNavigate } from 'react-router-dom'
-import Notification from '../../components/notification'
-import Loader from '../../components/Loader'
+import Notification from '../../components/global/notification'
+import Loader from '../../components/global/Loader'
 
 
 

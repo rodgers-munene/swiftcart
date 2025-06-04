@@ -4,8 +4,8 @@ import Google from '../../assets/google.png'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
-import Notification from '../../components/notification'
-import Loader from '../../components/Loader'
+import Notification from '../../components/global/notification'
+import Loader from '../../components/global/Loader'
 
 
 

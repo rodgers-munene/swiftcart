@@ -1,7 +1,7 @@
 import React from 'react'
 import { Heart } from 'lucide-react'
 import StarRating from './StarRating'
-import { formattedPrice } from '../utils/formatPrice'
+import { formattedPrice } from '../../utils/formatPrice'
 
 const GridProducts = ({ items }) => {
   return (

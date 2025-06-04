@@ -1,6 +1,6 @@
 import React from 'react'
 import { CarFront, CreditCard, ShieldHalf, Headphones } from 'lucide-react'
-import { serviceData } from '../services/backendApi'
+import { serviceData } from '../../services/backendApi'
 
 const Features = () => {
   const Icon = serviceData.icon

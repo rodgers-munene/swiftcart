@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import GridProducts from '../components/gridProducts'
+import GridProducts from '../components/products/gridProducts'
 import {getProductsInCategory, getHighestDiscountedProducts } from '../services/backendApi'
 import { ArrowRight } from 'lucide-react'
-import FlexProducts from '../components/flexProducts'
-import TopDiscountSlider from '../components/Slideshow'
-import Features from '../components/Features'
-import Categories from '../components/Categories'
+import FlexProducts from '../components/home/flexProducts'
+import TopDiscountSlider from '../components/home/Slideshow'
+import Features from '../components/home/Features'
+import Categories from '../components/home/Categories'
 
 const Home = () => {
   const [beautyProducts, setBeautyProducts] = useState([]);
