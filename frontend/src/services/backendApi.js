@@ -73,6 +73,17 @@ export const getProductsInCategory = async (category, limit = 20, minPrice=0, ma
     }
 } 
 
+export const getProductById = async (id) => {
+    try{
+        const res = await fetch(`http://localhost:5001/api/products/${id}`)
+        const data = await res.json()
+        return data;
+    }catch(error){
+        console.error("Error fetching Product!!!",error)
+        return [];
+    }
+}
+
 // get highest discounted products 
 export const getHighestDiscountedProducts = async (limit) => {
     try {
