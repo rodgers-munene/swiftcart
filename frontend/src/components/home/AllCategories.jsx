@@ -29,17 +29,17 @@ const AllCategories = ( {title} ) => {
         </div>
         
         <div className="bg-white dark:bg-gray-950 rounded-xl shadow pl-4 pt-1 pb-1 h-full overflow-y-auto md:overflow-y-hidden max-h-[400px]">
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {categories.map((category) => (
-            <li
-                key={category}
-                className="text-sm text-gray-700 dark:text-gray-100 hover:text-blue-600 cursor-pointer transition"
-            >
-                <Link to={`/categories/${category}`}>{formatCategoryName(category)}</Link>
-            </li>
-            ))}
-        </ul>
-    </div>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {categories.map((category) => (
+                <li
+                    key={category}
+                    className="text-sm text-gray-700 dark:text-gray-100 hover:text-blue-600 cursor-pointer transition"
+                >
+                    <Link to={`/categories/${category}`}>{formatCategoryName(category)}</Link>
+                </li>
+                ))}
+            </ul>
+        </div>
     </div>
   )
 }
