@@ -11,7 +11,7 @@ import Loader from '../../components/global/Loader'
 
 const Login = () => {
  const navigate = useNavigate();
- const {setUser} = useAuth();
+ const { setUser, setToken } = useAuth();
  const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -64,14 +64,15 @@ const Login = () => {
 
         const data = await response.json()
         localStorage.setItem('token', data.accessToken)
+        setToken(data.accessToken)
 
         // decode the token to get the expiry time and store it in local storage
         const decoded = jwtDecode(data.accessToken)
         const expiresAt = decoded.exp * 1000
         localStorage.setItem('expiresAt', expiresAt)
 
-        localStorage.setItem('user', data.user)
-        setUser(localStorage.getItem('user'))
+        localStorage.setItem('user', JSON.stringify(data.user))
+        setUser(data.user)
         
         setMessage("Login Successful")
         setShow(true)

@@ -6,6 +6,7 @@ import Signup from "./pages/Auth/Signup"
 import Categories from "./pages/Categories"
 import MainCategories from "./pages/MainCategories"
 import ProductDetails from "./pages/ProductDetails"
+import Cart from "./pages/Cart"
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/categories" element={<Layout><MainCategories /></Layout>} ></Route>
         <Route path="/categories/:categoryName" element={<Layout><Categories /></Layout> } />
         <Route path="/categories/products/:id/:title" element={<Layout><ProductDetails /> </Layout>} />
+        <Route path="/cart" element={<Layout><Cart /></Layout>} />
         {/* <Route path="/" element={< Home />} /> */}
       </Routes>
     </Router>

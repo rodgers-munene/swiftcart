@@ -4,9 +4,27 @@ import StarRating from './StarRating'
 import { formattedPrice } from '../../utils/formatPrice'
 import { useNavigate } from 'react-router-dom'
 import slugify from 'slugify'
+import { postCart } from '../../services/cartFunction'
+import { useAuth } from '../../context/AuthContext'
+
 
 const GridProducts = ({ items }) => {
   const navigate = useNavigate()
+  const { user, token } = useAuth();
+  
+
+  const handleAddToCart = async (id, token, productId, quantity) => {
+    console.log("Sending to postCart:", { id, token, productId, quantity });
+
+    const response = await postCart(id, token, productId, quantity);
+      if (response.success) {
+        console.log(response.message);
+      } else {
+        console.error("Add to cart failed:", response.message);
+      }
+  };
+
+
 
   
   return (
@@ -58,7 +76,12 @@ const GridProducts = ({ items }) => {
               {item.description}
             </p>
 
-            <button className="mt-2 text-xs border border-blue-600 text-blue-600 px-3 py-1 rounded-md transition">
+            <button
+            onClick={(e) => {
+              e.stopPropagation() // prevents the click from reaching the parent div
+              handleAddToCart(user.user_id, token, item._id, 1)
+            }}
+            className=" z-10 hover:bg-gray-200 mt-2 text-xs border border-blue-600 text-blue-600 px-3 py-1 rounded-md transition">
               Add to Cart +
             </button>
           </div>

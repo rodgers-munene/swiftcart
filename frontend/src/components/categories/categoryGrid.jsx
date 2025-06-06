@@ -1,9 +1,14 @@
 import React from 'react'
-import { Heart } from 'lucide-react'
+import { Heart, ImageOff } from 'lucide-react'
 import StarRating from '../products/StarRating'
 import { formattedPrice } from '../../utils/formatPrice'
+import { useNavigate } from 'react-router-dom'
+import slugify from 'slugify'
 
 const GridProducts = ({ items }) => {
+  const navigate = useNavigate();
+
+
   return (
     <div className="grid sm:w-[95%] max-w-screen-xl mx-auto gap-4
       grid-cols-2 sm:grid-cols-3
@@ -11,8 +16,11 @@ const GridProducts = ({ items }) => {
       
       {items ? items.map((item, index) => (
         <div
+          onClick={() => {
+            navigate(`/categories/products/${item._id}/${slugify(item.title, { lower: true, trim: true })}`)
+          }}
           key={index}
-          className="relative flex flex-col border border-gray-200 dark:border-gray-800 p-3 sm:p-4 rounded-lg shadow-sm"
+          className="cursor-pointer relative flex flex-col border border-gray-200 dark:border-gray-800 p-3 sm:p-4 rounded-lg shadow-sm"
         >
           {/* Discount badge */}
           <p className="absolute top-2 left-2 bg-red-500 rounded-lg px-1 py-0.5 text-[10px] text-white">
@@ -50,7 +58,7 @@ const GridProducts = ({ items }) => {
               {item.description}
             </p>
 
-            <button className="mt-2 text-xs border border-blue-600 text-blue-600 px-3 py-1 rounded-md transition">
+            <button className="z-10 hover:bg-gray-200 mt-2 text-xs border border-blue-600 text-blue-600 px-3 py-1 rounded-md transition">
               Add to Cart +
             </button>
           </div>

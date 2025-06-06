@@ -16,7 +16,10 @@ export const useAuth = () => {
 
 // create the provide to wrap  the app with
 export const AuthProvider = ( {children} ) => {
-    const [user, setUser] = useState(localStorage.getItem('user'))
+    const [user, setUser] = useState(() => {
+            const storedUser = localStorage.getItem('user');
+            return storedUser ? JSON.parse(storedUser) : null;
+            });
     const [token, setToken] = useState(localStorage.getItem('token'))
 
     useEffect(()=>{
@@ -44,7 +47,7 @@ export const AuthProvider = ( {children} ) => {
     }
 
     return (
-        <AuthContext.Provider value={ {user, setUser, token, logout} }>
+        <AuthContext.Provider value={ {user, setUser, token, setToken, logout} }>
             {children}
         </AuthContext.Provider>
     )

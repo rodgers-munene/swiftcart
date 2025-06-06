@@ -6,6 +6,7 @@ import { ShoppingCart, User, Heart, MenuIcon, XIcon } from 'lucide-react'
 import Hamburger from './Hamburger'
 import { useAuth } from '../../context/AuthContext'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Header = () => {
   const[openProfile, setOpenProfile] = useState(false)
@@ -13,6 +14,7 @@ const Header = () => {
   const navbarRef = useRef(null)
   const profileRef = useRef(null)
   const { user } = useAuth()
+  const navigate = useNavigate();
 
 
   const toggleProfile = () => {
@@ -93,7 +95,11 @@ const Header = () => {
             <button className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
               <Heart />
             </button>
-            <button className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
+            <button 
+            onClick={() => {
+              navigate('/cart')
+            }}
+            className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
               <ShoppingCart /> 
             </button>
             <button onClick={toggleNavbar} className='lg:hidden'>

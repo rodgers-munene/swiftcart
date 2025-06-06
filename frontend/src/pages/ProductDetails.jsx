@@ -5,13 +5,19 @@ import StarRating from "../components/products/StarRating";
 import GridProducts from "../components/products/gridProducts";
 import { ArrowRight } from "lucide-react";
 import { Heart } from "lucide-react";
-import DynamicBreadcrumb from "../components/categories/BreadcrumbNav";
+import { useLocation } from "react-router-dom";
+
 
 export default function ProductDetails() {
+  const { pathname } = useLocation()
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [image, setImage] = useState(0);
   const [categoryProducts, setCategoryProducts] = useState([]);
+
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [pathname])
 
   useEffect(() => {
     const getData = async () => {
