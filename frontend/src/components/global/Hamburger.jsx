@@ -1,9 +1,10 @@
 import { ShoppingCart, User, Heart} from 'lucide-react'
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, Link, useNavigate } from 'react-router-dom'
 
 
 const Hamburger = () => {
   const location = useLocation()
+  const navigate = useNavigate()
 
   const navItems = [
     {name: 'Home', path: '/'},
@@ -32,10 +33,14 @@ const Hamburger = () => {
           })}
             
             
-            <button className='text-black dark:text-white py-2 pl-4 flex items-center md:hidden'>
+            <button className='flex items-center py-2 pl-4 text-black dark:text-white md:hidden'>
               <p>Wishlist</p> <Heart className='ml-1'/>
             </button>
-            <button className='text-black dark:text-white py-2 pl-4 flex items-center md:hidden'>
+            <button 
+            onClick={() => {
+              navigate('/cart')
+            }}
+            className='flex items-center py-2 pl-4 text-black dark:text-white md:hidden'>
               <p>Cart</p> <ShoppingCart className='ml-1' /> 
             </button>
         </div>

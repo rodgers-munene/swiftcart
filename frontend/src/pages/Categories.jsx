@@ -43,17 +43,17 @@ const Categories = () => {
   };
   
   return (
-    <div className='min-h-screen w-screen'>
+    <div className='w-screen min-h-screen'>
       <div className='absolute top-12 md:top-15 left-2 sm:left-6'><DynamicBreadcrumb /> </div>
-      <div className=' w-full'>
+      <div className='w-full '>
 
       </div>
-     <div className="flex flex-col md:flex-row px-2 md:px-6 py-4">
+     <div className="flex flex-col px-2 py-4 md:flex-row md:px-6">
       {/* Filter Toggle Button (Visible on small screens) */}
-      <div className="md:hidden mb-4 flex justify-end">
+      <div className="flex justify-end mb-4 md:hidden">
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="px-4 py-2  text-white rounded-lg shadow"
+          className="px-4 py-2 rounded-lg shadow"
         >
           {showFilters ? (<span className="flex items-center gap-1">
                 Hide Filters <IoIosArrowUp />
@@ -73,13 +73,13 @@ const Categories = () => {
         }`}
       >
         
-        <div className="border-2 border-gray-300 rounded-lg p-4 mb-4 md:mb-0">
-          <h1 className="text-center text-lg font-semibold mb-4">
+        <div className="p-4 mb-4 border-2 border-gray-300 rounded-lg md:mb-0">
+          <h1 className="mb-4 text-lg font-semibold text-center">
             Product Filter
           </h1>
 
           {/* Price Inputs */}
-          <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-4">
+          <div className="flex flex-col gap-4 mb-4 sm:flex-row sm:justify-between">
             <div className="flex-1">
               <label htmlFor="minPrice" className="block text-sm font-medium">
                 Min Price
@@ -94,7 +94,7 @@ const Categories = () => {
                 min={0}
                 max={50000}
                 placeholder="0"
-                className="border w-full px-2 py-2 rounded-lg text-gray-800 dark:text-gray-300"
+                className="w-full px-2 py-2 text-gray-800 border rounded-lg dark:text-gray-300"
               />
             </div>
 
@@ -112,7 +112,7 @@ const Categories = () => {
                 min={0}
                 max={50000}
                 placeholder="50000"
-                className="border w-full px-2 py-2 rounded-lg text-gray-800 dark:text-gray-300"
+                className="w-full px-2 py-2 text-gray-800 border rounded-lg dark:text-gray-300"
               />
             </div>
           </div>
@@ -128,12 +128,12 @@ const Categories = () => {
               step={1000}
             />
 
-            <div className="flex justify-between items-center mt-2 text-sm">
+            <div className="flex items-center justify-between mt-2 text-sm">
               <span>Price: ${value[0]} - ${value[1]}</span>
               <button
                 onClick={handleFilter}
                 type="button"
-                className="border px-4 py-1 rounded-lg hover:bg-blue-600 hover:text-white transition"
+                className="px-4 py-1 transition border rounded-lg hover:bg-blue-600 hover:text-white"
               >
                 Filter
               </button>
@@ -149,7 +149,7 @@ const Categories = () => {
 
       {/* Products Section */}
       <div className="flex-1">
-      <h1 className='pl-8 py-2 font-bold text-xl'>{formatCategoryName(categoryName)}</h1>
+      <h1 className='py-2 pl-8 text-xl font-bold'>{formatCategoryName(categoryName)}</h1>
         <GridProducts items={products} />
       </div>
     </div>

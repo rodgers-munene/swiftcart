@@ -3,8 +3,11 @@ import React, { useEffect, useState } from "react";
 import { getCart, updateCart, deleteInCart } from "../services/cartFunction";
 import { useAuth } from "../context/AuthContext";
 import { getProductById } from "../services/backendApi";
+import { getUserAddress } from "../services/userApi";
 import emptyCart from "../assets/emptyCart.png";
 import { useNavigate } from "react-router-dom";
+import { Trash2 } from "lucide-react";
+import { formattedPrice } from "../utils/formatPrice";
 
 const Cart = () => {
   const { user, token } = useAuth(); // Replace with your actual auth context or props
@@ -13,6 +16,8 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(true);
   const [discount, setDiscount] = useState(0);
+  const [address, setAddress] = useState([]);
+  const [subtotal, setSubtotal] = useState(0)
   const navigate = useNavigate();
 
   // Fetch cart from backend
@@ -28,6 +33,11 @@ const Cart = () => {
           data.items.map((item) => getProductById(item.product_id))
         );
         setProductsInCart(productInfos);
+
+        // fetch user address
+        const getAddress = await getUserAddress(user.user_id, token);
+        setAddress(getAddress.data[0])
+        
       } catch (error) {
         console.error("Error fetching cart:", error);
       } finally {
@@ -36,7 +46,11 @@ const Cart = () => {
     };
 
     if (user && token) fetchCart();
-  }, [user, token, getCart]);
+  }, [user, token]);
+  
+  
+
+
 
   // Update quantity
   const handleUpdateQty = async (productId, newQty) => {
@@ -66,21 +80,21 @@ const Cart = () => {
     }
   };
 
-  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (loading) return <div className="py-10 text-center">Loading...</div>;
 
   // what to return if the cart is empty
   if (cartItems.length === 0)
     return (
       <div className="min-h-[70vh] w-full flex flex-col items-center justify-center">
         <img src={emptyCart} alt="empty-cart" />
-        <p className="border px-12 py-3 text-red-600 border-gray-400 mt-4">
+        <p className="px-12 py-3 mt-4 text-red-600 border border-gray-400">
           Your cart is currently empty
         </p>
         <button
           onClick={() => {
             navigate("/categories");
           }}
-          className="mt-3 px-2 py-2 border rounded-md text-white bg-black "
+          className="px-2 py-2 mt-3 text-white bg-black border rounded-md "
         >
           Return to Shop
         </button>
@@ -89,10 +103,10 @@ const Cart = () => {
 
   // what to return if the cart has items
   return (
-    <div className="p-4 md:p-8 bg-gray-100 min-h-screen">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="min-h-screen p-4 bg-gray-100 md:p-8">
+      <div className="grid grid-cols-1 gap-6 mx-auto max-w-7xl lg:grid-cols-3">
         {/* Left Side - Cart Items */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="space-y-6 lg:col-span-2">
           <h2 className="text-2xl font-semibold">Shopping Cart</h2>
           <p className="text-gray-500">
             {cartItems.length} items in your cart.
@@ -106,23 +120,22 @@ const Cart = () => {
               if(!item) return null;
 
               const itemTotal = (product.price * item.quantity).toFixed(2)
-            
             return(
               <div
                 key={index}
-                className="bg-white rounded-xl shadow p-4 flex flex-col sm:flex-row items-center justify-between"
+                className="flex flex-col items-center justify-between p-4 bg-white shadow rounded-xl sm:flex-row"
               >
-                <div className="flex items-center gap-4 w-full md:w-auto">
+                <div className="flex items-center w-full gap-4 md:w-auto">
                   <img
                     src={product.thumbnail}
                     alt={product.title}
-                    className="w-24 h-24 rounded object-cover"
+                    className="object-cover w-24 h-24 rounded"
                   />
                   <div className="p-3">
                     <p className="text-sm text-gray-500 capitalize">
                       {product.category}
                     </p>
-                    <h3 className="text-lg font-semibold">{product.title}</h3>
+                    <h3 className="text-sm font-semibold">{product.title}</h3>
                     <p className="text-sm text-gray-500">
                       {product.color ? `Color: ${product.color} |` : ""}{" "}
                       {product.weight ? `Weight: ${product.weight}` : ""}
@@ -131,7 +144,7 @@ const Cart = () => {
                 </div>
                 <div className="flex flex-row items-center gap-6 mt-4 md:mt-0">
                   <p className="text-lg font-medium">
-                    ${product.price.toFixed(2)}
+                    ${(product.price).toFixed(2)}
                   </p>
                   <div className="flex items-center border rounded">
                     <button
@@ -162,9 +175,15 @@ const Cart = () => {
                       +
                     </button>
                   </div>
-                  <p className="text-yellow-600 font-semibold">
+                  <p className="font-semibold text-yellow-600">
                     ${itemTotal}
                   </p>
+                    {/* delete icon */}
+                  <button
+                  onClick={() => {
+                    handleRemoveItem(product._id)
+                  }} 
+                  className="text-red-500"><Trash2 /> </button>
                 </div>
               </div>
             )})}
@@ -172,21 +191,43 @@ const Cart = () => {
         </div>
 
         {/* Right Side - Summary */}
-        <div className="bg-white p-6 rounded-xl shadow space-y-6">
+        <div className="p-6 space-y-6 bg-white border shadow rounded-xl">
           <div>
-            <h4 className="font-semibold mb-2">Calculated Shipping</h4>
+            <h4 className="mb-2 font-semibold">Shipping Address</h4>
             <div className="space-y-2">
-              <input type="text" placeholder="Country" className="" />
-              <input type="text" placeholder="State / City" />
-              <button className="w-full">Update</button>
+              {/* address line */}
+              <input
+              defaultValue={address.addressLine} 
+              type="text" 
+              placeholder="Address Line"
+              className="w-full py-2 pl-3 text-black border rounded-lg outline-none"/>
+              {/* country */}
+              <input 
+              defaultValue={address.country}
+              type="text" 
+              placeholder="Country" 
+              className="w-full py-2 pl-3 text-black border rounded-lg outline-none" />
+              {/* city */}
+              <input 
+              defaultValue={address.city}
+              type="text" 
+              placeholder="State / City"  
+              className="w-full py-2 pl-3 text-black border rounded-lg outline-none"/>
+              {/* Postal code */}
+              <input 
+              defaultValue={address.postalCode}
+              type="text" 
+              placeholder="Postal Code" 
+              className="w-full py-2 pl-3 text-black border rounded-lg outline-none"/>
+              <button className="px-2 py-1 border rounded-lg">Update</button>
             </div>
           </div>
 
-          <div className="bg-yellow-100 p-4 rounded-xl space-y-2">
+          <div className="p-4 space-y-2 bg-yellow-100 rounded-xl">
             <h4 className="font-semibold">Cart Total</h4>
             <div className="flex justify-between text-sm">
               <span>Cart Subtotal</span>
-              <span>${totalPrice.toFixed(2)}</span>
+              <span>${(totalPrice).toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span>Shipping</span>
@@ -194,13 +235,13 @@ const Cart = () => {
             </div>
             <div className="flex justify-between text-sm">
               <span>Discount</span>
-              <span>-${discount.toFixed(2)}</span>
+              <span>-${(discount).toFixed(2)}</span>
             </div>
             <div className="flex justify-between font-bold">
               <span>Cart Total</span>
-              <span>${(totalPrice - discount).toFixed(2)}</span>
+              <span>${(totalPrice).toFixed(2)}</span>
             </div>
-            <button className="w-full">Apply</button>
+            <button className="w-full py-1 mt-3 border rounded-lg">Proceed to Checkout</button>
           </div>
         </div>
       </div>

@@ -13,8 +13,8 @@ const GridProducts = ({ items }) => {
   const { user, token } = useAuth();
   
 
-  const handleAddToCart = async (id, token, productId, quantity) => {
-    const response = await postCart(id, token, productId, quantity);
+  const handleAddToCart = async (productId, quantity) => {
+    const response = await postCart(user.user_id, token, productId, quantity);
       if (response.success) {
         console.log(response.message);
       } else {
@@ -36,7 +36,7 @@ const GridProducts = ({ items }) => {
             navigate(`/categories/products/${item._id}/${slugify(item.title, { lower: true, trim: true })}`)
           }}
           key={index}
-          className=" cursor-pointer relative flex flex-col border border-gray-200 dark:border-gray-800 p-3 sm:p-4 rounded-lg shadow-sm"
+          className="relative flex flex-col p-3 border border-gray-200 rounded-lg shadow-sm cursor-pointer dark:border-gray-800 sm:p-4"
         >
           {/* Discount badge */}
           <p className="absolute top-2 left-2 bg-red-500 rounded-lg px-1 py-0.5 text-[10px] text-white">
@@ -44,14 +44,14 @@ const GridProducts = ({ items }) => {
           </p>
 
           {/* Wishlist icon */}
-          <Heart className="absolute top-2 right-2 text-gray-400 w-4 h-4" />
+          <Heart className="absolute w-4 h-4 text-gray-400 top-2 right-2" />
 
           {/* Image */}
           <div className="flex justify-center mb-2">
             <img
               src={item.thumbnail}
               alt={item.title}
-              className="h-28 w-28 object-cover rounded-md"
+              className="object-cover rounded-md h-28 w-28"
             />
           </div>
 
@@ -64,8 +64,8 @@ const GridProducts = ({ items }) => {
             </div>
 
             <div className="flex items-center space-x-2">
-              <p className="text-xs sm:text-sm font-bold text-red-500">${item.price}</p>
-              <p className="text-xs line-through font-medium text-gray-500">
+              <p className="text-xs font-bold text-red-500 sm:text-sm">${item.price}</p>
+              <p className="text-xs font-medium text-gray-500 line-through">
                 ${formattedPrice(item.price, item.discountPercentage)}
               </p>
             </div>
@@ -77,9 +77,9 @@ const GridProducts = ({ items }) => {
             <button
             onClick={(e) => {
               e.stopPropagation() // prevents the click from reaching the parent div
-              handleAddToCart(user.user_id, token, item._id, 1)
+              handleAddToCart(item._id, 1)
             }}
-            className=" z-10 hover:bg-gray-200 mt-2 text-xs border border-blue-600 text-blue-600 px-3 py-1 rounded-md transition">
+            className="z-10 px-3 py-1 mt-2 text-xs text-blue-600 transition border border-blue-600 rounded-md hover:bg-gray-200">
               Add to Cart +
             </button>
           </div>
