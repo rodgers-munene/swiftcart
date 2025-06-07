@@ -1,6 +1,6 @@
 import { CarFront, CreditCard, ShieldHalf, Headphones } from 'lucide-react';
 
-
+// get all products
 export const getProducts = async () => {
     try {
         const res = await fetch('http://localhost:5001/api/products')
@@ -8,6 +8,7 @@ export const getProducts = async () => {
         return data;
     } catch (error) {
         console.error("Error fetching products!!")
+        return []; 
     }
 }
 
@@ -18,6 +19,7 @@ export const getCategories = async () =>{
         return data;
     } catch (error) {
         console.error('Error Fetching Categories!!')
+        return [];
     }
 }
 
@@ -73,6 +75,7 @@ export const getProductsInCategory = async (category, limit = 20, minPrice=0, ma
     }
 } 
 
+// get product by id
 export const getProductById = async (id) => {
     try{
         const res = await fetch(`http://localhost:5001/api/products/${id}`)

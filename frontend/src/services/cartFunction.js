@@ -45,3 +45,57 @@ export const postCart = async (id, token, product_id, quantity) => {
     return { success: false, message: error.message || "Error adding product to cart" };
   }
 };
+
+export const updateCart = async (id, token, product_id, quantity) => {
+  try {
+    const res = await fetch(`http://localhost:5001/api/user/${id}/cart/${product_id}`, 
+      {
+        method: "PUT",
+        headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          quantity
+        })
+      }
+    )
+
+    const data = await res.json()
+
+    if(!res.ok){
+      console.log("Error updating the cart function", data);
+      return {success: false, message: data.message || "Failed to update cart" }
+    }
+
+    return {data, success: true, message: "Update cart successful"}
+  } catch (error) {
+    console.log("Failed to update cart", error)
+    return { success: false, message: error || "Error updating cart"}
+  }
+}
+
+// delete in cart
+export const deleteInCart = async (id, token, product_id) => {
+  try {
+    const res = await fetch(`http://localhost:5001/api/user/${id}/cart/${product_id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `Bearer ${token}`
+      }
+    })
+
+    const data = await res.json();
+
+    if(!res.ok){
+      console.log("Error deleting product from cart", data)
+      return {success: false, message: data.message || "Failed to delete product in cart!!"}
+    }
+
+    return {data, success: true, message: "Successfully deleted product form cart"}
+
+  } catch (error) {
+    console.error("Failed to delete cart", error);
+    return { success: false, message: error || "Error updating cart"};
+  }
+}

@@ -14,8 +14,6 @@ const GridProducts = ({ items }) => {
   
 
   const handleAddToCart = async (id, token, productId, quantity) => {
-    console.log("Sending to postCart:", { id, token, productId, quantity });
-
     const response = await postCart(id, token, productId, quantity);
       if (response.success) {
         console.log(response.message);
