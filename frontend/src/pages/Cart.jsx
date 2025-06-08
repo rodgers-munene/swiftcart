@@ -6,10 +6,11 @@ import emptyCart from "../assets/emptyCart.png";
 import { useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import Notification from "../components/global/notification";
 
 const Cart = () => {
   const { user, token } = useAuth();
-  const {cartItems,  handleUpdateQty, handleRemoveItem, totalPrice, productsInCart} = useCart()
+  const {cartItems,  handleUpdateQty, handleRemoveItem, totalPrice, productsInCart, message, show, setShow} = useCart()
   const [loading, setLoading] = useState(true);
   const [discount, setDiscount] = useState(0);
   const [address, setAddress] = useState([]);
@@ -98,7 +99,7 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="flex flex-row items-center gap-6 mt-4 md:mt-0">
-                  <p className="text-lg font-medium">
+                  <p className="text-sm sm:text-base md:text-lg font-medium">
                     ${(product.price).toFixed(2)}
                   </p>
                   <div className="flex items-center border rounded">
@@ -130,7 +131,7 @@ const Cart = () => {
                       +
                     </button>
                   </div>
-                  <p className="font-semibold text-yellow-600">
+                  <p className="text-sm sm:text-base md:text-lg font-semibold text-yellow-600">
                     ${itemTotal}
                   </p>
                     {/* delete icon */}
@@ -146,7 +147,7 @@ const Cart = () => {
         </div>
 
         {/* Right Side - Summary */}
-        <div className="p-6 space-y-6 bg-white dark:bg-gray-800 border shadow rounded-xl">
+        <div className="p-6 space-y-6 bg-white dark:bg-gray-800 border max-h-[36rem] shadow rounded-xl">
           <div>
             <h4 className="mb-2 font-semibold">Shipping Address</h4>
             <div className="space-y-2">
@@ -196,10 +197,20 @@ const Cart = () => {
               <span>Cart Total</span>
               <span>${(totalPrice).toFixed(2)}</span>
             </div>
-            <button className="w-full py-1 mt-3 border rounded-lg text-black bg-yellow-200">Proceed to Checkout</button>
+            <button
+            onClick={() => {
+              navigate('/checkout')
+            }}
+            className="w-full py-1 mt-3 border rounded-lg text-black bg-yellow-200">Proceed to Checkout</button>
           </div>
         </div>
       </div>
+
+      {show && (<Notification 
+                message={message}
+                duration={800}
+                onClose={() => setShow(false)}
+            />)}
     </div>
   );
 };

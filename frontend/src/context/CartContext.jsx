@@ -19,6 +19,8 @@ export const CartProvider = ({ children }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalInCart, setTotalInCart] = useState(0);
   const [productsInCart, setProductsInCart] = useState([])
+  const [message, setMessage] = useState("")
+  const [show, setShow] = useState(false)
 
   // Fetch cart on user/token change
   useEffect(() => {
@@ -49,12 +51,16 @@ export const CartProvider = ({ children }) => {
       setCartItems(response.data.items);
       setTotalPrice(response.data.totalPrice);
       setTotalInCart(response.data.items.length);
+      setMessage("Product Added to Cart")
+      setShow(true)
 
       const newProduct = await getProductById(productId);
 
       if(!productsInCart.find((item) => item._id === productId)){
         setProductsInCart([...productsInCart, newProduct])
       }
+
+      
 
     } else {
       console.error("Add to cart failed:", response.message);
@@ -80,6 +86,8 @@ export const CartProvider = ({ children }) => {
       setCartItems(response.data.items);
       setTotalPrice(response.data.totalPrice);
       setTotalInCart(response.data.items.length);
+      setMessage("Product Removed from cart")
+      setShow(true)
 
       const leftProducts = productsInCart.filter((item) => item._id !== productId)
       setProductsInCart(leftProducts)
@@ -95,6 +103,9 @@ export const CartProvider = ({ children }) => {
         totalPrice,
         totalInCart,
         productsInCart,
+        message,
+        show,
+        setShow,
         handleAddToCart,
         handleUpdateQty,
         handleRemoveItem,

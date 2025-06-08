@@ -55,7 +55,7 @@ const HomeSlideshow = () => {
               key={i}
               src={img}
               alt={`Slide ${slide.id} image ${i + 1}`}
-              className="w-16 h-16 md:w-32 md:h-32 object-cover rounded shadow-md"
+              className="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 object-cover rounded shadow-md"
             />
           ))}
         </div>

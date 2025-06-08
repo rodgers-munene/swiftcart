@@ -6,12 +6,15 @@ import { useNavigate } from 'react-router-dom'
 import slugify from 'slugify'
 import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
+import Notification from '../global/notification'
+
 
 
 const GridProducts = ({ items }) => {
   const navigate = useNavigate();
   const {user, token} = useAuth()
-  const {handleAddToCart} = useCart()
+  const {handleAddToCart, message, setShow, show} = useCart()
+
 
 
 
@@ -68,6 +71,7 @@ const GridProducts = ({ items }) => {
             onClick={(e) => {
               e.stopPropagation() // prevents the click from reaching the parent div
               handleAddToCart(item._id, 1)
+              
             }} 
             className="z-10 px-3 py-1 mt-2 text-xs text-blue-600 transition border border-blue-600 rounded-md hover:bg-gray-200">
               Add to Cart +
@@ -75,6 +79,12 @@ const GridProducts = ({ items }) => {
           </div>
         </div>
       )) : "Loading..."}
+
+      {show && (<Notification 
+                message={message}
+                duration={800}
+                onClose={() => setShow(false)}
+            />)}
     </div>
   )
 }
