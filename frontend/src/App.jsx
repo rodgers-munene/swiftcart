@@ -8,6 +8,7 @@ import MainCategories from "./pages/MainCategories"
 import ProductDetails from "./pages/ProductDetails"
 import Cart from "./pages/Cart"
 import Checkout from "./pages/Checkout"
+import Profile from "./pages/Profile"
 
 
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/categories/products/:id/:title" element={<Layout><ProductDetails /> </Layout>} />
         <Route path="/cart" element={<Layout><Cart /></Layout>} />
         <Route path="/checkout" element={<Layout><Checkout /></Layout>} />
+        <Route path="/profile" element={<Layout><Profile /></Layout>} />
         {/* <Route path="/" element={< Home />} /> */}
       </Routes>
     </Router>

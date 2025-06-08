@@ -21,7 +21,6 @@ const Header = () => {
 
   const toggleProfile = () => {
     setOpenProfile((prev) => !prev)
-    console.log("profile open")
   }
 
 
@@ -126,7 +125,7 @@ const Header = () => {
       {openProfile && (
         <div 
           ref={profileRef}
-          className={`absolute w-36 h-auto bg-gray-400 right-4 top-10 md:top-14 z-50 rounded-lg dark:bg-gray-800`}>
+          className={`absolute w-36 h-auto bg-gray-400 right-2 sm:right-3 top-10 md:top-14 z-50 rounded-lg dark:bg-gray-800`}>
             {token === null? 
             <div className='flex flex-col items-start'>
               <a
@@ -139,7 +138,11 @@ const Header = () => {
               className='flex items-center h-10 border w-full rounded-b-lg hover:bg-gray-300 dark:hover:bg-gray-700 pl-4'>Signup</a> 
             </div>:
             <div>
-              <button className='h-10 w-full rounded-lg'>View Profile</button>
+              <button 
+              onClick={()=> {
+                navigate('/profile')
+              }}
+              className='h-10 w-full rounded-lg'>View Profile</button>
             </div>
             }
           </div>
