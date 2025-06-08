@@ -1,39 +1,24 @@
 // CartPage.jsx
 import React, { useEffect, useState } from "react";
-import { getCart, updateCart, deleteInCart } from "../services/cartFunction";
 import { useAuth } from "../context/AuthContext";
-import { getProductById } from "../services/backendApi";
 import { getUserAddress } from "../services/userApi";
 import emptyCart from "../assets/emptyCart.png";
 import { useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
-import { formattedPrice } from "../utils/formatPrice";
+import { useCart } from "../context/CartContext";
 
 const Cart = () => {
-  const { user, token } = useAuth(); // Replace with your actual auth context or props
-  const [cartItems, setCartItems] = useState([]);
-  const [productsInCart, setProductsInCart] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const { user, token } = useAuth();
+  const {cartItems,  handleUpdateQty, handleRemoveItem, totalPrice, productsInCart} = useCart()
   const [loading, setLoading] = useState(true);
   const [discount, setDiscount] = useState(0);
   const [address, setAddress] = useState([]);
-  const [subtotal, setSubtotal] = useState(0)
   const navigate = useNavigate();
 
   // Fetch cart from backend
   useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const data = await getCart(user.user_id, token);
-        setCartItems(data.items || []);
-        setTotalPrice(data.totalPrice);
-
-        // fetch product info after fetching cart
-        const productInfos = await Promise.all(
-          data.items.map((item) => getProductById(item.product_id))
-        );
-        setProductsInCart(productInfos);
-
+    const fetchAddress = async () => {
+      try { 
         // fetch user address
         const getAddress = await getUserAddress(user.user_id, token);
         setAddress(getAddress.data[0])
@@ -45,40 +30,10 @@ const Cart = () => {
       }
     };
 
-    if (user && token) fetchCart();
+    if (user && token) fetchAddress();
   }, [user, token]);
   
-  
 
-
-
-  // Update quantity
-  const handleUpdateQty = async (productId, newQty) => {
-    const response = await updateCart(user.user_id, token, productId, newQty);
-
-    if (response.success) {
-      setCartItems(response.data.items);
-      setTotalPrice(response.data.totalPrice);
-    } else {
-      console.log("Error updating product cart");
-    }
-  };
-
-  const handleRemoveItem = async (productId) => {
-    const response = await deleteInCart(user.user_id, token, productId)
-
-    if(response.success){
-      setCartItems(response.data.items)
-      setTotalPrice(response.data.totalPrice)
-
-      const updatedProducts = productsInCart.filter((item) => item.product_id !== productId)
-
-      setProductsInCart(updatedProducts)
-
-    }else{
-      console.log("Error deleting product from cart", response.message)
-    }
-  };
 
   if (loading) return <div className="py-10 text-center">Loading...</div>;
 
@@ -103,7 +58,7 @@ const Cart = () => {
 
   // what to return if the cart has items
   return (
-    <div className="min-h-screen p-4 bg-gray-100 md:p-8">
+    <div className="min-h-screen p-4 bg-gray-100 dark:bg-gray-950 md:p-8">
       <div className="grid grid-cols-1 gap-6 mx-auto max-w-7xl lg:grid-cols-3">
         {/* Left Side - Cart Items */}
         <div className="space-y-6 lg:col-span-2">
@@ -123,7 +78,7 @@ const Cart = () => {
             return(
               <div
                 key={index}
-                className="flex flex-col items-center justify-between p-4 bg-white shadow rounded-xl sm:flex-row"
+                className="flex flex-col items-center justify-between p-4 bg-white dark:bg-gray-800 shadow rounded-xl sm:flex-row"
               >
                 <div className="flex items-center w-full gap-4 md:w-auto">
                   <img
@@ -132,11 +87,11 @@ const Cart = () => {
                     className="object-cover w-24 h-24 rounded"
                   />
                   <div className="p-3">
-                    <p className="text-sm text-gray-500 capitalize">
+                    <p className="text-sm text-gray-800 dark:text-gray-200 capitalize">
                       {product.category}
                     </p>
-                    <h3 className="text-sm font-semibold">{product.title}</h3>
-                    <p className="text-sm text-gray-500">
+                    <h3 className="font-semibold">{product.title}</h3>
+                    <p className="text-sm text-gray-800 dark:text-gray-200">
                       {product.color ? `Color: ${product.color} |` : ""}{" "}
                       {product.weight ? `Weight: ${product.weight}` : ""}
                     </p>
@@ -191,7 +146,7 @@ const Cart = () => {
         </div>
 
         {/* Right Side - Summary */}
-        <div className="p-6 space-y-6 bg-white border shadow rounded-xl">
+        <div className="p-6 space-y-6 bg-white dark:bg-gray-800 border shadow rounded-xl">
           <div>
             <h4 className="mb-2 font-semibold">Shipping Address</h4>
             <div className="space-y-2">
@@ -200,48 +155,48 @@ const Cart = () => {
               defaultValue={address.addressLine} 
               type="text" 
               placeholder="Address Line"
-              className="w-full py-2 pl-3 text-black border rounded-lg outline-none"/>
+              className="w-full py-2 pl-3 text-black dark:text-white border rounded-lg outline-none"/>
               {/* country */}
               <input 
               defaultValue={address.country}
               type="text" 
               placeholder="Country" 
-              className="w-full py-2 pl-3 text-black border rounded-lg outline-none" />
+              className="w-full py-2 pl-3 text-black dark:text-white border rounded-lg outline-none" />
               {/* city */}
               <input 
               defaultValue={address.city}
               type="text" 
               placeholder="State / City"  
-              className="w-full py-2 pl-3 text-black border rounded-lg outline-none"/>
+              className="w-full py-2 pl-3 text-black dark:text-white border rounded-lg outline-none"/>
               {/* Postal code */}
               <input 
               defaultValue={address.postalCode}
               type="text" 
               placeholder="Postal Code" 
-              className="w-full py-2 pl-3 text-black border rounded-lg outline-none"/>
+              className="w-full py-2 pl-3 text-black dark:text-white border rounded-lg outline-none"/>
               <button className="px-2 py-1 border rounded-lg">Update</button>
             </div>
           </div>
 
           <div className="p-4 space-y-2 bg-yellow-100 rounded-xl">
-            <h4 className="font-semibold">Cart Total</h4>
-            <div className="flex justify-between text-sm">
+            <h4 className="font-semibold text-black">Cart Total</h4>
+            <div className="flex justify-between text-sm text-black">
               <span>Cart Subtotal</span>
               <span>${(totalPrice).toFixed(2)}</span>
             </div>
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-sm text-black">
               <span>Shipping</span>
               <span>Free</span>
             </div>
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-sm text-black">
               <span>Discount</span>
               <span>-${(discount).toFixed(2)}</span>
             </div>
-            <div className="flex justify-between font-bold">
+            <div className="flex justify-between font-bold text-black">
               <span>Cart Total</span>
               <span>${(totalPrice).toFixed(2)}</span>
             </div>
-            <button className="w-full py-1 mt-3 border rounded-lg">Proceed to Checkout</button>
+            <button className="w-full py-1 mt-3 border rounded-lg text-black bg-yellow-200">Proceed to Checkout</button>
           </div>
         </div>
       </div>

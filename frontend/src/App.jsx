@@ -7,6 +7,7 @@ import Categories from "./pages/Categories"
 import MainCategories from "./pages/MainCategories"
 import ProductDetails from "./pages/ProductDetails"
 import Cart from "./pages/Cart"
+import Checkout from "./pages/Checkout"
 
 
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/categories/:categoryName" element={<Layout><Categories /></Layout> } />
         <Route path="/categories/products/:id/:title" element={<Layout><ProductDetails /> </Layout>} />
         <Route path="/cart" element={<Layout><Cart /></Layout>} />
+        <Route path="/checkout" element={<Layout><Checkout /></Layout>} />
         {/* <Route path="/" element={< Home />} /> */}
       </Routes>
     </Router>

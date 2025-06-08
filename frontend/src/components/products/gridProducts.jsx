@@ -4,25 +4,12 @@ import StarRating from './StarRating'
 import { formattedPrice } from '../../utils/formatPrice'
 import { useNavigate } from 'react-router-dom'
 import slugify from 'slugify'
-import { postCart } from '../../services/cartFunction'
-import { useAuth } from '../../context/AuthContext'
+import { useCart } from '../../context/CartContext'
 
 
 const GridProducts = ({ items }) => {
   const navigate = useNavigate()
-  const { user, token } = useAuth();
-  
-
-  const handleAddToCart = async (productId, quantity) => {
-    const response = await postCart(user.user_id, token, productId, quantity);
-      if (response.success) {
-        console.log(response.message);
-      } else {
-        console.error("Add to cart failed:", response.message);
-      }
-  };
-
-
+  const {handleAddToCart} = useCart()
 
   
   return (

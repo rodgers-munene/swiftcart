@@ -23,16 +23,6 @@ const MainCategories = () => {
         {name: "Vehicles", slug: "vehicle", src: vehicle}
     ]
 
-    
-    useEffect(() => {
-        const fetchCategories = async () => {
-            const fetchedCategories = await getCategories();
-            setCategories(fetchedCategories)
-        }
-
-        fetchCategories();
-
-    }, [getCategories])
 
     useEffect(() => {
             try {
@@ -42,11 +32,13 @@ const MainCategories = () => {
                 const mobileAccessoriesData = await getProductsInCategory('mobile-accessories', 4);
                 const laptopData = await getProductsInCategory('laptops', 4);
                 const smartPhoneData = await getProductsInCategory('smartphones', 4);
+                const fetchedCategories = await getCategories();
                 setVehicles(vehicleData);
                 setFragrances(fragranceData);
                 setMobileAccessories(mobileAccessoriesData);
                 setLaptops(laptopData)
                 setSmartphones(smartPhoneData)
+                setCategories(fetchedCategories)
             }
             
             getData()
@@ -55,7 +47,7 @@ const MainCategories = () => {
         }finally{
             setLoading(false)
         }
-    }, [getProductsInCategory])
+    }, [])
 
     const handleCategories = () => {
         setShowCategories((prev) => !prev)

@@ -1,25 +1,18 @@
 import React from 'react'
-import { Heart, ImageOff } from 'lucide-react'
+import { Heart } from 'lucide-react'
 import StarRating from '../products/StarRating'
 import { formattedPrice } from '../../utils/formatPrice'
 import { useNavigate } from 'react-router-dom'
 import slugify from 'slugify'
 import { useAuth } from '../../context/AuthContext'
-import { postCart } from '../../services/cartFunction'
+import { useCart } from '../../context/CartContext'
 
 
 const GridProducts = ({ items }) => {
   const navigate = useNavigate();
   const {user, token} = useAuth()
+  const {handleAddToCart} = useCart()
 
-  const handleAddToCart = async (productId, quantity) => {
-      const response = await postCart(user.user_id, token, productId, quantity);
-        if (response.success) {
-          console.log(response.message);
-        } else {
-          console.error("Add to cart failed:", response.message);
-        }
-  };
 
 
   return (

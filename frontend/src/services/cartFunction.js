@@ -38,7 +38,7 @@ export const postCart = async (id, token, product_id, quantity) => {
       return { success: false, message: data.message || "Error adding product to cart" };
     }
 
-    return { success: true, message: "Product added to cart successfully" };
+    return { data, success: true, message: "Product added to cart successfully" };
 
   } catch (error) {
     console.error("Network error:", error); 

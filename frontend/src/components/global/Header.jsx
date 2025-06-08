@@ -5,10 +5,11 @@ import Navbar from './Navbar'
 import { ShoppingCart, User, Heart, MenuIcon, XIcon } from 'lucide-react'
 import Hamburger from './Hamburger'
 import { useAuth } from '../../context/AuthContext'
-import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { useCart } from '../../context/CartContext'
 
 const Header = () => {
+  const { totalInCart } = useCart()
   const[openProfile, setOpenProfile] = useState(false)
   const[isOpen, setIsOpen] = useState(false)
   const navbarRef = useRef(null)
@@ -99,8 +100,9 @@ const Header = () => {
             onClick={() => {
               navigate('/cart')
             }}
-            className='hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
-              <ShoppingCart /> 
+            className='relative hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full'>
+              <ShoppingCart />
+              <p className='absolute right-1 -top-2 '>{totalInCart}</p> 
             </button>
             <button onClick={toggleNavbar} className='lg:hidden'>
             {isOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
