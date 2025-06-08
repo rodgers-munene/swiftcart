@@ -1,54 +1,78 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+const slides = [
+  {
+    id: 'tech',
+    title: 'Explore the Latest Tech',
+    subtitle: 'Laptops, Smartphones, Headphones',
+    images: [
+      'https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp',
+      'https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/thumbnail.webp',
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods-max-silver/thumbnail.webp'
+    ]
+  },
+  {
+    id: 'furniture',
+    title: 'Stylish Modern Furniture',
+    subtitle: 'Beds, Chairs, Tables & More',
+    images: [
+      'https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-bed/thumbnail.webp',
+      'https://cdn.dummyjson.com/product-images/furniture/bedside-table-african-cherry/thumbnail.webp',
+      'https://cdn.dummyjson.com/product-images/furniture/knoll-saarinen-executive-conference-chair/thumbnail.webp'
+    ]
+  }
+];
 
-export default function TopDiscountSlider({ products }) {
+const HomeSlideshow = () => {
+  const [current, setCurrent] = useState(0);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const slide = slides[current];
+
   return (
-    <div className="w-full md:w-1/2 px-4 py-4 md:px-6 lg:px-10">
-      <h2 className="text-xl md:text-2xl font-semibold mb-4 text-center">
-        Top Offers
-      </h2>
-
-      <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={20}
-        slidesPerView={1}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 5000 }}
-        breakpoints={{
-          640: { slidesPerView: 1 },
-          768: { slidesPerView: 1 },
-          1024: { slidesPerView: 1 },
-        }}
-        className="w-full custom-swiper"
-      >
-        {products.map((product) => (
-          <SwiperSlide key={product._id}>
-            <div className="relative bg-white flex flex-col justify-around dark:bg-gray-950 shadow-2xl h-96 rounded-xl overflow-hidden transition duration-300 text-sm">
-              <img
-                src={product.images[0]}
-                alt={product.title}
-                className="w-full h-[60%]  object-contain"
-              />
-              <div className="p-3">
-                <h3 className="font-semibold truncate">{product.title}</h3>
-                <p className="text-gray-500 text-xs truncate mb-1">{product.category}</p>
-
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-green-600 font-medium">${product.price.toFixed(2)}</span>
-                  <span className="text-xs bg-red-100 text-red-600 px-1.5 py-0.5 rounded">
-                    -{product.discountPercentage.toFixed(0)}%
-                  </span>
-                </div>
-
-                <p className="text-xs text-gray-600 line-clamp-2">
-                  {product.description}
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
+    <div className="w-full bg-gray-300 dark:bg-gray-700 py-10">
+      <div className="bg-gray-200 dark:bg-gray-900 max-w-6xl min-h-full mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex-1 space-y-4 text-center md:text-left">
+          <h3 className="text-sm text-gray-500">{slide.subtitle}</h3>
+          <h1 className="text-3xl md:text-4xl font-bold">{slide.title}</h1>
+          <button
+            onClick={() => {
+              navigate('/categories')
+            }}
+           className="mt-4 px-6 py-2 bg-black text-white rounded">Shop Now</button>
+        </div>
+        <div className="flex-1 flex justify-center items-center gap-4 flex-wrap">
+          {slide.images.map((img, i) => (
+            <img
+              key={i}
+              src={img}
+              alt={`Slide ${slide.id} image ${i + 1}`}
+              className="w-16 h-16 md:w-32 md:h-32 object-cover rounded shadow-md"
+            />
+          ))}
+        </div>
+      </div>
+      <div className="flex justify-center mt-6 space-x-2">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`h-2 w-6 rounded-full transition-all duration-300 ${
+              current === i ? 'bg-black' : 'bg-white'
+            }`}
+          ></button>
         ))}
-      </Swiper>
+      </div>
     </div>
   );
 }
+
+export default HomeSlideshow

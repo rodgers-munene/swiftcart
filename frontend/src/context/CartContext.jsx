@@ -51,7 +51,10 @@ export const CartProvider = ({ children }) => {
       setTotalInCart(response.data.items.length);
 
       const newProduct = await getProductById(productId);
-      setProductsInCart([...productsInCart, newProduct])
+
+      if(!productsInCart.find((item) => item._id === productId)){
+        setProductsInCart([...productsInCart, newProduct])
+      }
 
     } else {
       console.error("Add to cart failed:", response.message);

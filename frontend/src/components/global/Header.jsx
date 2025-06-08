@@ -14,6 +14,7 @@ const Header = () => {
   const[isOpen, setIsOpen] = useState(false)
   const navbarRef = useRef(null)
   const profileRef = useRef(null)
+  const toggleButtonRef = useRef(null);
   const { user, token } = useAuth()
   const navigate = useNavigate();
 
@@ -44,7 +45,7 @@ const Header = () => {
   useEffect(() => {
      const handleProfileClick = (event) => {
       if(profileRef.current && !profileRef.current.contains(event.target)){
-        setOpenProfile(false)
+        setTimeout(() => setOpenProfile(false), 0);
         }
       }
 
@@ -125,7 +126,7 @@ const Header = () => {
       {openProfile && (
         <div 
           ref={profileRef}
-          className={`fixed w-36 h-auto bg-gray-400 right-0 top-10 md:top-14 z-50 rounded-lg dark:bg-gray-800`}>
+          className={`absolute w-36 h-auto bg-gray-400 right-4 top-10 md:top-14 z-50 rounded-lg dark:bg-gray-800`}>
             {token === null? 
             <div className='flex flex-col items-start'>
               <a

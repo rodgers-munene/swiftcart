@@ -6,6 +6,7 @@ import GridProducts from "../components/products/gridProducts";
 import { ArrowRight } from "lucide-react";
 import { Heart } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 
 export default function ProductDetails() {
@@ -14,6 +15,7 @@ export default function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [image, setImage] = useState(0);
   const [categoryProducts, setCategoryProducts] = useState([]);
+  const {handleAddToCart} = useCart()
 
   useEffect(() => {
     window.scrollTo(0,0)
@@ -120,7 +122,7 @@ export default function ProductDetails() {
               </span>
             </div>
 
-            <p className="text-sm text-gray-600">Weight: {product.weight}g</p>
+            <p className="text-sm text-gray-600">Weight: {product.weight}</p>
 
             <div className="text-sm text-gray-700">
               Dimensions: {product.dimensions.width} x{" "}
@@ -138,7 +140,11 @@ export default function ProductDetails() {
             </div>
 
             <div className="flex items-center justify-between sm:justify-start">
-              <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+              <button
+              onClick={() => {
+                handleAddToCart(product._id, 1)
+              }}
+              className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
                 Add to Cart
               </button>
               <button className="flex items-center border border-blue-700 py-2 rounded-lg px-4 ml-3">
