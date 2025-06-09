@@ -5,13 +5,19 @@ import creditCard from '../assets/creditCard.png'
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { getUserAddress } from '../services/userApi';
+import { useLocation } from 'react-router-dom';
 
 const Checkout = () => {
+  const { pathname } = useLocation()
   const {user, token} = useAuth()
   const [paymentMethod, setPaymentMethod] = useState('card');
   const {cartItems, productsInCart, totalPrice } = useCart();
   const [loading, setLoading] = useState(true)
   const [address, setAddress] = useState();
+
+  useEffect(() => {
+      window.scrollTo(0,0)
+    }, [pathname])
 
    useEffect(() => {
       const fetchAddress = async () => {

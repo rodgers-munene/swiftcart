@@ -85,7 +85,7 @@ const MainCategories = () => {
                 </div>
             
             <div className={`bg-white border dark:bg-gray-950 rounded-xl shadow pl-4 pt-1 pb-1 h-52 overflow-y-auto md:overflow-y-hidden w-full md:w-[95%] ${showCategories? "block": "hidden"}`}>
-                <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4">
+                <ul className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-4">
                     {categories.map((category) => (
                     <li
                         key={category}
