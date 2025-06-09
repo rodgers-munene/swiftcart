@@ -1,14 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from '../context/AuthContext'
+import { getOrders } from "../services/orderFunction";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("account");
+  const {user, token} = useAuth()
+  const [orders, setOrders] = useState([])
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const orderData = await getOrders(user.user_id, token)
+      setOrders(orderData.data)
+      console.log(orderData.data)
+    }
+
+    if(user && token) {
+      fetchOrders()
+    }
+  }, [user, token])
 
   const renderContent = () => {
     switch (activeTab) {
       case "account":
-        return <div><h2 className="text-xl font-semibold mb-4">Account Details</h2><p>Update your personal information here.</p></div>;
+        return <div className="">
+              <h2 className="text-xl font-semibold mb-4">Account Details</h2>
+              {/* first and last name */}
+
+              <div className="flex">
+                 <div className="flex flex-col">
+                  <label htmlFor="firstName" className="mb-1">First Name:</label>
+                  <input type="text" id="firstName" value={user.firstName} readOnly className="border pl-2 py-1 rounded-md w-44 outline-none" />
+                </div>
+                <div className="flex flex-col ml-4">
+                  <label htmlFor="lastName" className="mb-1">Last Name:</label>
+                  <input type="text" id="lastName" value={user.lastName} readOnly className="border pl-2 py-1 rounded-md w-44 outline-none" />
+                </div>
+              </div>
+
+              {/* email */}
+              <div className="flex flex-col mt-1">
+                <label htmlFor="email" className="mb-1">Email: </label>
+                <input type="email" name="" id="email" value={user.email} readOnly={true} className="border w-64 pl-2 py-1 rounded-md outline-none"/>
+              </div>
+
+          </div>;
+
       case "orders":
-        return <div><h2 className="text-xl font-semibold mb-4">Your Orders</h2><p>View and manage your orders.</p></div>;
+        return <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-md space-y-4">
+                <h2 className="text-2xl font-semibold mb-2">Order Summary </h2>
+                {orders.map((order, index) => (
+                  <div key={index} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex justify-between">
+                      <span className="font-medium">Payment Status:</span>
+                      <span className={order.paymentStatus === 'pending' ? 'text-red-500' : 'text-green-600'}>
+                        {order.paymentStatus}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium">Order Status:</span>
+                      <span className="capitalize">{order.orderStatus}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium">Total Items:</span>
+                      <span>{order.items.length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium">Total Price:</span>
+                      <span>${order.totalPrice.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium">Payment Method:</span>
+                      <span className="capitalize">{order.paymentMethod}</span>
+                    </div>
+                 
+                </div>
+                ))}
+              </div>
       case "addresses":
         return <div><h2 className="text-xl font-semibold mb-4">Saved Addresses</h2><p>Manage your shipping and billing addresses.</p></div>;
       case "wishlist":
