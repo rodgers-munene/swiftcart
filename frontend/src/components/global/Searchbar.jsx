@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SearchIcon, XIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Searchbar = () => {
   const [isSearchBar, setIsSearchBar] = useState(false);
@@ -8,12 +9,14 @@ const Searchbar = () => {
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleClick = (event) => {
       // check if click occurs outside of the search component
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setIsSearchBar(false); //hide the search bar
+        setQuery("")
       }
     };
 
@@ -124,7 +127,13 @@ const Searchbar = () => {
             {results.length > 0 && (
               <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                 {results.map((item, index) => (
-                  <li key={index} className="py-2">
+                  <li
+                   onClick={() => {
+                    navigate(`/categories/products/${item._id}/${item.title}`)
+                    setIsSearchBar(false)
+                    setQuery("")
+                   }}
+                   key={index} className="py-2 cursor-pointer ">
                     <span className="font-medium">{item.title}</span>
                   </li>
                 ))}
@@ -138,7 +147,10 @@ const Searchbar = () => {
               className="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 
             text-gray-700 dark:text-gray-300 rounded-lg flex items-center font-medium 
             transition-colors duration-200"
-              onClick={toggleSearch}
+              onClick={() => {
+                toggleSearch()
+                setQuery("")
+              }}
             >
               Close <XIcon className="ml-1 h-4 w-4" />
             </button>
