@@ -39,6 +39,12 @@ const limiter = rateLimiter({
     message: "Too many requests from this ip, please try again later"
 });
 
+const authLimiter = rateLimiter({
+    windowMs: 15 * 60 * 1000,
+    max: 10, // 10 attempts per 15 minutes
+    message: "Too many attempts ,please try again later"
+})
+
 
 
 app.use((req, res, next) => {
