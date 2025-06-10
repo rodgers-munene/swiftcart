@@ -129,4 +129,18 @@ const productSchema = new mongoose.Schema({
   timestamps: true
 });
 
+
+productSchema.index({
+  title: 'text',
+  brand: 'text',
+  category: 'text'
+}, {
+  weights: {
+    title: 5,    // Highest priority
+    brand: 3,
+    category: 2
+  },
+  name: 'product_search_index'
+});
+
 module.exports = mongoose.model('Product', productSchema);

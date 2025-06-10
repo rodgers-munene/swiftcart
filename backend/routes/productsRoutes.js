@@ -1,5 +1,5 @@
 const express = require('express');
-const { getProducts, getProductDetails, getHighestDiscountProducts } = require('../controllers/productController');
+const { getProducts, getProductDetails, getHighestDiscountProducts, searchProducts } = require('../controllers/productController');
 const router = express.Router();
 
 // Get all products
@@ -13,11 +13,15 @@ router.get('/', getProducts)
 
 router.get('/highest-discount', getHighestDiscountProducts)
 
+// Search products
+// GET /api/products/search
+// public route
+router.get('/search', searchProducts)
+
 // Get product details 
 // GET /api/products/:id
 // public route
 router.get('/:id', getProductDetails)
-
 
 
 module.exports = router
