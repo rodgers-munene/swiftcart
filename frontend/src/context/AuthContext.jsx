@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { updateUser } from "../services/userApi";
 
 // create the context 
 const AuthContext = createContext()
@@ -21,6 +22,8 @@ export const AuthProvider = ( {children} ) => {
             return storedUser ? JSON.parse(storedUser) : null;
             });
     const [token, setToken] = useState(localStorage.getItem('token'))
+    const [message, setMessage] = useState("")
+    const [show, setShow] = useState(false)
 
     useEffect(()=>{
         const checkToken = () => {
@@ -39,6 +42,19 @@ export const AuthProvider = ( {children} ) => {
 
     }, [])
 
+    const updateUserInfo = async (updatableData) => {
+      const res = await updateUser(user.user_id, token, updatableData)
+
+      if(res.success){
+        setMessage("Updated successfully")
+        setShow(true)
+        localStorage.setItem('user', JSON.stringify(res.data))
+        setUser(res.data)
+      }else{
+        console.log("Error updating", res.message)
+      }
+    } 
+
     const logout = () => {
         setUser(null)
         setToken(null)
@@ -47,7 +63,7 @@ export const AuthProvider = ( {children} ) => {
     }
 
     return (
-        <AuthContext.Provider value={ {user, setUser, token, setToken, logout} }>
+        <AuthContext.Provider value={ {user, setUser, token, setToken, logout, updateUserInfo, message, show, setShow, setMessage} }>
             {children}
         </AuthContext.Provider>
     )
