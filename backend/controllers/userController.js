@@ -9,7 +9,21 @@ const userProfile = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error("Unauthorised!!")
     }
-    res.json(req.user);
+
+    const userAvailable = await User.findOne({ _id: req.params.id });
+
+    const user = {
+        user_id: userAvailable._id,
+        firstName: userAvailable.firstName,
+        lastName: userAvailable.lastName,
+        email: userAvailable.email,
+        dob: userAvailable.birthDate,
+        phone: userAvailable.phone,
+        role: userAvailable.role
+    }
+
+    // const user = await User.findById(req.params.id)
+    res.json(user);
 })
 
 // update profile
@@ -40,7 +54,20 @@ const updateProfile = asyncHandler(async(req, res) => {
         {$set: allowedChanges},
         {new: true}
     )
-    res.status(200).json(updatedUser)
+
+    const userAvailable = await User.findOne({ _id: req.params.id });
+
+    const newUser = {
+        user_id: userAvailable._id,
+        firstName: userAvailable.firstName,
+        lastName: userAvailable.lastName,
+        email: userAvailable.email,
+        dob: userAvailable.birthDate,
+        phone: userAvailable.phone,
+        role: userAvailable.role
+    }
+
+    res.status(200).json(newUser)
 
 })
 
