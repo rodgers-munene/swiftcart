@@ -39,7 +39,7 @@ const limiter = rateLimiter({
     message: "Too many requests from this ip, please try again later"
 });
 
-app.use(limiter)
+
 
 app.use((req, res, next) => {
   req.query = { ...req.query }; // Clone into a mutable object
@@ -60,9 +60,9 @@ app.use(express.json())
 app.use('/api/admin', require('./routes/adminRoutes'))
 
 // auth routes
-app.use('/api/auth', require('./routes/authRoutes'))
+app.use('/api/auth', limiter, require('./routes/authRoutes'))
 // user routes
-app.use('/api/users', require('./routes/userRoutes'))
+app.use('/api/users', limiter, require('./routes/userRoutes'))
 
 // product routes
 app.use('/api/products', require('./routes/productsRoutes')) 
@@ -71,10 +71,10 @@ app.use('/api/products', require('./routes/productsRoutes'))
 app.use('/api/categories', require('./routes/categoryRoutes'))
 
 // cart routes
-app.use('/api/user', require('./routes/cartRoutes'))
+app.use('/api/user', limiter, require('./routes/cartRoutes'))
 
 // order routes
-app.use('/api/user', require('./routes/orderRoutes'))
+app.use('/api/user', limiter, require('./routes/orderRoutes'))
 
 
 // error handler middleware
