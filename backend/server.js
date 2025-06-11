@@ -82,6 +82,10 @@ app.use('/api/user', limiter, require('./routes/cartRoutes'))
 // order routes
 app.use('/api/user', limiter, require('./routes/orderRoutes'))
 
+// payment route
+app.use('/api/mpesa', require('./routes/mpesaRoutes'))
+
+
 
 // error handler middleware
 app.use(errorHandler);
