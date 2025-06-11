@@ -1,6 +1,8 @@
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export const getOrders = async (id, token) => {
     try {
-        const res = await fetch(`http://localhost:5001/api/user/${id}/orders`, {
+        const res = await fetch(`${API_BASE_URL}/api/user/${id}/orders`, {
             method: 'GET',
             headers: {
                 authorization: `Bearer ${token}`
@@ -24,7 +26,7 @@ export const getOrders = async (id, token) => {
 
 export const postOrder = async (id, token, paymentMethod) => {
     try {
-        const res = await fetch(`http://localhost:5001/api/user/${id}/orders`, {
+        const res = await fetch(`${API_BASE_URL}/api/user/${id}/orders`, {
             method: 'GET',
             headers: {
                 authorization: `Bearer ${token}`,

@@ -1,9 +1,10 @@
 import { CarFront, CreditCard, ShieldHalf, Headphones } from 'lucide-react';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // get all products
 export const getProducts = async () => {
     try {
-        const res = await fetch('http://localhost:5001/api/products')
+        const res = await fetch(`${API_BASE_URL}/api/products`)
         const data = res.json()
         return data;
     } catch (error) {
@@ -14,7 +15,7 @@ export const getProducts = async () => {
 
 export const getCategories = async () =>{
     try {
-        const res = await fetch('http://localhost:5001/api/categories')
+        const res = await fetch(`${API_BASE_URL}/api/categories`)
         const data = await res.json();
         return data;
     } catch (error) {
@@ -66,7 +67,7 @@ export const serviceData = [
 export const getProductsInCategory = async (category, limit = 20, minPrice=0, maxPrice=50000) => {
     try {
         const categoryParam = Array.isArray(category)? category.join(',') : category
-        const res = await fetch(`http://localhost:5001/api/categories/products?category=${categoryParam}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`)
+        const res = await fetch(`${API_BASE_URL}/api/categories/products?category=${categoryParam}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`)
         const data = await res.json()
         return data;
     } catch (error) {
@@ -78,7 +79,7 @@ export const getProductsInCategory = async (category, limit = 20, minPrice=0, ma
 // get product by id
 export const getProductById = async (id) => {
     try{
-        const res = await fetch(`http://localhost:5001/api/products/${id}`)
+        const res = await fetch(`${API_BASE_URL}/api/products/${id}`)
         const data = await res.json()
         return data;
     }catch(error){
@@ -90,7 +91,7 @@ export const getProductById = async (id) => {
 // get highest discounted products 
 export const getHighestDiscountedProducts = async (limit) => {
     try {
-        const res = await fetch(`http://localhost:5001/api/products/highest-discount?&limit=${limit}`)
+        const res = await fetch(`${API_BASE_URL}/api/products/highest-discount?&limit=${limit}`)
         const data = await res.json()
         return data;
     } catch (error) {

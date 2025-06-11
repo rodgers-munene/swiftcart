@@ -1,7 +1,8 @@
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getCart = async ( id, token) => {
     try {
-        const res = await fetch(`http://localhost:5001/api/user/${id}/cart`, {
+        const res = await fetch(`${API_BASE_URL}/api/user/${id}/cart`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -22,7 +23,7 @@ export const getCart = async ( id, token) => {
 
 export const postCart = async (id, token, product_id, quantity) => {
   try {
-    const res = await fetch(`http://localhost:5001/api/user/${id}/cart`, {
+    const res = await fetch(`${API_BASE_URL}/api/user/${id}/cart`, {
       method: "POST",
       headers: {
         authorization: `Bearer ${token}`,
@@ -48,7 +49,7 @@ export const postCart = async (id, token, product_id, quantity) => {
 
 export const updateCart = async (id, token, product_id, quantity) => {
   try {
-    const res = await fetch(`http://localhost:5001/api/user/${id}/cart/${product_id}`, 
+    const res = await fetch(`${API_BASE_URL}/api/user/${id}/cart/${product_id}`, 
       {
         method: "PUT",
         headers: {
@@ -78,7 +79,7 @@ export const updateCart = async (id, token, product_id, quantity) => {
 // delete in cart
 export const deleteInCart = async (id, token, product_id) => {
   try {
-    const res = await fetch(`http://localhost:5001/api/user/${id}/cart/${product_id}`, {
+    const res = await fetch(`${API_BASE_URL}/api/user/${id}/cart/${product_id}`, {
       method: "DELETE",
       headers: {
         authorization: `Bearer ${token}`

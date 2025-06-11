@@ -1,7 +1,9 @@
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 // user address
 export const getUserAddress = async (id, token) => {
     try {
-        const res = await fetch(`http://localhost:5001/api/users/${id}/address`, {
+        const res = await fetch(`${API_BASE_URL}/api/users/${id}/address`, {
             method: 'GET',
             headers: {
                 authorization: `Bearer ${token}`
@@ -24,7 +26,7 @@ export const getUserAddress = async (id, token) => {
 
 export const updateUser = async (id, token, updatableData) => {
     try {
-        const res = await fetch(`http://localhost:5001/api/users/profile/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/users/profile/${id}`, {
             method: 'PUT',
             headers: {
                 authorization: `Bearer ${token}`,
@@ -51,7 +53,7 @@ export const updateUser = async (id, token, updatableData) => {
 
 export const updateUserAddress = async (id, addressId, token, updatableData) => {
     try {
-        const res = await fetch(`http://localhost:5001/api/users/${id}/address/${addressId}`, {
+        const res = await fetch(`${API_BASE_URL}/api/users/${id}/address/${addressId}`, {
             method: 'PUT',
             headers: {
                 authorization: `Bearer ${token}`,
