@@ -10,7 +10,6 @@ const Home = () => {
   const [beautyProducts, setBeautyProducts] = useState([]);
   const [fashionProducts, setFashionProducts] = useState([])
   const [homeProducts, setHomeProducts] = useState([])
-  const [slideProducts, setSlideProducts] = useState([])
 
 
   useEffect(() => {
@@ -18,11 +17,9 @@ const Home = () => {
       const beautyData = await getProductsInCategory(['beauty', 'skin-care'], 8)
       const fashionData = await getProductsInCategory(['mens-shirts', 'womens-dresses'], 8)
       const homeData = await getProductsInCategory(['home-decoration', 'furniture'], 8)
-      const slideData = await getHighestDiscountedProducts(6)
       setBeautyProducts(beautyData)
       setFashionProducts(fashionData)
       setHomeProducts(homeData)
-      setSlideProducts(slideData)
     }
 
     getData()
