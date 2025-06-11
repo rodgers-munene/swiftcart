@@ -29,7 +29,7 @@ const Footer = () => {
             <div><PhoneCallIcon /></div>
             <div className='ml-4'>
               <p className='text-xs md:text-base'>Monday-Friday:08am-09pm</p>
-              <h1 className='font-bold text-base md:text-2xl'>0 707-435-237</h1>
+              <h1 className='font-bold text-base md:text-2xl'>+254 707-435-237</h1>
             </div>
           </div>
           <div className='flex items-center'>
