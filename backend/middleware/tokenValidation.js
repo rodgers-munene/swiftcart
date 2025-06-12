@@ -1,41 +1,38 @@
-const asyncHandler = require('express-async-handler');
-const jwt = require('jsonwebtoken')
+const asyncHandler = require("express-async-handler");
+const jwt = require("jsonwebtoken");
 
+const validateToken = asyncHandler(async (req, res, next) => {
+  let token;
+  let authHeader = req.headers.Authorization || req.headers.authorization;
 
-const validateToken = asyncHandler( async (req, res, next) => {
-    let token;
-    let authHeader = req.headers.Authorization || req.headers.authorization
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    // split bearer from the token
+    token = authHeader.split(" ")[1];
 
-    if(authHeader && authHeader.startsWith("Bearer")){
-        // split bearer from the token
-        token = authHeader.split(" ")[1];
+    // validate the jwt token
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+      if (err) {
+        res.status(401);
+        console.log(err);
+        throw new Error("User not authorised");
+      }
+      req.user = decoded.user;
+      next();
+    });
 
-        // validate the jwt token
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-            if(err){
-                res.status(401);
-                console.log(err)
-                throw new Error("User not authorised");
-            }
-            req.user = decoded.user;
-            next();
-        });
-
-        if(!token){
-            res.status(401);
-            throw new Error("User not authorised or token missing");
-        }
-
-    } 
-
- })
-
- const isAdmin = asyncHandler(async (req, res, next) => {
-    if(req.user.role !== 'admin'){
-        res.status(403)
-        throw new Error("Admin role is required to carry out this operation")
+    if (!token) {
+      res.status(401);
+      throw new Error("User not authorised or token missing");
     }
-    next();
- })
+  }
+});
 
- module.exports = {validateToken, isAdmin}
+const isAdmin = asyncHandler(async (req, res, next) => {
+  if (req.user.role !== "admin") {
+    res.status(403);
+    throw new Error("Admin role is required to carry out this operation");
+  }
+  next();
+});
+
+module.exports = { validateToken, isAdmin };

@@ -109,52 +109,50 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 const searchProducts = asyncHandler(async (req, res) => {
-    const {query, category, brand, page = 1, limit = 10, sort} = req.query;
+  const { query, category, brand, page = 1, limit = 10, sort } = req.query;
 
-    const searchQuery = {}
+  const searchQuery = {};
 
-    // Full-text search
-    if(query) {
-        searchQuery.$or = [
-            { productName: { $regex: query, $options: 'i' } },
-            { description: { $regex: query, $options: 'i' } },
-            { category: { $regex: query, $options: 'i' } },
-        ];
-    }
+  // Full-text search
+  if (query) {
+    searchQuery.$or = [
+      { productName: { $regex: query, $options: "i" } },
+      { description: { $regex: query, $options: "i" } },
+      { category: { $regex: query, $options: "i" } },
+    ];
+  }
 
-    // category filter
-    if(category){
-        searchQuery.category = category;
-    }
+  // category filter
+  if (category) {
+    searchQuery.category = category;
+  }
 
-    // brand filter
-    if(brand){
-        searchQuery.brand = brand;
-    }
+  // brand filter
+  if (brand) {
+    searchQuery.brand = brand;
+  }
 
-    // pagination
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+  // pagination
+  const skip = (parseInt(page) - 1) * parseInt(limit);
 
-    let sortOption = {};
-    if(sort === 'price_asc')sortOption.price = 1;
-    else if (sort === 'price_desc') sortOption.price = -1;
-    else sortOption.createdAt = -1; // default, returns newest first
+  let sortOption = {};
+  if (sort === "price_asc") sortOption.price = 1;
+  else if (sort === "price_desc") sortOption.price = -1;
+  else sortOption.createdAt = -1; // default, returns newest first
 
-    const products = await Product.find(searchQuery)
-        .sort(sortOption)
-        .skip(skip)
-        .limit(parseInt(limit))
+  const products = await Product.find(searchQuery)
+    .sort(sortOption)
+    .skip(skip)
+    .limit(parseInt(limit));
 
-    const total = await Product.countDocuments(searchQuery)
+  const total = await Product.countDocuments(searchQuery);
 
-    res.status(200).json({
-        products,
-        total,
-        page: parseInt(page),
-        pages: Math.ceil(total/limit)
-    })
-
-
+  res.status(200).json({
+    products,
+    total,
+    page: parseInt(page),
+    pages: Math.ceil(total / limit),
+  });
 });
 
 module.exports = {
@@ -164,5 +162,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getHighestDiscountProducts,
-  searchProducts
+  searchProducts,
 };
