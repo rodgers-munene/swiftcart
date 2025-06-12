@@ -83,7 +83,7 @@ const postOrders = asyncHandler(async (req, res) => {
     shippingAddress: userAddress._id,
     paymentMethod,
     totalPrice: userCart.totalPrice,
-    paymentStatus: "pending",
+    paymentStatus: "paid",
     orderStatus: "processing",
   });
 
