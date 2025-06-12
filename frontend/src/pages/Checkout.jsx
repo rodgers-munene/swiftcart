@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Mpesa from "../assets/mpesa.png";
 // import Paypal from '../assets/paypal.png'
 // import creditCard from '../assets/creditCard.png'
@@ -8,6 +8,9 @@ import { getUserAddress } from "../services/userApi";
 import { useLocation } from "react-router-dom";
 import { placeOrder } from "../services/paymentApi";
 import Loader from "../components/global/Loader";
+import { postOrder } from "../services/orderFunction";
+import { useNavigate } from "react-router-dom";
+import Notification from "../components/global/notification";
 
 const Checkout = () => {
   const { pathname } = useLocation();
@@ -18,6 +21,9 @@ const Checkout = () => {
   const [address, setAddress] = useState();
   const [mpesaPhone, setMpesaPhone] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const navigate = useNavigate()
+  const [message, setMessage] = useState("")
+  const [show, setShow] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -52,28 +58,45 @@ const Checkout = () => {
 
   const handleMpesaPayment = async () => {
     if (!mpesaPhone) {
-      alert("Please enter your M-Pesa phone number.");
+      setMessage("Please enter your M-Pesa phone number.");
+      setShow(true)
       return;
     }
 
     const userPhone = formatNumber(mpesaPhone);
     if (!userPhone) {
-      alert("Enter a valid phone Number");
+      setMessage("Enter a valid phone Number");
+      setShow(true)
       return;
     }
 
     try {
       setIsProcessing(true);
       const response = await placeOrder(userPhone, 1);
-      if (response.success) {
-        console.log("STK push initiated ");
+      const updateOrder = await postOrder(user.user_id, token, paymentMethod)
+      
+      if (response.success && updateOrder.success) {
+        setMessage("STK push initiated and Order Placed");
+        setShow(true)
+        return true;        
+      }else if(response.success === false){
+        setMessage(response.message)
+        setShow(true)
+      }else if(updateOrder.success === false) {
+        setMessage(updateOrder.message)
+        setShow(true)
       }
+     
     } catch (err) {
       console.error(err);
-      console.log("Payment failed. Please try again.");
+      setMessage("Payment failed. Please try again.");
+      setShow(true)
+      
     } finally {
       setIsProcessing(false);
     }
+  
+    return false;
   };
 
   if (loading) return <div className="w-full h-[50vh]">Loading...</div>;
@@ -265,7 +288,14 @@ const Checkout = () => {
           {/* payment button */}
           {paymentMethod === "mpesa" && (
             <button
-              onClick={handleMpesaPayment}
+              onClick={async () => {
+                const success = await handleMpesaPayment();
+                if(success){
+                  setTimeout(() => {
+                    navigate('/profile?active=orders')
+                  }, 1000)
+                }
+              }}
               disabled={isProcessing}
               className="w-full py-2 text-lg font-semibold text-white bg-green-600 rounded hover:bg-green-700 disabled:opacity-50"
             >
@@ -274,6 +304,17 @@ const Checkout = () => {
           )}
         </div>
       </div>
+
+          <div className="absolute">
+        {show && (
+          <Notification
+            message={message}
+            duration={1000}
+            onClose={() => setShow(false)}
+          />
+        )}
+      </div>
+
     </div>
   );
 };

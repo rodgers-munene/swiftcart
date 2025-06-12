@@ -33,7 +33,7 @@ export const getOrders = async (id, token) => {
 export const postOrder = async (id, token, paymentMethod) => {
   try {
     const res = await fetch(`${API_BASE_URL}/api/user/${id}/orders`, {
-      method: "GET",
+      method: "POST",
       headers: {
         authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

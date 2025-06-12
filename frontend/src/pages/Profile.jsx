@@ -4,9 +4,13 @@ import { getOrders } from "../services/orderFunction";
 import { getUserAddress, updateUserAddress } from "../services/userApi";
 import Notification from "../components/global/notification";
 import { formatDate } from "../utils/formatDate";
+import { useLocation } from "react-router-dom";
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState("account");
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const query = queryParams.get('active')
+  const [activeTab, setActiveTab] = useState(query? query : "account");
   const { user, token, updateUserInfo, message, setMessage, setShow, show } =
     useAuth();
   const [orders, setOrders] = useState([]);
