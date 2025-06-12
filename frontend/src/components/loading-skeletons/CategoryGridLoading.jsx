@@ -1,12 +1,11 @@
-import React from 'react'
-
-const CategoryGridLoading = ( {length} ) => {
+const CategoryGridLoading = ({ length }) => {
   return (
-   <div className="grid sm:w-[95%] max-w-screen-xl mx-auto gap-4
+    <div
+      className="grid sm:w-[95%] max-w-screen-xl mx-auto gap-4
       grid-cols-2 sm:grid-cols-3
-      bg-white dark:bg-gray-950 rounded-xl p-2 sm:p-4">
-      
-      {Array.from({ length: length}).map((_, index) => (
+      bg-white dark:bg-gray-950 rounded-xl p-2 sm:p-4"
+    >
+      {Array.from({ length: length }).map((_, index) => (
         <div
           key={index}
           className="relative flex flex-col p-3 border border-gray-200 rounded-lg shadow-sm dark:border-gray-800 sm:p-4"
@@ -19,9 +18,7 @@ const CategoryGridLoading = ( {length} ) => {
 
           {/* Image skeleton*/}
           <div className="flex justify-center mb-2">
-            <div
-              className="bg-gray-200 rounded-md dark:bg-gray-800 h-28 w-28 animate-pulse"
-            />
+            <div className="bg-gray-200 rounded-md dark:bg-gray-800 h-28 w-28 animate-pulse" />
           </div>
 
           {/* Product info skeleton*/}
@@ -30,9 +27,10 @@ const CategoryGridLoading = ( {length} ) => {
 
             {/* product rating skeleton */}
             <div className="flex my-1 space-x-1">
-              {Array.from({length: 5}).map((_, index) => (
-                <div key={index}
-                className="w-3 h-3 bg-gray-200 rounded-full dark:bg-gray-800 animate-pulse"
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="w-3 h-3 bg-gray-200 rounded-full dark:bg-gray-800 animate-pulse"
                 ></div>
               ))}
             </div>
@@ -49,14 +47,13 @@ const CategoryGridLoading = ( {length} ) => {
               <div className="w-3/4 h-2 bg-gray-200 rounded dark:bg-gray-800 animate-pulse"></div>
             </div>
 
-              {/* button skeleton */}
+            {/* button skeleton */}
             <div className="h-6 mt-2 bg-gray-200 rounded-md dark:bg-gray-800 animate-pulse"></div>
           </div>
         </div>
       ))}
-
     </div>
-  )
-}
+  );
+};
 
-export default CategoryGridLoading
+export default CategoryGridLoading;

@@ -1,22 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SearchIcon, XIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Searchbar = () => {
   const [isSearchBar, setIsSearchBar] = useState(false);
   const searchRef = useRef(null);
-  const [query, setQuery] = useState("")
-  const [results, setResults] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const navigate = useNavigate()
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClick = (event) => {
       // check if click occurs outside of the search component
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setIsSearchBar(false); //hide the search bar
-        setQuery("")
+        setQuery("");
       }
     };
 
@@ -31,23 +31,26 @@ const Searchbar = () => {
 
   const toggleSearch = () => {
     setIsSearchBar((prev) => !prev);
-   
   };
 
   // debounce live search effect
   useEffect(() => {
-    if(!query.trim()){
+    if (!query.trim()) {
       setResults([]);
       setError("");
       return;
     }
 
-    setLoading(true)
-    setError("")
+    setLoading(true);
+    setError("");
 
     const timeout = setTimeout(async () => {
       try {
-        const res = await fetch(`http://localhost:5001/api/products/search?query=${encodeURIComponent(query)}`);
+        const res = await fetch(
+          `http://localhost:5001/api/products/search?query=${encodeURIComponent(
+            query
+          )}`
+        );
         if (!res.ok) throw new Error("Search Failed!");
         const data = await res.json();
         setResults(data.products || []);
@@ -60,29 +63,33 @@ const Searchbar = () => {
     }, 400); // 400ms debounce
 
     return () => clearTimeout(timeout);
-  }, [query])
+  }, [query]);
 
   // search handle
   const handleSearch = async (e) => {
     e.preventDefault();
-    if(!query.trim()) return;
-    setLoading(true)
-    setError("")
+    if (!query.trim()) return;
+    setLoading(true);
+    setError("");
 
     try {
-      const res = await fetch(`http://localhost:5001/api/products/search?query=${encodeURIComponent(query)}`)
-      if(!res.ok) throw new Error("Search Failed!")
-        
-      const data =await res.json()
-      setResults(data.products) || []
-      console.log(data)
+      const res = await fetch(
+        `http://localhost:5001/api/products/search?query=${encodeURIComponent(
+          query
+        )}`
+      );
+      if (!res.ok) throw new Error("Search Failed!");
+
+      const data = await res.json();
+      setResults(data.products) || [];
+      console.log(data);
     } catch (error) {
       setError("Failed to fetch results.");
       setResults([]);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex z-50">
@@ -99,7 +106,10 @@ const Searchbar = () => {
       border border-gray-200 dark:border-gray-700 backdrop-blur-sm bg-opacity-90`}
       >
         <div className="relative w-full h-full p-4 flex flex-col">
-          <form className="flex items-center w-full mb-2" onSubmit={handleSearch}>
+          <form
+            className="flex items-center w-full mb-2"
+            onSubmit={handleSearch}
+          >
             <div className="relative flex-grow flex items-center">
               <SearchIcon className="absolute left-3 text-gray-400 dark:text-gray-500 h-5 w-5" />
               <input
@@ -128,12 +138,16 @@ const Searchbar = () => {
               <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                 {results.map((item, index) => (
                   <li
-                   onClick={() => {
-                    navigate(`/categories/products/${item._id}/${item.title}`)
-                    setIsSearchBar(false)
-                    setQuery("")
-                   }}
-                   key={index} className="py-2 cursor-pointer ">
+                    onClick={() => {
+                      navigate(
+                        `/categories/products/${item._id}/${item.title}`
+                      );
+                      setIsSearchBar(false);
+                      setQuery("");
+                    }}
+                    key={index}
+                    className="py-2 cursor-pointer "
+                  >
                     <span className="font-medium">{item.title}</span>
                   </li>
                 ))}
@@ -142,14 +156,13 @@ const Searchbar = () => {
           </div>
 
           <div className="flex justify-end items-center mt-auto ">
-            
             <button
               className="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 
             text-gray-700 dark:text-gray-300 rounded-lg flex items-center font-medium 
             transition-colors duration-200"
               onClick={() => {
-                toggleSearch()
-                setQuery("")
+                toggleSearch();
+                setQuery("");
               }}
             >
               Close <XIcon className="ml-1 h-4 w-4" />

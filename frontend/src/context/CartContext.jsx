@@ -1,5 +1,10 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { postCart, getCart, updateCart, deleteInCart } from "../services/cartFunction";
+import {
+  postCart,
+  getCart,
+  updateCart,
+  deleteInCart,
+} from "../services/cartFunction";
 import { getProductById } from "../services/backendApi";
 import { useAuth } from "./AuthContext";
 
@@ -18,9 +23,9 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalInCart, setTotalInCart] = useState(0);
-  const [productsInCart, setProductsInCart] = useState([])
-  const [message, setMessage] = useState("")
-  const [show, setShow] = useState(false)
+  const [productsInCart, setProductsInCart] = useState([]);
+  const [message, setMessage] = useState("");
+  const [show, setShow] = useState(false);
 
   // Fetch cart on user/token change
   useEffect(() => {
@@ -32,10 +37,9 @@ export const CartProvider = ({ children }) => {
         setTotalInCart(data.items.length);
 
         const productInfos = await Promise.all(
-            data.items.map((item) => getProductById(item.product_id))
+          data.items.map((item) => getProductById(item.product_id))
         );
         setProductsInCart(productInfos);
-
       } catch (error) {
         console.error("Error fetching cart:", error);
       }
@@ -51,17 +55,14 @@ export const CartProvider = ({ children }) => {
       setCartItems(response.data.items);
       setTotalPrice(response.data.totalPrice);
       setTotalInCart(response.data.items.length);
-      setMessage("Product Added to Cart")
-      setShow(true)
+      setMessage("Product Added to Cart");
+      setShow(true);
 
       const newProduct = await getProductById(productId);
 
-      if(!productsInCart.find((item) => item._id === productId)){
-        setProductsInCart([...productsInCart, newProduct])
+      if (!productsInCart.find((item) => item._id === productId)) {
+        setProductsInCart([...productsInCart, newProduct]);
       }
-
-      
-
     } else {
       console.error("Add to cart failed:", response.message);
     }
@@ -86,11 +87,13 @@ export const CartProvider = ({ children }) => {
       setCartItems(response.data.items);
       setTotalPrice(response.data.totalPrice);
       setTotalInCart(response.data.items.length);
-      setMessage("Product Removed from cart")
-      setShow(true)
+      setMessage("Product Removed from cart");
+      setShow(true);
 
-      const leftProducts = productsInCart.filter((item) => item._id !== productId)
-      setProductsInCart(leftProducts)
+      const leftProducts = productsInCart.filter(
+        (item) => item._id !== productId
+      );
+      setProductsInCart(leftProducts);
     } else {
       console.log("Error deleting product from cart", response.message);
     }

@@ -1,7 +1,7 @@
-const LoadingSkeleton = ( { length }) => {
+const LoadingSkeleton = ({ length }) => {
   return (
     <div className="grid w-[95vw] max-w-screen-xl mx-auto gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 bg-white dark:bg-gray-950 rounded-xl p-2 sm:p-4">
-      {Array.from({length: length}).map((_, index) => (
+      {Array.from({ length: length }).map((_, index) => (
         <div
           key={index}
           className="relative flex flex-col p-3 border border-gray-200 rounded-lg shadow-sm dark:border-gray-800 sm:p-4"
@@ -23,7 +23,7 @@ const LoadingSkeleton = ( { length }) => {
 
             {/* skeleton for product rating */}
             <div className="flex my-1 space-x-1">
-              {Array.from({length: 5}).map((_, i) => (
+              {Array.from({ length: 5 }).map((_, i) => (
                 <div
                   key={i}
                   className="w-3 h-3 bg-gray-200 rounded-full dark:bg-gray-800 animate-pulse"

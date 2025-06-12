@@ -1,5 +1,4 @@
-// CartPage.jsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { getUserAddress } from "../services/userApi";
 import emptyCart from "../assets/emptyCart.png";
@@ -11,7 +10,16 @@ import CartSkeleton from "../components/loading-skeletons/CartSkeleton";
 
 const Cart = () => {
   const { user, token } = useAuth();
-  const {cartItems,  handleUpdateQty, handleRemoveItem, totalPrice, productsInCart, message, show, setShow} = useCart()
+  const {
+    cartItems,
+    handleUpdateQty,
+    handleRemoveItem,
+    totalPrice,
+    productsInCart,
+    message,
+    show,
+    setShow,
+  } = useCart();
   const [loading, setLoading] = useState(true);
   const [discount, setDiscount] = useState(0);
   const [address, setAddress] = useState([]);
@@ -20,11 +28,10 @@ const Cart = () => {
   // Fetch cart from backend
   useEffect(() => {
     const fetchAddress = async () => {
-      try { 
+      try {
         // fetch user address
         const getAddress = await getUserAddress(user.user_id, token);
-        setAddress(getAddress.data[0])
-        
+        setAddress(getAddress.data[0]);
       } catch (error) {
         console.error("Error fetching cart:", error);
       } finally {
@@ -34,12 +41,13 @@ const Cart = () => {
 
     if (user && token) fetchAddress();
   }, [user, token]);
-  
 
-
-  if (loading) return <div className="">
-    <CartSkeleton />
-  </div>;
+  if (loading)
+    return (
+      <div className="">
+        <CartSkeleton />
+      </div>
+    );
 
   // what to return if the cart is empty
   if (cartItems.length === 0)
@@ -72,80 +80,79 @@ const Cart = () => {
           </p>
 
           <div className="space-y-4">
-            {productsInCart.map((product, index) => { 
+            {productsInCart.map((product, index) => {
+              const item = cartItems.find(
+                (item) => item.product_id === product._id
+              );
 
-              const item = cartItems.find((item) => item.product_id === product._id)
+              if (!item) return null;
 
-              if(!item) return null;
-
-              const itemTotal = (product.price * item.quantity).toFixed(2)
-            return(
-              <div
-                key={index}
-                className="flex flex-col items-center justify-between p-4 bg-white shadow dark:bg-gray-800 rounded-xl sm:flex-row"
-              >
-                <div className="flex items-center w-full gap-4 md:w-auto">
-                  <img
-                    src={product.thumbnail}
-                    alt={product.title}
-                    className="object-cover w-24 h-24 rounded"
-                  />
-                  <div className="p-3">
-                    <p className="text-sm text-gray-800 capitalize dark:text-gray-200">
-                      {product.category}
-                    </p>
-                    <h3 className="font-semibold">{product.title}</h3>
-                    <p className="text-sm text-gray-800 dark:text-gray-200">
-                      {product.color ? `Color: ${product.color} |` : ""}{" "}
-                      {product.weight ? `Weight: ${product.weight}` : ""}
-                    </p>
+              const itemTotal = (product.price * item.quantity).toFixed(2);
+              return (
+                <div
+                  key={index}
+                  className="flex flex-col items-center justify-between p-4 bg-white shadow dark:bg-gray-800 rounded-xl sm:flex-row"
+                >
+                  <div className="flex items-center w-full gap-4 md:w-auto">
+                    <img
+                      src={product.thumbnail}
+                      alt={product.title}
+                      className="object-cover w-24 h-24 rounded"
+                    />
+                    <div className="p-3">
+                      <p className="text-sm text-gray-800 capitalize dark:text-gray-200">
+                        {product.category}
+                      </p>
+                      <h3 className="font-semibold">{product.title}</h3>
+                      <p className="text-sm text-gray-800 dark:text-gray-200">
+                        {product.color ? `Color: ${product.color} |` : ""}{" "}
+                        {product.weight ? `Weight: ${product.weight}` : ""}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-row items-center gap-6 mt-4 md:mt-0">
-                  <p className="text-sm font-medium sm:text-base md:text-lg">
-                    ${(product.price).toFixed(2)}
-                  </p>
-                  <div className="flex items-center border rounded">
+                  <div className="flex flex-row items-center gap-6 mt-4 md:mt-0">
+                    <p className="text-sm font-medium sm:text-base md:text-lg">
+                      ${product.price.toFixed(2)}
+                    </p>
+                    <div className="flex items-center border rounded">
+                      <button
+                        onClick={() => {
+                          if (item && item.quantity > 1) {
+                            handleUpdateQty(product._id, item.quantity - 1);
+                          } else {
+                            handleRemoveItem(product._id);
+                          }
+                        }}
+                        className="px-2"
+                      >
+                        -
+                      </button>
+                      <span className="px-3">{item.quantity}</span>
+                      <button
+                        onClick={() =>
+                          handleUpdateQty(product._id, item.quantity + 1)
+                        }
+                        className="px-2"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <p className="text-sm font-semibold text-yellow-600 sm:text-base md:text-lg">
+                      ${itemTotal}
+                    </p>
+                    {/* delete icon */}
                     <button
                       onClick={() => {
-                        if(item && item.quantity > 1){
-                          handleUpdateQty(
-                          product._id,
-                          item.quantity - 1
-                        );
-                        }else{
-                          handleRemoveItem(product._id)
-                        }
+                        handleRemoveItem(product._id);
                       }}
-                      className="px-2"
+                      className="text-red-500"
                     >
-                      -
-                    </button>
-                    <span className="px-3">{item.quantity}</span>
-                    <button
-                      onClick={() =>
-                        handleUpdateQty(
-                          product._id,
-                          item.quantity + 1
-                        )
-                      }
-                      className="px-2"
-                    >
-                      +
+                      <Trash2 />{" "}
                     </button>
                   </div>
-                  <p className="text-sm font-semibold text-yellow-600 sm:text-base md:text-lg">
-                    ${itemTotal}
-                  </p>
-                    {/* delete icon */}
-                  <button
-                  onClick={() => {
-                    handleRemoveItem(product._id)
-                  }} 
-                  className="text-red-500"><Trash2 /> </button>
                 </div>
-              </div>
-            )})}
+              );
+            })}
           </div>
         </div>
 
@@ -156,28 +163,32 @@ const Cart = () => {
             <div className="space-y-2">
               {/* address line */}
               <input
-              defaultValue={address.addressLine} 
-              type="text" 
-              placeholder="Address Line"
-              className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white"/>
+                defaultValue={address.addressLine}
+                type="text"
+                placeholder="Address Line"
+                className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white"
+              />
               {/* country */}
-              <input 
-              defaultValue={address.country}
-              type="text" 
-              placeholder="Country" 
-              className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white" />
+              <input
+                defaultValue={address.country}
+                type="text"
+                placeholder="Country"
+                className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white"
+              />
               {/* city */}
-              <input 
-              defaultValue={address.city}
-              type="text" 
-              placeholder="State / City"  
-              className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white"/>
+              <input
+                defaultValue={address.city}
+                type="text"
+                placeholder="State / City"
+                className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white"
+              />
               {/* Postal code */}
-              <input 
-              defaultValue={address.postalCode}
-              type="text" 
-              placeholder="Postal Code" 
-              className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white"/>
+              <input
+                defaultValue={address.postalCode}
+                type="text"
+                placeholder="Postal Code"
+                className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white"
+              />
               <button className="px-2 py-1 border rounded-lg">Update</button>
             </div>
           </div>
@@ -186,7 +197,7 @@ const Cart = () => {
             <h4 className="font-semibold text-black">Cart Total</h4>
             <div className="flex justify-between text-sm text-black">
               <span>Cart Subtotal</span>
-              <span>${(totalPrice).toFixed(2)}</span>
+              <span>${totalPrice.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm text-black">
               <span>Shipping</span>
@@ -194,26 +205,31 @@ const Cart = () => {
             </div>
             <div className="flex justify-between text-sm text-black">
               <span>Discount</span>
-              <span>-${(discount).toFixed(2)}</span>
+              <span>-${discount.toFixed(2)}</span>
             </div>
             <div className="flex justify-between font-bold text-black">
               <span>Cart Total</span>
-              <span>${(totalPrice).toFixed(2)}</span>
+              <span>${totalPrice.toFixed(2)}</span>
             </div>
             <button
-            onClick={() => {
-              navigate('/checkout')
-            }}
-            className="w-full py-1 mt-3 text-black bg-yellow-200 border rounded-lg">Proceed to Checkout</button>
+              onClick={() => {
+                navigate("/checkout");
+              }}
+              className="w-full py-1 mt-3 text-black bg-yellow-200 border rounded-lg"
+            >
+              Proceed to Checkout
+            </button>
           </div>
         </div>
       </div>
 
-      {show && (<Notification 
-                message={message}
-                duration={800}
-                onClose={() => setShow(false)}
-            />)}
+      {show && (
+        <Notification
+          message={message}
+          duration={800}
+          onClose={() => setShow(false)}
+        />
+      )}
     </div>
   );
 };

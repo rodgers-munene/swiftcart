@@ -7,14 +7,15 @@ import { formatDate } from "../utils/formatDate";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("account");
-  const { user, token, updateUserInfo, message, setMessage, setShow, show } = useAuth();
+  const { user, token, updateUserInfo, message, setMessage, setShow, show } =
+    useAuth();
   const [orders, setOrders] = useState([]);
   const [address, setAddress] = useState({
     _id: "",
     addressLine: "",
     country: "",
     city: "",
-    postalCode: ""
+    postalCode: "",
   });
 
   // Defensive: handle user not loaded yet
@@ -22,7 +23,7 @@ const Profile = () => {
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
     birthDate: user?.dob || "",
-    phone: user?.phone || ""
+    phone: user?.phone || "",
   };
   const [updatableData, setUpdatableData] = useState(defaultValues);
 
@@ -31,7 +32,7 @@ const Profile = () => {
     addressLine: address.addressLine || "",
     country: address.country || "",
     city: address.city || "",
-    postalCode: address.postalCode || ""
+    postalCode: address.postalCode || "",
   });
 
   // Sync updatableData with user changes
@@ -40,7 +41,7 @@ const Profile = () => {
       firstName: user?.firstName || "",
       lastName: user?.lastName || "",
       birthDate: user?.dob || "",
-      phone: user?.phone || ""
+      phone: user?.phone || "",
     });
   }, [user]);
 
@@ -50,7 +51,7 @@ const Profile = () => {
       addressLine: address?.addressLine || "",
       country: address?.country || "",
       city: address?.city || "",
-      postalCode: address?.postalCode || ""
+      postalCode: address?.postalCode || "",
     });
   }, [address]);
 
@@ -85,29 +86,33 @@ const Profile = () => {
       const orderData = await getOrders(user.user_id, token);
       const addressData = await getUserAddress(user.user_id, token);
       setOrders(orderData.data || []);
-      setAddress(addressData.data?.[0] || {
-        _id: "",
-        addressLine: "",
-        country: "",
-        city: "",
-        postalCode: ""
-      });
-      
+      setAddress(
+        addressData.data?.[0] || {
+          _id: "",
+          addressLine: "",
+          country: "",
+          city: "",
+          postalCode: "",
+        }
+      );
     };
 
     fetchOrders();
   }, [user, token]);
 
- 
   const handleUpdateAddress = async (addressId) => {
-    const res = await updateUserAddress(user.user_id, addressId, token, updatableAddress)
-    if(res.success){
+    const res = await updateUserAddress(
+      user.user_id,
+      addressId,
+      token,
+      updatableAddress
+    );
+    if (res.success) {
       setMessage("Address info successfully updated!");
       setShow(true);
 
       setAddress(res.data);
     }
-    
   };
 
   const renderContent = () => {
@@ -157,7 +162,10 @@ const Profile = () => {
 
             {/* Email */}
             <div className="flex flex-col mb-4">
-              <label htmlFor="email" className="mb-1 text-sm text-gray-600 dark:text-gray-200">
+              <label
+                htmlFor="email"
+                className="mb-1 text-sm text-gray-600 dark:text-gray-200"
+              >
                 Email
               </label>
               <input
@@ -171,14 +179,21 @@ const Profile = () => {
 
             {/* Date of Birth */}
             <div className="flex flex-col mb-4">
-              <label htmlFor="dob" className="mb-1 text-sm text-gray-600 dark:text-gray-200">
+              <label
+                htmlFor="dob"
+                className="mb-1 text-sm text-gray-600 dark:text-gray-200"
+              >
                 Date of Birth
               </label>
               <input
                 type="date"
                 id="dob"
                 name="birthDate"
-                value={updatableData.birthDate ? formatDate(updatableData.birthDate) : ""}
+                value={
+                  updatableData.birthDate
+                    ? formatDate(updatableData.birthDate)
+                    : ""
+                }
                 onChange={handleChange}
                 className="border border-gray-300 px-3 py-2 rounded-lg outline-none focus:ring-2 focus:ring-green-700 bg-gray-50 text-black"
               />
@@ -186,7 +201,10 @@ const Profile = () => {
 
             {/* Phone Number */}
             <div className="flex flex-col mb-6">
-              <label htmlFor="phone" className="mb-1 text-sm text-gray-600 dark:text-gray-200">
+              <label
+                htmlFor="phone"
+                className="mb-1 text-sm text-gray-600 dark:text-gray-200"
+              >
                 Phone
               </label>
               <input
@@ -206,7 +224,11 @@ const Profile = () => {
                   updateUserInfo(updatableData);
                 }}
                 disabled={isUnchanged}
-                className={`px-4 py-2  text-white rounded-lg transition-colors  ${isUnchanged ? "bg-gray-500 opacity-50 !cursor-not-allowed" : "cursor-pointer bg-green-800"}`}
+                className={`px-4 py-2  text-white rounded-lg transition-colors  ${
+                  isUnchanged
+                    ? "bg-gray-500 opacity-50 !cursor-not-allowed"
+                    : "cursor-pointer bg-green-800"
+                }`}
               >
                 Update Profile
               </button>
@@ -326,10 +348,14 @@ const Profile = () => {
               {/* Update Button */}
               <button
                 onClick={() => {
-                  handleUpdateAddress(address._id)
+                  handleUpdateAddress(address._id);
                 }}
                 disabled={isAddressUnchanged}
-                className={`w-full py-2 text-white text-sm font-medium rounded-lg  transition-colors ${isAddressUnchanged ? "bg-gray-500 opacity-50 !cursor-not-allowed" : "cursor-pointer bg-green-800"}`}
+                className={`w-full py-2 text-white text-sm font-medium rounded-lg  transition-colors ${
+                  isAddressUnchanged
+                    ? "bg-gray-500 opacity-50 !cursor-not-allowed"
+                    : "cursor-pointer bg-green-800"
+                }`}
               >
                 Update
               </button>
@@ -383,7 +409,9 @@ const Profile = () => {
         </div>
 
         {/* Content Area */}
-        <div className="w-full md:w-3/4 sm:p-6 dark:bg-gray-700">{renderContent()}</div>
+        <div className="w-full md:w-3/4 sm:p-6 dark:bg-gray-700">
+          {renderContent()}
+        </div>
       </div>
 
       {show && (

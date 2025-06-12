@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import logo from "../../assets/logo.svg";
 import Searchbar from "./Searchbar";
 import Navbar from "./Navbar";
 import { ShoppingCart, User, Heart, MenuIcon, XIcon } from "lucide-react";
 import Hamburger from "./Hamburger";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import Notification from "./notification";
 
@@ -16,9 +16,10 @@ const Header = () => {
   const navbarRef = useRef(null);
   const profileRef = useRef(null);
   const { user, token, logout } = useAuth();
-  const [show, setShow] = useState(false)
-  const [message, setMessage] = useState("")
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleProfile = () => {
     setOpenProfile((prev) => !prev);
@@ -41,21 +42,20 @@ const Header = () => {
   }, [isOpen, setIsOpen]);
 
   useEffect(() => {
-  const handleProfileClick = (event) => {
-    if (profileRef.current && !profileRef.current.contains(event.target)) {
-      setOpenProfile(false);
+    const handleProfileClick = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setOpenProfile(false);
+      }
+    };
+
+    if (openProfile) {
+      document.addEventListener("mousedown", handleProfileClick);
     }
-  };
 
-  if (openProfile) {
-    document.addEventListener("mousedown", handleProfileClick);
-  }
-
-  return () => {
-    document.removeEventListener("mousedown", handleProfileClick);
-  };
-}, [openProfile]);
-
+    return () => {
+      document.removeEventListener("mousedown", handleProfileClick);
+    };
+  }, [openProfile]);
 
   const toggleNavbar = () => {
     setIsOpen((prev) => !prev);
@@ -63,7 +63,14 @@ const Header = () => {
 
   return (
     <div className="relative flex items-center justify-between w-screen border-b lg:justify-around ">
-      <div className="flex items-center md:w-1/3 lg:w-1/6">
+      <div
+        onClick={() => {
+          if (location.pathname !== "/") {
+            navigate("/");
+          }
+        }}
+        className="flex items-center md:w-1/3 lg:w-1/6 cursor-pointer"
+      >
         <img
           src={logo}
           alt="Logo svg file"
@@ -82,7 +89,7 @@ const Header = () => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              toggleProfile()
+              toggleProfile();
             }}
             className="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
           >
@@ -107,13 +114,13 @@ const Header = () => {
           </button>
           <button
             onClick={() => {
-              if(token && user){
+              if (token && user) {
                 navigate("/cart");
-              }else{
+              } else {
                 setTimeout(() => {
-                  navigate('/login');
-                }, 1000)
-                setMessage("Please login to access the cart!")
+                  navigate("/login");
+                }, 1000);
+                setMessage("Please login to access the cart!");
                 setShow(true);
               }
             }}
@@ -122,91 +129,86 @@ const Header = () => {
             <ShoppingCart />
             <p className="absolute right-1 -top-2 ">{totalInCart}</p>
           </button>
-          
-           <div
-           
-            className="relative">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  toggleProfile()
-                }}
-                className="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
-              >
-                <User />
-              </button>
-            </div>
 
-            <button onClick={toggleNavbar} className="lg:hidden">
-              {isOpen ? (
-                <XIcon className="w-6 h-6" />
-              ) : (
-                <MenuIcon className="w-6 h-6" />
-              )}
+          <div className="relative">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleProfile();
+              }}
+              className="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
+            >
+              <User />
             </button>
-          
+          </div>
+
+          <button onClick={toggleNavbar} className="lg:hidden">
+            {isOpen ? (
+              <XIcon className="w-6 h-6" />
+            ) : (
+              <MenuIcon className="w-6 h-6" />
+            )}
+          </button>
         </div>
       </div>
 
       {/* profile component */}
 
       {openProfile && (
-              <div
-                ref={profileRef}
-                className={`absolute right-32 sm:right-36 top-10 md:top-14 z-50 w-24 h-auto bg-gray-400 rounded-lg dark:bg-gray-800`}
-              >
-                <div className="w-56 p-2 text-sm text-gray-700 bg-white border rounded-lg shadow-lg dark:bg-gray-900 dark:text-gray-200">
-                  {token === null ? (
-                    <>
-                      <a
-                        href="/login"
-                        onClick={toggleProfile}
-                        className="block px-4 py-2 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        Login
-                      </a>
-                      <hr className="my-1 border-gray-200 dark:border-gray-700" />
-                      <a
-                        href="/signup"
-                        onClick={toggleProfile}
-                        className="block px-4 py-2 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        Signup
-                      </a>
-                    </>
-                  ) : (
-                    <>
-                      <div className="px-4 py-2 text-xs text-gray-500">
-                        {user.firstName} {user.lastName}
-                      </div>
-                      <hr className="my-1 border-gray-200 dark:border-gray-700" />
-                      <button
-                        onClick={() => {
-                          navigate("/profile")
-                          toggleProfile()
-                        }}
-                        className="w-full px-4 py-2 text-left transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        View Profile
-                      </button>
-                      <hr className="my-1 border-gray-200 dark:border-gray-700" />
-                      <button
-                        onClick={() => {
-                          logout()
-                          navigate("/login");
-                          toggleProfile()
-                        }}
-                        className="w-full px-4 py-2 text-left text-red-600 transition-colors rounded hover:bg-red-400 dark:hover:bg-red-800 hover:text-white"
-                      >
-                        Logout
-                      </button>
-                    </>
-                  )}
+        <div
+          ref={profileRef}
+          className={`absolute right-32 sm:right-36 top-10 md:top-14 z-50 w-24 h-auto bg-gray-400 rounded-lg dark:bg-gray-800`}
+        >
+          <div className="w-56 p-2 text-sm text-gray-700 bg-white border rounded-lg shadow-lg dark:bg-gray-900 dark:text-gray-200">
+            {token === null ? (
+              <>
+                <a
+                  href="/login"
+                  onClick={toggleProfile}
+                  className="block px-4 py-2 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  Login
+                </a>
+                <hr className="my-1 border-gray-200 dark:border-gray-700" />
+                <a
+                  href="/signup"
+                  onClick={toggleProfile}
+                  className="block px-4 py-2 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  Signup
+                </a>
+              </>
+            ) : (
+              <>
+                <div className="px-4 py-2 text-xs text-gray-500">
+                  {user.firstName} {user.lastName}
                 </div>
-              </div>
+                <hr className="my-1 border-gray-200 dark:border-gray-700" />
+                <button
+                  onClick={() => {
+                    navigate("/profile");
+                    toggleProfile();
+                  }}
+                  className="w-full px-4 py-2 text-left transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  View Profile
+                </button>
+                <hr className="my-1 border-gray-200 dark:border-gray-700" />
+                <button
+                  onClick={() => {
+                    logout();
+                    navigate("/login");
+                    toggleProfile();
+                  }}
+                  className="w-full px-4 py-2 text-left text-red-600 transition-colors rounded hover:bg-red-400 dark:hover:bg-red-800 hover:text-white"
+                >
+                  Logout
+                </button>
+              </>
             )}
-
-    
+          </div>
+        </div>
+      )}
 
       <div
         ref={navbarRef}
@@ -218,11 +220,13 @@ const Header = () => {
       </div>
 
       <div className="absolute">
-        {show && (<Notification 
-                message={message}
-                duration={1000}
-                onClose={() => setShow(false)}
-            />)}
+        {show && (
+          <Notification
+            message={message}
+            duration={1000}
+            onClose={() => setShow(false)}
+          />
+        )}
       </div>
     </div>
   );

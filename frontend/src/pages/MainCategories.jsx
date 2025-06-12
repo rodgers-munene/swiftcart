@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getCategories, getProductsInCategory } from "../services/backendApi";
 import { Link } from "react-router-dom";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";

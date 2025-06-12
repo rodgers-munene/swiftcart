@@ -1,10 +1,6 @@
-import React from 'react'
-import { CarFront, CreditCard, ShieldHalf, Headphones } from 'lucide-react'
-import { serviceData } from '../../services/backendApi'
+import { serviceData } from "../../services/backendApi";
 
 const Features = () => {
-  const Icon = serviceData.icon
-
   return (
     <div className="flex overflow-x-auto overflow-y-hidden w-screen sm:w-[95vw] p-2 justify-between text-black">
       {serviceData.map((item, index) => {
@@ -24,7 +20,7 @@ const Features = () => {
         );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default Features
+export default Features;

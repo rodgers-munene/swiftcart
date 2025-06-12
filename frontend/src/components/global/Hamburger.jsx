@@ -1,4 +1,4 @@
-import { ShoppingCart, User, Heart} from 'lucide-react'
+import { ShoppingCart, Heart} from 'lucide-react'
 import { useLocation, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import Notification from './notification'
