@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getProductsInCategory } from '../services/backendApi'
-import GridProducts from '../components/categories/categoryGrid'
 import { Slider } from '@mui/material'
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
 import DynamicBreadcrumb from '../components/categories/BreadcrumbNav'
 import AllCategories from '../components/home/AllCategories'
+import CategoryGrid from '../components/categories/categoryGrid'
+import CategoryGridLoading from '../components/loading-skeletons/CategoryGridLoading'
 
 
 const Categories = () => {
@@ -150,7 +151,7 @@ const Categories = () => {
       {/* Products Section */}
       <div className="flex-1">
       <h1 className='py-2 pl-8 text-xl font-bold'>{formatCategoryName(categoryName)}</h1>
-        <GridProducts items={products} />
+        {products.length < 1? <CategoryGridLoading length={6} /> : <CategoryGrid items={products} />}
       </div>
     </div>
     </div>

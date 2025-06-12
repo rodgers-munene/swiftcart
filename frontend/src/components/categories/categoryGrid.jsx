@@ -10,7 +10,7 @@ import Notification from '../global/notification'
 
 
 
-const GridProducts = ({ items }) => {
+const CategoryGrid = ({ items }) => {
   const navigate = useNavigate();
   const {user, token} = useAuth()
   const {handleAddToCart, message, setShow, show} = useCart()
@@ -89,4 +89,4 @@ const GridProducts = ({ items }) => {
   )
 }
 
-export default GridProducts
+export default CategoryGrid

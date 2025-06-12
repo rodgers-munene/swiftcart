@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { Heart } from 'lucide-react'
 import StarRating from './StarRating'
 import { formattedPrice } from '../../utils/formatPrice'
@@ -6,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import slugify from 'slugify'
 import { useCart } from '../../context/CartContext'
 import Notification from '../global/notification'
+
 
 
 const GridProducts = ({ items }) => {

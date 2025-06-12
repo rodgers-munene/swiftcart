@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import Notification from "../components/global/notification";
+import CartSkeleton from "../components/loading-skeletons/CartSkeleton";
 
 const Cart = () => {
   const { user, token } = useAuth();
@@ -36,7 +37,9 @@ const Cart = () => {
   
 
 
-  if (loading) return <div className="py-10 text-center">Loading...</div>;
+  if (loading) return <div className="">
+    <CartSkeleton />
+  </div>;
 
   // what to return if the cart is empty
   if (cartItems.length === 0)
@@ -79,7 +82,7 @@ const Cart = () => {
             return(
               <div
                 key={index}
-                className="flex flex-col items-center justify-between p-4 bg-white dark:bg-gray-800 shadow rounded-xl sm:flex-row"
+                className="flex flex-col items-center justify-between p-4 bg-white shadow dark:bg-gray-800 rounded-xl sm:flex-row"
               >
                 <div className="flex items-center w-full gap-4 md:w-auto">
                   <img
@@ -88,7 +91,7 @@ const Cart = () => {
                     className="object-cover w-24 h-24 rounded"
                   />
                   <div className="p-3">
-                    <p className="text-sm text-gray-800 dark:text-gray-200 capitalize">
+                    <p className="text-sm text-gray-800 capitalize dark:text-gray-200">
                       {product.category}
                     </p>
                     <h3 className="font-semibold">{product.title}</h3>
@@ -99,7 +102,7 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="flex flex-row items-center gap-6 mt-4 md:mt-0">
-                  <p className="text-sm sm:text-base md:text-lg font-medium">
+                  <p className="text-sm font-medium sm:text-base md:text-lg">
                     ${(product.price).toFixed(2)}
                   </p>
                   <div className="flex items-center border rounded">
@@ -131,7 +134,7 @@ const Cart = () => {
                       +
                     </button>
                   </div>
-                  <p className="text-sm sm:text-base md:text-lg font-semibold text-yellow-600">
+                  <p className="text-sm font-semibold text-yellow-600 sm:text-base md:text-lg">
                     ${itemTotal}
                   </p>
                     {/* delete icon */}
@@ -156,25 +159,25 @@ const Cart = () => {
               defaultValue={address.addressLine} 
               type="text" 
               placeholder="Address Line"
-              className="w-full py-2 pl-3 text-black dark:text-white border rounded-lg outline-none"/>
+              className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white"/>
               {/* country */}
               <input 
               defaultValue={address.country}
               type="text" 
               placeholder="Country" 
-              className="w-full py-2 pl-3 text-black dark:text-white border rounded-lg outline-none" />
+              className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white" />
               {/* city */}
               <input 
               defaultValue={address.city}
               type="text" 
               placeholder="State / City"  
-              className="w-full py-2 pl-3 text-black dark:text-white border rounded-lg outline-none"/>
+              className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white"/>
               {/* Postal code */}
               <input 
               defaultValue={address.postalCode}
               type="text" 
               placeholder="Postal Code" 
-              className="w-full py-2 pl-3 text-black dark:text-white border rounded-lg outline-none"/>
+              className="w-full py-2 pl-3 text-black border rounded-lg outline-none dark:text-white"/>
               <button className="px-2 py-1 border rounded-lg">Update</button>
             </div>
           </div>
@@ -201,7 +204,7 @@ const Cart = () => {
             onClick={() => {
               navigate('/checkout')
             }}
-            className="w-full py-1 mt-3 border rounded-lg text-black bg-yellow-200">Proceed to Checkout</button>
+            className="w-full py-1 mt-3 text-black bg-yellow-200 border rounded-lg">Proceed to Checkout</button>
           </div>
         </div>
       </div>

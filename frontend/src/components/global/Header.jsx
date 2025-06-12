@@ -7,6 +7,7 @@ import Hamburger from "./Hamburger";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import Notification from "./notification";
 
 const Header = () => {
   const { totalInCart } = useCart();
@@ -15,6 +16,8 @@ const Header = () => {
   const navbarRef = useRef(null);
   const profileRef = useRef(null);
   const { user, token, logout } = useAuth();
+  const [show, setShow] = useState(false)
+  const [message, setMessage] = useState("")
   const navigate = useNavigate();
 
   const toggleProfile = () => {
@@ -59,7 +62,7 @@ const Header = () => {
   };
 
   return (
-    <div className="w-screen relative border-b flex items-center justify-between lg:justify-around ">
+    <div className="relative flex items-center justify-between w-screen border-b lg:justify-around ">
       <div className="flex items-center md:w-1/3 lg:w-1/6">
         <img
           src={logo}
@@ -69,11 +72,11 @@ const Header = () => {
         <h1 className="text-xl md:text-3xl ">SwiftCart</h1>
       </div>
 
-      <div className="w-1/2 hidden lg:block">
+      <div className="hidden w-1/2 lg:block">
         <Navbar />
       </div>
 
-      <div className="md:hidden flex items-center mr-2">
+      <div className="flex items-center mr-2 md:hidden">
         <Searchbar />
         <div className="relative">
           <button
@@ -81,7 +84,7 @@ const Header = () => {
               e.stopPropagation();
               toggleProfile()
             }}
-            className="hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full"
+            className="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
           >
             <User />
           </button>
@@ -96,17 +99,25 @@ const Header = () => {
       </div>
 
       <div className="hidden md:block md:w-1/3 lg:w-1/6">
-        <div className="w-full flex items-center justify-around">
+        <div className="flex items-center justify-around w-full">
           <Searchbar />
 
-          <button className="hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full">
+          <button className="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700">
             <Heart />
           </button>
           <button
             onClick={() => {
-              navigate("/cart");
+              if(token && user){
+                navigate("/cart");
+              }else{
+                setTimeout(() => {
+                  navigate('/login');
+                }, 1000)
+                setMessage("Please login to access the cart!")
+                setShow(true);
+              }
             }}
-            className="relative hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full"
+            className="relative p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
           >
             <ShoppingCart />
             <p className="absolute right-1 -top-2 ">{totalInCart}</p>
@@ -120,7 +131,7 @@ const Header = () => {
                   e.stopPropagation()
                   toggleProfile()
                 }}
-                className="hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded-full"
+                className="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
               >
                 <User />
               </button>
@@ -144,13 +155,13 @@ const Header = () => {
                 ref={profileRef}
                 className={`absolute right-32 sm:right-36 top-10 md:top-14 z-50 w-24 h-auto bg-gray-400 rounded-lg dark:bg-gray-800`}
               >
-                <div className="w-56 bg-white dark:bg-gray-900 rounded-lg shadow-lg p-2 text-sm text-gray-700 dark:text-gray-200 border">
+                <div className="w-56 p-2 text-sm text-gray-700 bg-white border rounded-lg shadow-lg dark:bg-gray-900 dark:text-gray-200">
                   {token === null ? (
                     <>
                       <a
                         href="/login"
                         onClick={toggleProfile}
-                        className="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        className="block px-4 py-2 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         Login
                       </a>
@@ -158,7 +169,7 @@ const Header = () => {
                       <a
                         href="/signup"
                         onClick={toggleProfile}
-                        className="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        className="block px-4 py-2 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         Signup
                       </a>
@@ -174,7 +185,7 @@ const Header = () => {
                           navigate("/profile")
                           toggleProfile()
                         }}
-                        className="w-full text-left px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        className="w-full px-4 py-2 text-left transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         View Profile
                       </button>
@@ -185,7 +196,7 @@ const Header = () => {
                           navigate("/login");
                           toggleProfile()
                         }}
-                        className="w-full text-left px-4 py-2 rounded text-red-600 hover:bg-red-400 dark:hover:bg-red-800 hover:text-white transition-colors"
+                        className="w-full px-4 py-2 text-left text-red-600 transition-colors rounded hover:bg-red-400 dark:hover:bg-red-800 hover:text-white"
                       >
                         Logout
                       </button>
@@ -204,6 +215,14 @@ const Header = () => {
         }`}
       >
         <Hamburger />
+      </div>
+
+      <div className="absolute">
+        {show && (<Notification 
+                message={message}
+                duration={1000}
+                onClose={() => setShow(false)}
+            />)}
       </div>
     </div>
   );

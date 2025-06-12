@@ -1,10 +1,16 @@
 import { ShoppingCart, User, Heart} from 'lucide-react'
 import { useLocation, Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import Notification from './notification'
+import { useState } from 'react'
 
 
 const Hamburger = () => {
   const location = useLocation()
   const navigate = useNavigate()
+  const {user, token} = useAuth()
+  const [show, setShow] = useState(false)
+  const [message, setMessage] = useState("")
 
   const navItems = [
     {name: 'Home', path: '/'},
@@ -37,14 +43,29 @@ const Hamburger = () => {
               <p>Wishlist</p> <Heart className='ml-1'/>
             </button>
             <button 
-            onClick={() => {
-              navigate('/cart')
+           onClick={() => {
+              if(token && user){
+                navigate("/cart");
+              }else{
+                setTimeout(() => {
+                  navigate('/login');
+                }, 1000)
+                setMessage("Please login to access the cart!")
+                setShow(true);
+              }
             }}
             className='flex items-center py-2 pl-4 text-black dark:text-white md:hidden'>
               <p>Cart</p> <ShoppingCart className='ml-1' /> 
             </button>
         </div>
 
+            <div className="absolute">
+              {show && (<Notification 
+                      message={message}
+                      duration={1000}
+                      onClose={() => setShow(false)}
+                  />)}
+            </div>
         
     </div>
   )
