@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { getProductsInCategory } from "../services/backendApi";
 import { Slider } from "@mui/material";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
@@ -13,6 +13,11 @@ const Categories = () => {
   const [products, setProducts] = useState([]);
   const [value, setValue] = useState([0, 50000]);
   const [showFilters, setShowFilters] = useState(false);
+  const pathname = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

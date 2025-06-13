@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCategories, getProductsInCategory } from "../services/backendApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { ArrowRight } from "lucide-react";
 import GridProducts from "../components/products/gridProducts";
@@ -14,6 +14,7 @@ const MainCategories = () => {
   const [mobileAccessories, setMobileAccessories] = useState([]);
   const [smartPhones, setSmartphones] = useState([]);
   const [laptops, setLaptops] = useState([]);
+  const navigate = useNavigate()
   const topCategories = [
     { name: "Smartphones", slug: "smartphones", src: smartPhones },
     {
@@ -119,7 +120,11 @@ const MainCategories = () => {
               <p className="text-sm font-bold sm:text-base lg:text-xl">
                 {item.name}
               </p>
-              <button className="flex items-center px-2 py-1 text-sm text-black bg-white rounded-md">
+              <button 
+              onClick={()=> {
+              navigate(`/categories/${item.slug}`)
+            }}
+              className="flex items-center px-2 py-1 text-sm text-black bg-white rounded-md">
                 View all <ArrowRight className="w-4 h-4" />
               </button>
             </div>

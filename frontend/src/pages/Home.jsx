@@ -6,11 +6,13 @@ import FlexProducts from "../components/home/flexProducts";
 import Features from "../components/home/Features";
 import HomeSlideshow from "../components/home/Slideshow";
 import LoadingSkeleton from "../components/loading-skeletons/LoadingSkeleton";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [beautyProducts, setBeautyProducts] = useState([]);
   const [fashionProducts, setFashionProducts] = useState([]);
   const [homeProducts, setHomeProducts] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getData = async () => {
@@ -60,7 +62,11 @@ const Home = () => {
             <p className="text-sm font-bold sm:text-base lg:text-xl">
               Beauty & Skincare
             </p>
-            <button className="flex items-center px-2 py-1 text-sm text-black bg-white rounded-md">
+            <button
+            onClick={()=> {
+              navigate('/categories/beauty')
+            }}
+             className="flex items-center px-2 py-1 text-sm text-black bg-white rounded-md">
               View all <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -82,7 +88,11 @@ const Home = () => {
             <p className="text-sm font-bold sm:text-base lg:text-xl">
               Fashion & Accessories
             </p>
-            <button className="flex items-center px-2 py-1 text-sm text-black bg-white rounded-md">
+            <button
+            onClick={()=> {
+              navigate('/categories/mens-shirts')
+            }}
+             className="flex items-center px-2 py-1 text-sm text-black bg-white rounded-md">
               View all <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -112,7 +122,11 @@ const Home = () => {
             <p className="text-sm font-bold sm:text-base lg:text-xl">
               Furniture & Home Accessories
             </p>
-            <button className="flex items-center px-2 py-1 text-sm text-black bg-white rounded-md">
+            <button
+            onClick={()=> {
+              navigate('/categories/furniture')
+            }} 
+            className="flex items-center px-2 py-1 text-sm text-black bg-white rounded-md">
               View all <ArrowRight className="w-4 h-4" />
             </button>
           </div>
