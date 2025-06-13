@@ -4,6 +4,7 @@ import Google from "../../assets/google.png";
 import { useNavigate } from "react-router-dom";
 import Notification from "../../components/global/notification";
 import Loader from "../../components/global/Loader";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -56,7 +57,7 @@ const Signup = () => {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5001/api/auth/register", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
