@@ -7,22 +7,24 @@ import { Trash2 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import Notification from "../components/global/notification";
 import CartSkeleton from "../components/loading-skeletons/CartSkeleton";
+import { updateCart, deleteInCart } from "../services/cartFunction";
 
 const Cart = () => {
   const { user, token } = useAuth();
   const {
     cartItems,
-    handleUpdateQty,
-    handleRemoveItem,
     totalPrice,
     productsInCart,
-    message,
-    show,
-    setShow,
+    setCartItems,
+    setTotalPrice,
+    setTotalInCart,
+    setProductsInCart
   } = useCart();
   const [loading, setLoading] = useState(true);
   const [discount, setDiscount] = useState(0);
   const [address, setAddress] = useState([]);
+  const [message, setMessage] = useState([])
+  const [show, setShow] = useState(false)
   const navigate = useNavigate();
 
   // Fetch cart from backend
@@ -41,6 +43,35 @@ const Cart = () => {
 
     if (user && token) fetchAddress();
   }, [user, token]);
+
+  const handleUpdateQty = async (productId, newQty) => {
+      const response = await updateCart(user.user_id, token, productId, newQty);
+      if (response.success) {
+        setCartItems(response.data.items);
+        setTotalPrice(response.data.totalPrice);
+        setTotalInCart(response.data.items.length);
+      } else {
+        console.log("Error updating product in cart");
+      }
+    };
+
+    const handleRemoveItem = async (productId) => {
+    const response = await deleteInCart(user.user_id, token, productId);
+    if (response.success) {
+      setCartItems(response.data.items);
+      setTotalPrice(response.data.totalPrice);
+      setTotalInCart(response.data.items.length);
+      setMessage("Product Removed from cart");
+      setShow(true);
+
+      const leftProducts = productsInCart.filter(
+        (item) => item._id !== productId
+      );
+      setProductsInCart(leftProducts);
+    } else {
+      console.log("Error deleting product from cart", response.message);
+    }
+  };
 
   if (loading)
     return (

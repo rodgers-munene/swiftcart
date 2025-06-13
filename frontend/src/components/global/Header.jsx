@@ -207,6 +207,7 @@ const Header = () => {
 
       <div
         ref={navbarRef}
+        onClick={toggleNavbar}
         className={`absolute z-50 right-0 transition-all duration-500 ease-in-out lg:hidden ${
           isOpen ? "top-10 md:top-14" : "-top-[30rem]"
         }`}

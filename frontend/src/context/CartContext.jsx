@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect } from "react";
 import {
   postCart,
   getCart,
-  updateCart,
   deleteInCart,
 } from "../services/cartFunction";
 import { getProductById } from "../services/backendApi";
@@ -68,35 +67,10 @@ export const CartProvider = ({ children }) => {
   };
 
   // Update item quantity
-  const handleUpdateQty = async (productId, newQty) => {
-    const response = await updateCart(user.user_id, token, productId, newQty);
-    if (response.success) {
-      setCartItems(response.data.items);
-      setTotalPrice(response.data.totalPrice);
-      setTotalInCart(response.data.items.length);
-    } else {
-      console.log("Error updating product in cart");
-    }
-  };
+  
 
   // Remove item from cart
-  const handleRemoveItem = async (productId) => {
-    const response = await deleteInCart(user.user_id, token, productId);
-    if (response.success) {
-      setCartItems(response.data.items);
-      setTotalPrice(response.data.totalPrice);
-      setTotalInCart(response.data.items.length);
-      setMessage("Product Removed from cart");
-      setShow(true);
-
-      const leftProducts = productsInCart.filter(
-        (item) => item._id !== productId
-      );
-      setProductsInCart(leftProducts);
-    } else {
-      console.log("Error deleting product from cart", response.message);
-    }
-  };
+  
 
   return (
     <CartContext.Provider
@@ -109,8 +83,10 @@ export const CartProvider = ({ children }) => {
         show,
         setShow,
         handleAddToCart,
-        handleUpdateQty,
-        handleRemoveItem,
+        // handleUpdateQty,
+        setProductsInCart,
+        setTotalInCart,
+        // handleRemoveItem,
         setCartItems,
         setTotalPrice,
       }}
