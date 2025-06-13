@@ -24,7 +24,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://swiftcart-alei.onrender.com/"
+      "https://swiftcart-alei.onrender.com"
     ],
     credentials: true,
   })
