@@ -21,9 +21,6 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const toggleProfile = () => {
-    setOpenProfile((prev) => !prev);
-  };
 
   useEffect(() => {
     const handleOutsideCLick = (event) => {
@@ -41,24 +38,13 @@ const Header = () => {
     };
   }, [isOpen, setIsOpen]);
 
-  useEffect(() => {
-    const handleProfileClick = (event) => {
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
-        setOpenProfile(false);
-      }
-    };
-
-    if (openProfile) {
-      document.addEventListener("mousedown", handleProfileClick);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleProfileClick);
-    };
-  }, [openProfile]);
 
   const toggleNavbar = () => {
     setIsOpen((prev) => !prev);
+  };
+
+   const toggleProfile = () => {
+    setOpenProfile((prev) => !prev);
   };
 
   return (
@@ -87,10 +73,7 @@ const Header = () => {
         <Searchbar />
         <div className="relative">
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleProfile();
-            }}
+            onClick={toggleProfile}
             className="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
           >
             <User />
@@ -132,10 +115,7 @@ const Header = () => {
 
           <div className="relative">
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleProfile();
-              }}
+              onClick={toggleProfile}
               className="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
             >
               <User />
@@ -156,7 +136,7 @@ const Header = () => {
 
       {openProfile && (
         <div
-          ref={profileRef}
+        
           className={`absolute right-32 sm:right-36 top-10 md:top-14 z-50 w-24 h-auto bg-gray-400 rounded-lg dark:bg-gray-800`}
         >
           <div className="w-56 p-2 text-sm text-gray-700 bg-white border rounded-lg shadow-lg dark:bg-gray-900 dark:text-gray-200">
@@ -177,6 +157,13 @@ const Header = () => {
                 >
                   Signup
                 </a>
+                <hr className="my-1 border-gray-200 dark:border-gray-700"/>
+                <button
+                  onClick={toggleProfile}
+                  className="flex items-center w-full justify-between it px-4 py-2 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  Close <XIcon className="w-6 h-6" />
+                </button>
               </>
             ) : (
               <>
@@ -203,6 +190,14 @@ const Header = () => {
                   className="w-full px-4 py-2 text-left text-red-600 transition-colors rounded hover:bg-red-400 dark:hover:bg-red-800 hover:text-white"
                 >
                   Logout
+                </button>
+                
+                <hr className="my-1 border-gray-200 dark:border-gray-700"/>
+                <button
+                  onClick={toggleProfile}
+                  className="flex items-center w-full justify-between it px-4 py-2 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  Close <XIcon className="w-6 h-6" />
                 </button>
               </>
             )}

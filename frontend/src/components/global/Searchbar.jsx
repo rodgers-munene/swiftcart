@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SearchIcon, XIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const Searchbar = () => {
   const [isSearchBar, setIsSearchBar] = useState(false);
@@ -47,7 +48,7 @@ const Searchbar = () => {
     const timeout = setTimeout(async () => {
       try {
         const res = await fetch(
-          `http://localhost:5001/api/products/search?query=${encodeURIComponent(
+          `${API_BASE_URL}/api/products/search?query=${encodeURIComponent(
             query
           )}`
         );
