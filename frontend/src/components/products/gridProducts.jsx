@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Heart } from "lucide-react";
 import StarRating from "./StarRating";
 import { formattedPrice } from "../../utils/formatPrice";
@@ -8,7 +9,10 @@ import Notification from "../global/notification";
 
 const GridProducts = ({ items }) => {
   const navigate = useNavigate();
-  const { handleAddToCart, message, show, setShow } = useCart();
+  const { handleAddToCart} = useCart();
+  const [message, setMessage] = useState("")
+  const [show, setShow] = useState(false)
+  
 
   return (
     <div
@@ -72,6 +76,8 @@ const GridProducts = ({ items }) => {
                   onClick={(e) => {
                     e.stopPropagation(); // prevents the click from reaching the parent div
                     handleAddToCart(item._id, 1);
+                    setMessage("Product Added to Cart");
+                    setShow(true);
                   }}
                   className="px-3 py-1 mt-2 text-xs text-blue-600 transition border border-blue-600 rounded-md hover:bg-gray-200"
                 >

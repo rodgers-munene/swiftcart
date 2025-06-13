@@ -5,10 +5,14 @@ import { useNavigate } from "react-router-dom";
 import slugify from "slugify";
 import { useCart } from "../../context/CartContext";
 import Notification from "../global/notification";
+import { useState } from "react";
 
 const CategoryGrid = ({ items }) => {
   const navigate = useNavigate();
-  const { handleAddToCart, message, setShow, show } = useCart();
+  const { handleAddToCart } = useCart();
+  const [message, setMessage] = useState("")
+  const [show, setShow] = useState(false)
+
 
   return (
     <div
@@ -72,6 +76,8 @@ const CategoryGrid = ({ items }) => {
                   onClick={(e) => {
                     e.stopPropagation(); // prevents the click from reaching the parent div
                     handleAddToCart(item._id, 1);
+                    setMessage("Product Added to Cart");
+                    setShow(true);
                   }}
                   className="z-10 px-3 py-1 mt-2 text-xs text-blue-600 transition border border-blue-600 rounded-md hover:bg-gray-200"
                 >

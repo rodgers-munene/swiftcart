@@ -55,8 +55,7 @@ export const CartProvider = ({ children }) => {
       setCartItems(response.data.items);
       setTotalPrice(response.data.totalPrice);
       setTotalInCart(response.data.items.length);
-      setMessage("Product Added to Cart");
-      setShow(true);
+      
 
       const newProduct = await getProductById(productId);
 

@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { Heart } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import Notification from "../components/global/notification";
 
 export default function ProductDetails() {
   const { pathname } = useLocation();
@@ -15,6 +16,8 @@ export default function ProductDetails() {
   const [image, setImage] = useState(0);
   const [categoryProducts, setCategoryProducts] = useState([]);
   const { handleAddToCart } = useCart();
+  const [message, setMessage] = useState()
+  const [show, setShow] = useState()
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -142,6 +145,8 @@ export default function ProductDetails() {
               <button
                 onClick={() => {
                   handleAddToCart(product._id, 1);
+                  setMessage("Product Added to Cart");
+                  setShow(true);
                 }}
                 className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
               >
@@ -207,6 +212,15 @@ export default function ProductDetails() {
           </div>
         )}
       </div>
+
+    {show && (
+        <Notification
+          message={message}
+          duration={800}
+          onClose={() => setShow(false)}
+        />
+      )}
+
     </div>
   );
 }
