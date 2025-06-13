@@ -22,7 +22,10 @@ const port = process.env.PORT ? process.env.PORT : 5000;
 // allow api calls from our vite frontend
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://swiftcart-alei.onrender.com/"
+    ],
     credentials: true,
   })
 );
