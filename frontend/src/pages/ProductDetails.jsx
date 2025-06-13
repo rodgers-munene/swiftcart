@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getProductById, getProductsInCategory } from "../services/backendApi";
 import StarRating from "../components/products/StarRating";
 import GridProducts from "../components/products/gridProducts";
@@ -18,6 +18,7 @@ export default function ProductDetails() {
   const { handleAddToCart } = useCart();
   const [message, setMessage] = useState()
   const [show, setShow] = useState()
+  const navigate = useNavigate()
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -204,7 +205,11 @@ export default function ProductDetails() {
               <p className="text-sm sm:text-base lg:text-xl font-bold">
                 Related Products
               </p>
-              <button className="flex rounded-md text-sm px-2 py-1 text-black bg-white items-center">
+              <button 
+              onClick={() => {
+                navigate(`/categories/${product.category}`)
+              }}
+              className="flex rounded-md text-sm px-2 py-1 text-black bg-white items-center">
                 View all <ArrowRight className="w-4 h-4" />
               </button>
             </div>
