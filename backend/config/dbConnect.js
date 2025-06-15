@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const dbConnector = async () => {
   try {
-    const connect = await mongoose.connect("mongodb+srv://rodgers:zAF2sVAbl52BOqqF@swiftcartcluster.qwtvxgc.mongodb.net/swiftcartdb");
+    const connect = await mongoose.connect(process.env.MONGODB_URL);
     console.log(
       "Database Connected",
       connect.connection.host,
