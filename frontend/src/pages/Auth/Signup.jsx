@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.svg";
 import Google from "../../assets/google.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Notification from "../../components/global/notification";
 import Loader from "../../components/global/Loader";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -247,12 +247,12 @@ const Signup = () => {
 
             <p className="text-center text-sm text-gray-600">
               Already have an account?{" "}
-              <a
+              <Link
                 href="/login"
                 className="text-amber-600 hover:text-amber-700 font-medium"
               >
                 Log in
-              </a>
+              </Link>
             </p>
           </form>
         </div>

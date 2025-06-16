@@ -2,7 +2,7 @@ import { useState } from "react";
 import logo from "../../assets/logo.svg";
 import Google from "../../assets/google.png";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Notification from "../../components/global/notification";
 import Loader from "../../components/global/Loader";
@@ -172,12 +172,12 @@ const Login = () => {
                   Remember me
                 </label>
               </div>
-              <a
+              <Link
                 href="/forgot-password"
                 className="text-sm text-amber-600 hover:text-amber-700"
               >
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             <button
@@ -211,12 +211,12 @@ const Login = () => {
 
             <p className="text-center text-sm text-gray-600">
               Don't have an account?{" "}
-              <a
+              <Link
                 href="/signup"
                 className="text-amber-600 hover:text-amber-700 font-medium"
               >
                 Sign up
-              </a>
+              </Link>
             </p>
           </form>
         </div>

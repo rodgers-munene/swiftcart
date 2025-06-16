@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import { ShoppingCart, User, Heart, MenuIcon, XIcon } from "lucide-react";
 import Hamburger from "./Hamburger";
 import { useAuth } from "../../context/AuthContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import Notification from "./notification";
 
@@ -142,21 +142,21 @@ const Header = () => {
           <div className="w-56 p-2 text-sm text-gray-700 bg-white border rounded-lg shadow-lg dark:bg-gray-900 dark:text-gray-200">
             {token === null ? (
               <>
-                <a
-                  href="/login"
+                <Link
+                  to="/login"
                   onClick={toggleProfile}
                   className="block px-4 py-2 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Login
-                </a>
+                </Link>
                 <hr className="my-1 border-gray-200 dark:border-gray-700" />
-                <a
-                  href="/signup"
+                <Link
+                  to="/signup"
                   onClick={toggleProfile}
                   className="block px-4 py-2 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Signup
-                </a>
+                </Link>
                 <hr className="my-1 border-gray-200 dark:border-gray-700"/>
                 <button
                   onClick={toggleProfile}
