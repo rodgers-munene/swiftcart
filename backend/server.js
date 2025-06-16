@@ -24,7 +24,7 @@ app.use(cors({
   origin: "https://swiftcart-oxor.vercel.app",
   credentials: true,
 }));
-app.options("*", cors());
+
 
 
 //set secure http headers
