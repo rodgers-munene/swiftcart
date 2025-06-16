@@ -8,6 +8,7 @@ import { Heart } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import Notification from "../components/global/notification";
+import { useAuth } from "../context/AuthContext";
 
 export default function ProductDetails() {
   const { pathname } = useLocation();
@@ -19,6 +20,7 @@ export default function ProductDetails() {
   const [message, setMessage] = useState()
   const [show, setShow] = useState()
   const navigate = useNavigate()
+  const {token} = useAuth()
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -145,9 +147,17 @@ export default function ProductDetails() {
             <div className="flex items-center justify-between sm:justify-start">
               <button
                 onClick={() => {
-                  handleAddToCart(product._id, 1);
-                  setMessage("Product Added to Cart");
-                  setShow(true);
+                   if (token !== null) {
+                      handleAddToCart(item._id, 1);
+                      setMessage("Product Added to Cart");
+                      setShow(true);
+                    } else {
+                      setMessage("Login to Access cart");
+                      setShow(true);
+                      setTimeout(() => {
+                        navigate("/login");
+                      }, 1000);
+                    }
                 }}
                 className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
               >
