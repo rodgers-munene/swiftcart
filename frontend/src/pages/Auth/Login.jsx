@@ -173,7 +173,7 @@ const Login = () => {
                 </label>
               </div>
               <Link
-                href="/forgot-password"
+                to="/forgot-password"
                 className="text-sm text-amber-600 hover:text-amber-700"
               >
                 Forgot password?
@@ -212,7 +212,7 @@ const Login = () => {
             <p className="text-center text-sm text-gray-600">
               Don't have an account?{" "}
               <Link
-                href="/signup"
+                to="/signup"
                 className="text-amber-600 hover:text-amber-700 font-medium"
               >
                 Sign up
