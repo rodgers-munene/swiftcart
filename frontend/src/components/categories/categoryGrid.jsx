@@ -6,13 +6,14 @@ import slugify from "slugify";
 import { useCart } from "../../context/CartContext";
 import Notification from "../global/notification";
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 const CategoryGrid = ({ items }) => {
   const navigate = useNavigate();
   const { handleAddToCart } = useCart();
-  const [message, setMessage] = useState("")
-  const [show, setShow] = useState(false)
-
+  const [message, setMessage] = useState("");
+  const [show, setShow] = useState(false);
+  const { user, token } = useAuth();
 
   return (
     <div
@@ -75,9 +76,15 @@ const CategoryGrid = ({ items }) => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation(); // prevents the click from reaching the parent div
-                    handleAddToCart(item._id, 1);
-                    setMessage("Product Added to Cart");
-                    setShow(true);
+                    if (token !== null) {
+                      handleAddToCart(item._id, 1);
+                      setMessage("Product Added to Cart");
+                      setShow(true);
+                    } else {
+                      setMessage("Login to Access cart");
+                      setShow(true);
+                      navigate("/login");
+                    }
                   }}
                   className="z-10 px-3 py-1 mt-2 text-xs text-blue-600 transition border border-blue-600 rounded-md hover:bg-gray-200"
                 >
