@@ -8,14 +8,12 @@ import { useCart } from "../../context/CartContext";
 import Notification from "../global/notification";
 import { useAuth } from "../../context/AuthContext";
 
-
 const GridProducts = ({ items }) => {
   const navigate = useNavigate();
   const { handleAddToCart } = useCart();
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
-  const { user, token } = useAuth();
-
+  const { token } = useAuth();
 
   return (
     <div
@@ -85,7 +83,9 @@ const GridProducts = ({ items }) => {
                     } else {
                       setMessage("Login to Access cart");
                       setShow(true);
-                      navigate("/login");
+                      setTimeout(() => {
+                        navigate("/login");
+                      }, 1000);
                     }
                   }}
                   className="px-3 py-1 mt-2 text-xs text-blue-600 transition border border-blue-600 rounded-md hover:bg-gray-200"
