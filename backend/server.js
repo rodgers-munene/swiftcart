@@ -20,12 +20,12 @@ const app = express();
 const port = process.env.PORT ? process.env.PORT : 5000;
 
 // allow api calls from our vite frontend
-app.use(
-  cors({
-    origin: "https://swiftcart-oxor.vercel.app",
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: "https://swiftcart-oxor.vercel.app",
+  credentials: true,
+}));
+app.options("*", cors());
+
 
 //set secure http headers
 app.use(helmet());
