@@ -22,7 +22,7 @@ const port = process.env.PORT ? process.env.PORT : 5000;
 // allow api calls from our vite frontend
 app.use(
   cors({
-    origin: "https://swiftcart-alpha.vercel.app",
+    origin: "https://swiftcart-oxor.vercel.app",
     credentials: true,
   })
 );
