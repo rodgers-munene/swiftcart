@@ -61,7 +61,7 @@
 
 1. **Clone the repository**
    ```bash
-   clone https://github.com/rodgers-munene/swiftcart
+   git clone https://github.com/rodgers-munene/swiftcart
    cd backend
    npm install
    ```
