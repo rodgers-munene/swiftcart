@@ -1,6 +1,6 @@
 # 🛒 SwiftCart – Modern eCommerce Platform
 
-![Live Project]("https://swiftcart-oxor.vercel.app/")
+[Live Project](https://swiftcart-oxor.vercel.app/)
 
 **SwiftCart** is a full-stack eCommerce solution with a focus on seamless shopping experiences and robust admin controls. Built with cutting-edge technologies, it supports product browsing, secure checkout, M-Pesa payments, and order management.
 
@@ -154,12 +154,9 @@ Push to the branch (git push origin feature/AmazingFeature)
 
 Open a Pull Request
 
-📜 License
+## License
 Distributed under the MIT License. See LICENSE for more information.
 
-## 📬 Contact
-![Rodgers Munene]("https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white")
-![LinkedIn]("https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white")
 
 
 
