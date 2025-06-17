@@ -60,7 +60,9 @@
 ### Installation
 
 1. **Clone the repository**
-   ```bashSet up Backend
+   ```bash
+   clone https://githu.com/rodgers-munene/swiftcart
+```
 
 ```bash
 cd backend
