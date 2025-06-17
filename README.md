@@ -119,14 +119,18 @@ swiftcart/
 
 ## API Reference
 
-Endpoint	Method	Description
-/api/auth/register	POST	User registration
-/api/auth/login	POST	User authentication
-/api/products	GET	Get all products
-/api/products	POST	Create new product (Admin)
-/api/orders	POST	Create new order
-/api/mpesa/checkout	POST	Initiate M-Pesa payment
-(Full API documentation available in the backend repository)
+| Endpoint                | Method | Description                     | Access  |
+|-------------------------|--------|---------------------------------|---------|
+| `/api/auth/register`    | POST   | User registration               | Public  |
+| `/api/auth/login`       | POST   | User authentication             | Public  |
+| `/api/products`         | GET    | Get all products                | Public  |
+| `/api/products`         | POST   | Create new product              | Admin   |
+| `/api/products/:id`     | PUT    | Update product                  | Admin   |
+| `/api/products/:id`     | DELETE | Delete product                  | Admin   |
+| `/api/orders`           | POST   | Create new order                | Private |
+| `/api/orders/user`      | GET    | Get user's orders               | Private |
+| `/api/mpesa/checkout`   | POST   | Initiate M-Pesa payment         | Private |
+
 
 ##  Future Implementations
 Google OAuth integration
