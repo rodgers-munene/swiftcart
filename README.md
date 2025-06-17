@@ -1,6 +1,6 @@
 # 🛒 SwiftCart – Modern eCommerce Platform
 
-[Live Project]("https://swiftcart-oxor.vercel.app/") *
+![Live Project]("https://swiftcart-oxor.vercel.app/")
 
 **SwiftCart** is a full-stack eCommerce solution with a focus on seamless shopping experiences and robust admin controls. Built with cutting-edge technologies, it supports product browsing, secure checkout, M-Pesa payments, and order management.
 
