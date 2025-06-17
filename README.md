@@ -130,7 +130,7 @@ Endpoint	Method	Description
 /api/mpesa/checkout	POST	Initiate M-Pesa payment
 (Full API documentation available in the backend repository)
 
-##  Roadmap
+##  Future Implementations
 Google OAuth integration
 
 Stripe/PayPal payment options
