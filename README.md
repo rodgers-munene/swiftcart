@@ -1,143 +1,166 @@
-# 🛒 SwiftCart – eCommerce Web App
+# 🛒 SwiftCart – Modern eCommerce Platform
 
-SwiftCart is a full-stack eCommerce web application that allows users to browse products, manage their shopping cart, place orders, and make secure payments through M-Pesa. Built with modern technologies and a clean user interface, it provides a smooth shopping experience for customers and powerful tools for admins.
+![Live Project]("https://swiftcart-oxor.vercel.app/") *
 
----
-
-## 🚀 Features
-
-### 👤 User Management
-- JWT-based registration and login system.
-- Role-based access control (admin/user).
-- Profile view & update functionality.
-- **Planned:** Google OAuth integration.
-
-### 🛍️ Product Management
-- Admins can add, update, delete, and categorize products.
-
-### 📦 Order Management
-- Users can place orders and view their order history.
-- **Planned:** Real-time order tracking for ongoing deliveries.
-
-### 🛒 Shopping Cart
-- Add or remove products from the cart.
-- Update product quantities.
-- View cart summary with total price.
-
-### 💳 Payment Integration
-- Secure checkout process.
-- Integrated with **M-Pesa** for local mobile payments.
-- **Planned:** Support for Stripe and PayPal.
-
-### 🔎 Search & Filters
-- Search products by name or category.
-- Filter products by category for easy navigation.
+**SwiftCart** is a full-stack eCommerce solution with a focus on seamless shopping experiences and robust admin controls. Built with cutting-edge technologies, it supports product browsing, secure checkout, M-Pesa payments, and order management.
 
 ---
 
-## 🧱 Tech Stack
+##  Key Features
 
-| Layer        | Technology                           |
-|--------------|--------------------------------------|
-| Frontend     | React, Vite, Tailwind CSS            |
-| Routing      | React Router                         |
-| Backend      | Node.js, Express                     |
-| Database     | MongoDB, Mongoose                    |
-| Auth         | JWT (JSON Web Tokens)                |
-| Payment      | M-Pesa API                           |
-| Future Plans | Google Auth, Stripe, Order Tracking  |
+### Shopping Experience
+- **Product Catalog**: Browse/search products with filters
+- **Shopping Cart**: Add/remove items, adjust quantities
+- **Secure Checkout**: Protected payment flow
+
+### User System
+- JWT authentication (Register/Login)
+- Role-based access (Admin/Customer)
+- User profile management
+
+### Admin Controls
+- Full CRUD for products
+- Category management
+- Order processing system
+
+### Payments
+- **M-Pesa integration** for mobile payments
+- *(Coming Soon)* Stripe & PayPal support
+
+### Order Management
+- Order history tracking
+- *(Planned)* Real-time delivery updates
 
 ---
 
-## ⚙️ Setup Instructions
+## Technology Stack
 
-### 1. Clone the Repository
+### Frontend
+- **React** + **Vite** (Fast modern build)
+- **Tailwind CSS** (Utility-first styling)
+- **React Router** (Navigation)
 
-```bash
-git clone https://github.com/rodgers-munene/swiftcart.git
-cd swiftcart
-```
+### Backend
+- **Node.js** + **Express** (API server)
+- **MongoDB** (Database)
+- **Mongoose** (ODM)
 
-### 2. Backend Setup
+### Key Integrations
+- **JWT** Authentication
+- **M-Pesa API** Payments
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v16+)
+- MongoDB Atlas URI
+- M-Pesa API keys (for payments)
+
+### Installation
+
+1. **Clone the repository**
+   ```bashSet up Backend
+
 ```bash
 cd backend
 npm install
 ```
+### Create .env file:
 
-Create a .env file and add your environment variables:
 ```env
-Copy
-Edit
 PORT=5001
-MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_jwt_secret
-MPESA_CONSUMER_KEY=your_consumer_key
-MPESA_CONSUMER_SECRET=your_consumer_secret
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secure_jwt_secret
+MPESA_CONSUMER_KEY=your_mpesa_key
+MPESA_CONSUMER_SECRET=your_mpesa_secret
 ```
 
-Start the backend server:
+### Start server:
+
 ```bash
 npm run dev
 ```
 
-### 3. Frontend Setup
+### Set up Frontend
+
 
 ```bash
 cd ../frontend
 npm install
-npm run dev  # Visit http://localhost:5173 to view the app.
+npm run dev
 ```
+App will run at http://localhost:5173
 
-📁 Folder Structure
-```bash
-
+## Project Structure
+```text
 swiftcart/
-│
 ├── backend/
-│   ├── controllers/     # logic for routes
-│   ├── middleware/      # JWT auth, error handlers
-│   ├── models/          # Mongoose schemas
-│   ├── routes/          # API endpoints
-│   ├── utils/           # Helper functions
-│   ├── config/          # DB config
-|   ├── mpesa/           # M-Pesa functions
-│   └── server.js        # Express app entry point
+│   ├── config/         # Database configuration
+│   ├── controllers/    # Business logic
+│   ├── middleware/     # Auth & error handlers
+│   ├── models/         # MongoDB schemas
+│   ├── mpesa/          # Payment integration
+│   ├── routes/         # API endpoints
+│   ├── utils/          # Helper functions
+│   └── server.js       # Server entry point
 │
 ├── frontend/
-│   ├── src/
-│   │   ├── components/  # Reusable UI components
-│   │   ├── pages/       # Views/pages
-│   │   ├── contexts/    # Global state
-│   │   ├── services/    # API calls
-│   │   └── App.jsx      # Main App component
-│   └── index.html       # HTML entry point
+│   ├── public/         # Static assets
+│   └── src/
+│       ├── components/ # Reusable UI
+│       ├── contexts/   # State management
+│       ├── pages/      # Application views
+│       ├── services/   # API services
+│       ├── App.jsx     # Root component
+│       └── main.jsx    # Entry point
 │
-└── README.md
+└── README.md           # Project documentation
+```
 
-````
+## API Reference
 
-🔗 API Routes (Examples)
-Method	Route	Description
-POST	/api/auth/register	Register a new user
-POST	/api/auth/login	Authenticate user
-GET	/api/products	Get all products
-POST	/api/orders	Create a new order
-POST	/api/mpesa/checkout	Start M-Pesa payment
+Endpoint	Method	Description
+/api/auth/register	POST	User registration
+/api/auth/login	POST	User authentication
+/api/products	GET	Get all products
+/api/products	POST	Create new product (Admin)
+/api/orders	POST	Create new order
+/api/mpesa/checkout	POST	Initiate M-Pesa payment
+(Full API documentation available in the backend repository)
 
-📌 Future Improvements
-Google OAuth login
+##  Roadmap
+Google OAuth integration
 
-Stripe & PayPal integration
+Stripe/PayPal payment options
 
 Real-time order tracking
 
 Admin analytics dashboard
 
-🧑‍💻 Author
-Rodgers Munene
-GitHub • LinkedIn ("https://github.com/rodgers-munene")
+Product reviews & ratings
 
-📄 License
-This project is open-source and available under the MIT License.
+## Contributing
+We welcome contributions! Please follow these steps:
 
----
+Fork the project
+
+Create your feature branch (git checkout -b feature/AmazingFeature)
+
+Commit your changes (git commit -m 'Add some AmazingFeature')
+
+Push to the branch (git push origin feature/AmazingFeature)
+
+Open a Pull Request
+
+📜 License
+Distributed under the MIT License. See LICENSE for more information.
+
+## 📬 Contact
+![Rodgers Munene]("https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white")
+![LinkedIn]("https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white")
+
+
+
+  
