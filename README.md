@@ -61,13 +61,10 @@
 
 1. **Clone the repository**
    ```bash
-   clone https://githu.com/rodgers-munene/swiftcart
-```
-
-```bash
-cd backend
-npm install
-```
+   clone https://github.com/rodgers-munene/swiftcart
+   cd backend
+   npm install
+   ```
 ### Create .env file:
 
 ```env
