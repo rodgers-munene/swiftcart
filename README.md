@@ -21,7 +21,6 @@
 ### Admin Controls
 - Full CRUD for products
 - Category management
-- Order processing system
 
 ### Payments
 - **M-Pesa integration** for mobile payments
