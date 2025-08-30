@@ -21,6 +21,7 @@ const getProductDetails = asyncHandler(async (req, res) => {
   res.status(200).json(product);
 });
 
+// flash deals products 
 const getHighestDiscountProducts = asyncHandler(async (req, res) => {
   const productLimit = req.query.limit || 10;
   const products = await Product.find()
@@ -29,6 +30,8 @@ const getHighestDiscountProducts = asyncHandler(async (req, res) => {
 
   res.status(200).json(products);
 });
+
+
 
 // admin/ seller level endpoint
 
@@ -109,7 +112,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 const searchProducts = asyncHandler(async (req, res) => {
-  const { query, category, brand, page = 1, limit = 10, sort } = req.query;
+  const { query, category, brand, page = 1, limit = 5, sort } = req.query;
 
   const searchQuery = {};
 

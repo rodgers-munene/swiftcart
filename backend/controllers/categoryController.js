@@ -2,7 +2,10 @@ const asyncHandler = require("express-async-handler");
 const Product = require("../models/productModel");
 
 const getUniqueCategories = asyncHandler(async (req, res) => {
-  const categories = await Product.distinct("category");
+  const limit = req.query.limit? parseInt(req.query.limit): 24;
+  let categories = await Product.distinct("category")
+  categories = categories.slice(0, limit);
+
 
   res.status(200).json(categories);
 });
