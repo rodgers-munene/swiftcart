@@ -65,7 +65,7 @@ const Header = () => {
         <h1 className="text-xl md:text-3xl ">SwiftCart</h1>
       </div>
 
-      <div className="hidden w-1/2 lg:block">
+      <div className="hidden w-1/4 lg:block">
         <Navbar />
       </div>
 
@@ -88,7 +88,7 @@ const Header = () => {
         </button>
       </div>
 
-      <div className="hidden md:block md:w-1/3 lg:w-1/6">
+      <div className="hidden md:block md:w-1/3 ">
         <div className="flex items-center justify-around w-full">
           <Searchbar />
 

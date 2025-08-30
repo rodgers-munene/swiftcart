@@ -5,11 +5,8 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Home", path: "/" },
-    { name: "Categories", path: "/categories" },
-    { name: "Groceries", path: "/categories/groceries" },
-    { name: "Beauty", path: "/categories/beauty" },
-    { name: "Furniture", path: "/categories/furniture" },
-    { name: "Contact Us", path: "/contact-us" },
+    { name: "Contact", path: "/contact-us" },
+    { name: "About", path: "" },
   ];
 
   return (

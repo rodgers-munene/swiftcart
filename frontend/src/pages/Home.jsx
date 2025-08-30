@@ -7,6 +7,8 @@ import Features from "../components/home/Features";
 import HomeSlideshow from "../components/home/Slideshow";
 import LoadingSkeleton from "../components/loading-skeletons/LoadingSkeleton";
 import { useNavigate } from "react-router-dom";
+import MainCategories from "../components/home/MainCategories";
+import FlashDeals from "../components/home/FlashDeals";
 
 const Home = () => {
   const [beautyProducts, setBeautyProducts] = useState([]);
@@ -37,17 +39,22 @@ const Home = () => {
   }, [getProductsInCategory]);
 
   return (
-    <div className="w-screen min-h-screen">
+    <div className="w-screen min-h-screen flex flex-col items-center">
       {/* slide show section */}
 
-      <div className="flex justify-center w-full bg-gray-300 dark:bg-gray-700">
+      <div className="relative flex justify-between mb-10 w-[90%] pt-6 max-w-7xl">
+        <MainCategories />
         <HomeSlideshow />
       </div>
 
       {/* categories section */}
 
-      <div className="flex flex-col items-center w-full min-h-screen bg-gray-300 dark:bg-gray-700">
+      <div className="flex flex-col items-center w-full min-h-screen">
         {/* services */}
+        <div>
+          <FlashDeals />
+        </div>
+
         <div>
           <Features />
         </div>

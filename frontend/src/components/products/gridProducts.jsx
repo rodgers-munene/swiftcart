@@ -11,6 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 const GridProducts = ({ items }) => {
   const navigate = useNavigate();
   const { handleAddToCart } = useCart();
+  const [notifType, setNotifType] = useState("warning")
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
   const { token } = useAuth();
@@ -19,7 +20,7 @@ const GridProducts = ({ items }) => {
     <div
       className="grid w-[95vw] max-w-screen-xl mx-auto gap-4
       grid-cols-2 sm:grid-cols-3 lg:grid-cols-4
-      bg-white dark:bg-gray-950 rounded-xl p-2 sm:p-4"
+      bg-gray-100 dark:bg-gray-950 rounded-xl p-2 sm:p-4"
     >
       {items
         ? items.map((item, index) => (
@@ -80,12 +81,10 @@ const GridProducts = ({ items }) => {
                       handleAddToCart(item._id, 1);
                       setMessage("Product Added to Cart");
                       setShow(true);
+                      setNotifType("success")
                     } else {
                       setMessage("Login to Access cart");
                       setShow(true);
-                      setTimeout(() => {
-                        navigate("/login");
-                      }, 1000);
                     }
                   }}
                   className="px-3 py-1 mt-2 text-xs text-blue-600 transition border border-blue-600 rounded-md hover:bg-gray-200"
@@ -100,7 +99,8 @@ const GridProducts = ({ items }) => {
       {show && (
         <Notification
           message={message}
-          duration={800}
+          duration={5000}
+          type={notifType}
           onClose={() => setShow(false)}
         />
       )}

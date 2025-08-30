@@ -1,36 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { CheckCircle, AlertCircle } from "lucide-react";
 
-const Notification = ({ message, duration = 3000, onClose }) => {
-  const [progress, setProgress] = useState(0);
-
+const Notification = ({ 
+  message, 
+  duration = 3000, 
+  onClose, 
+  type = "success" // "success" | "warning"
+}) => {
   useEffect(() => {
-    let startTime = Date.now();
-    let intervalId;
+    const timer = setTimeout(() => {
+      onClose();
+    }, duration);
 
-    const tick = () => {
-      const elapsed = Date.now() - startTime;
-      const percentage = Math.min((elapsed / duration) * 100, 100);
-      setProgress(percentage);
-
-      if (percentage >= 100) {
-        clearInterval(intervalId);
-        onClose(); // remove the notification
-      }
-    };
-
-    intervalId = setInterval(tick, 5); // update every 50ms
-
-    return () => clearInterval(intervalId);
+    return () => clearTimeout(timer);
   }, [duration, onClose]);
 
+  const styles = {
+    success: {
+      bg: "bg-green-100",
+      border: "border-green-400",
+      text: "text-green-800",
+      icon: <CheckCircle className="w-5 h-5 text-green-600" />,
+    },
+    warning: {
+      bg: "bg-red-100",
+      border: "border-red-400",
+      text: "text-red-800",
+      icon: <AlertCircle className="w-5 h-5 text-red-600" />,
+    },
+  };
+
+  const style = styles[type] || styles.success;
+
   return (
-    <div className="w-full">
-      <div className="fixed z-[999] top-0 left-0 sm:left-1/3 sm:w-1/3 w-full p-4 bg-white shadow-md rounded border border-green-500 text-green-800">
-        <p>{message}</p>
-        <div
-          className="absolute bottom-0 left-0 h-1 bg-green-500"
-          style={{ width: `${progress}%` }}
-        />
+    <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-[999]">
+      <div
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border w-64 ${style.bg} ${style.border} ${style.text} animate-fade-in`}
+      >
+        {style.icon}
+        <span className="font-medium">{message}</span>
       </div>
     </div>
   );

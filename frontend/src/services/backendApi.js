@@ -13,9 +13,10 @@ export const getProducts = async () => {
   }
 };
 
-export const getCategories = async () => {
+export const getCategories = async (limit = 24) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/categories`);
+    const res = await fetch(`${API_BASE_URL}/api/categories?limit=${limit}`);
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     const data = await res.json();
     return data;
   } catch (error) {
