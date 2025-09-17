@@ -13,8 +13,8 @@ const Header = () => {
   const { totalInCart } = useCart();
   const [openProfile, setOpenProfile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [notifType, setNotifType] = useState("warning");  
   const navbarRef = useRef(null);
-  const profileRef = useRef(null);
   const { user, token, logout } = useAuth();
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
@@ -69,7 +69,7 @@ const Header = () => {
         <Navbar />
       </div>
 
-      <div className="flex items-center mr-2 md:hidden">
+      <div className="flex items-center mr-2 lg:hidden">
         <Searchbar />
         <div className="relative">
           <button
@@ -88,22 +88,21 @@ const Header = () => {
         </button>
       </div>
 
-      <div className="hidden md:block md:w-1/3 ">
+      <div className="hidden lg:block lg:w-1/3 ">
         <div className="flex items-center justify-around w-full">
           <Searchbar />
-
+          {/* wishlist */}
           <button className="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700">
             <Heart />
           </button>
+
+          {/* cart */}
           <button
             onClick={() => {
               if (token && user) {
                 navigate("/cart");
               } else {
-                setTimeout(() => {
-                  navigate("/login");
-                }, 1000);
-                setMessage("Please login to access the cart!");
+                setMessage("Login to access the cart!");
                 setShow(true);
               }
             }}
@@ -113,6 +112,7 @@ const Header = () => {
             <p className="absolute right-1 -top-2 ">{totalInCart}</p>
           </button>
 
+            {/* profile button */}
           <div className="relative">
             <button
               onClick={toggleProfile}
@@ -220,6 +220,7 @@ const Header = () => {
           <Notification
             message={message}
             duration={1000}
+            type={notifType}
             onClose={() => setShow(false)}
           />
         )}

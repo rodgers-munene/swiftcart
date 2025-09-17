@@ -4,7 +4,7 @@ const Product = require("../models/productModel");
 // Get all products
 const getProducts = asyncHandler(async (req, res) => {
   limit = req.query.limit || 20;
-  const products = await Product.find().limit(limit);
+  const products = await Product.find().limit(limit).sort({_id: -1});
   res.json(products);
 });
 
@@ -30,6 +30,16 @@ const getHighestDiscountProducts = asyncHandler(async (req, res) => {
 
   res.status(200).json(products);
 });
+
+// top rated products
+const getTopRatedProducts = asyncHandler(async (req, res) => {
+  const productLimit = req.query.limit || 10
+  const products = await Product.find()
+    .sort({ rating: -1})
+    .limit(productLimit);
+
+  res.status(200).json(products);
+})
 
 
 
@@ -165,5 +175,6 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getHighestDiscountProducts,
+  getTopRatedProducts,
   searchProducts,
 };

@@ -99,7 +99,7 @@ const GridProducts = ({ items }) => {
       {show && (
         <Notification
           message={message}
-          duration={5000}
+          duration={3000}
           type={notifType}
           onClose={() => setShow(false)}
         />

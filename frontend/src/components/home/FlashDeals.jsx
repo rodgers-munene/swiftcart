@@ -18,7 +18,7 @@ const FlashDeals = () => {
 
   const navigate = useNavigate();
   const { handleAddToCart } = useCart();
-  const [notifType, setNotifType] = useState("warning")
+  const [notifType, setNotifType] = useState("warning");
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
   const { token } = useAuth();
@@ -60,7 +60,7 @@ const FlashDeals = () => {
   return (
     <section className="py-10 w-[93vw] scrollbar-hide">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold">Flash Sales</h2>
+        <h2 className="text-xl font-semibold">Flash Sales</h2>
         {/* Countdown */}
         <div className="flex gap-2 mt-2">
           <TimeBox value={timeLeft.hours} label="H" />
@@ -84,10 +84,17 @@ const FlashDeals = () => {
               );
             }}
             key={index}
-            className="relative min-w-[250px] bg-white dark:bg-gray-900 shadow-sm border rounded-lg p-4 flex flex-col mb-4 cursor-pointer"
+            className="
+    relative 
+    min-w-[220px] h-[240px] 
+    sm:min-w-[250px] sm:h-[280px] 
+    bg-white dark:bg-gray-900 
+    shadow-sm border rounded
+    p-2 flex flex-col mb-4 cursor-pointer
+  "
           >
             {/* Discount Badge */}
-            <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded absolute">
+            <span className="bg-red-500 text-white text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded absolute">
               -{Math.round(item.discountPercentage)}%
             </span>
 
@@ -95,28 +102,28 @@ const FlashDeals = () => {
             <img
               src={item.thumbnail}
               alt={item.title}
-              className="w-full h-28 object-contain mb-3"
+              className="w-full h-24 sm:h-28 object-contain mb-2 sm:mb-3"
             />
 
             {/* Product Info */}
-            <h3 className="text-sm font-medium mb-2 line-clamp-2">
+            <h3 className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 line-clamp-2">
               {item.title}
             </h3>
 
             {/* Price */}
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-lg font-bold text-red-500">
+            <div className="flex items-center gap-2 mb-1 sm:mb-2">
+              <span className="text-sm sm:text-lg font-bold text-red-500">
                 ${formatPrice(item.price, item.discountPercentage)}
               </span>
-              <span className="text-sm text-gray-400 line-through">
+              <span className="text-xs sm:text-sm text-gray-400 line-through">
                 ${item.price}
               </span>
             </div>
 
             {/* Ratings */}
-            <div className="flex items-center gap-1 text-yellow-400 text-sm mb-2">
+            <div className="flex items-center gap-1 text-yellow-400 text-xs sm:text-sm mb-1 sm:mb-2">
               <StarRating rating={item.rating} />
-              <span className="text-gray-500 text-xs">
+              <span className="text-gray-500 text-[10px] sm:text-xs">
                 ({item.reviews.length})
               </span>
             </div>
@@ -129,18 +136,28 @@ const FlashDeals = () => {
                   handleAddToCart(item._id, 1);
                   setMessage("Product Added to Cart");
                   setShow(true);
-                  setNotifType("success")
+                  setNotifType("success");
                 } else {
                   setMessage("Login to Access cart!");
                   setShow(true);
                 }
               }}
-              className="bg-gray-700 text-white py-2 rounded mt-auto hover:bg-gray-800 transition"
+              className="
+      bg-gray-700 text-white 
+      py-1.5 sm:py-2 
+      text-xs sm:text-sm 
+      rounded mt-auto 
+      hover:bg-gray-800 transition
+    "
             >
               Add To Cart
             </button>
           </div>
         ))}
+      </div>
+
+      <div className="w-full flex justify-center items-center mt-5">
+        <button className="px-3 py-2 bg-red-500 text-white rounded shadow-xl">View All Products</button>
       </div>
 
       {show && (
@@ -152,17 +169,16 @@ const FlashDeals = () => {
         />
       )}
     </section>
-    
   );
 };
 
 function TimeBox({ value, label }) {
   return (
-    <div className="flex items-center bg-red-700 text-white px-3 py-1 rounded-md">
-      <span className="text-lg font-bold">
+    <div className="flex items-center bg-red-700 text-white px-1 py-1 rounded-md">
+      <span className="text-sm font-bold">
         {String(value).padStart(2, "0")}
       </span>
-      <span className="text-lg font-bold uppercase">{label}</span>
+      <span className="text-sm font-bold uppercase">{label}</span>
     </div>
   );
 }

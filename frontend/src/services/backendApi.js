@@ -1,10 +1,10 @@
-import { CarFront, CreditCard, ShieldHalf, Headphones } from "lucide-react";
+import { CarFront, CreditCard, PhoneCall } from "lucide-react";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // get all products
-export const getProducts = async () => {
+export const getProducts = async (limit) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/products`);
+    const res = await fetch(`${API_BASE_URL}/api/products?limit=${limit}`);
     const data = res.json();
     return data;
   } catch (error) {
@@ -39,7 +39,7 @@ export const topCategories = [
 export const serviceData = [
   {
     icon: CarFront,
-    title: "Free Shipping",
+    title: "Free and Fast Delivery",
     subtitle: "Enjoy fast, free delivery on all orders.",
     bg: "#fdefe6",
   },
@@ -50,14 +50,8 @@ export const serviceData = [
     bg: "#ceebe9",
   },
   {
-    icon: ShieldHalf,
-    title: "Secure Payment",
-    subtitle: "Your personal data is protected with us.",
-    bg: "#e2f2b2",
-  },
-  {
-    icon: Headphones,
-    title: " Back Guarantee",
+    icon: PhoneCall,
+    title: "24/7 Customer Support",
     subtitle: "100% satisfaction guaranteed.",
     bg: "#d6e5fb",
   },
@@ -102,7 +96,7 @@ export const getProductById = async (id) => {
 export const getHighestDiscountedProducts = async (limit) => {
   try {
     const res = await fetch(
-      `${API_BASE_URL}/api/products/highest-discount?&limit=${limit}`
+      `${API_BASE_URL}/api/products/highest-discount?limit=${limit}`
     );
     const data = await res.json();
     return data;
@@ -111,3 +105,16 @@ export const getHighestDiscountedProducts = async (limit) => {
     return [];
   }
 };
+
+export const getTopRatedProducts = async (limit) => {
+  try {
+    const res = await fetch(
+      `${API_BASE_URL}/api/products/top-rated?limit=${limit}`
+    );
+    const data = await res.json()
+    return data;
+  }catch(err) {
+    console.error("Error fetching products");
+    return [];
+  }
+}

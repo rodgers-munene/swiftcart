@@ -4,6 +4,7 @@ const {
   getProductDetails,
   getHighestDiscountProducts,
   searchProducts,
+  getTopRatedProducts,
 } = require("../controllers/productController");
 const router = express.Router();
 
@@ -17,6 +18,12 @@ router.get("/", getProducts);
 // public route
 
 router.get("/highest-discount", getHighestDiscountProducts);
+
+// get highest rated products sorted by rating
+// GET /api/top-rated
+// public route
+
+router.get("/top-rated", getTopRatedProducts);
 
 // Search products
 // GET /api/products/search
