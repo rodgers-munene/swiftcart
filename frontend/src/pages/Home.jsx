@@ -81,7 +81,7 @@ const Home = () => {
         {/* featured producs */}
         <div className="flex flex-col items-center w-full mt-5 mb-5">
           <div className="w-[90vw] flex justify-center mb-8 items-center">
-            <h2 className="relative text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 tracking-wide">
+            <h2 className="relative text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 dark:text-gray-100 tracking-wide">
               Featured Products
               <span className="absolute left-1/2 -bottom-2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"></span>
             </h2>
